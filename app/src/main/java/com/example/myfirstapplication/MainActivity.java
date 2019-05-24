@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -156,6 +157,14 @@ public class MainActivity extends AppCompatActivity {
             itemCategory.setLayoutParams(sizeRest);
 
             canvas.addView(itemLayout);
+
+            //add the horizontal line separator
+            View lineDivider = new View(this);
+            lineDivider.setBackgroundColor(Color.parseColor("#000000"));
+            LinearLayout.LayoutParams lineDividerMargins = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2);
+            lineDividerMargins.setMargins(0,20,0,20);
+            lineDivider.setLayoutParams(lineDividerMargins);
+            canvas.addView(lineDivider);
         }
     }
 
