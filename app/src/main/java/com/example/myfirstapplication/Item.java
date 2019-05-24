@@ -8,11 +8,13 @@ public class Item implements Parcelable {
     private String category;
     private int dueHour;
     private int dueMinute;
-    public Item(String name, String category, int dueHour, int dueMinute) {
+    private boolean isAfternoon = false;
+    public Item(String name, String category, int dueHour, int dueMinute, boolean isAfternoon) {
         this.name = name;
         this.category = category;
         this.dueHour = dueHour;
         this.dueMinute = dueMinute;
+        this.isAfternoon = isAfternoon;
     }
 
     public String getName() {
@@ -34,6 +36,10 @@ public class Item implements Parcelable {
     @Override
     public int describeContents() {
         return 0;
+    }
+
+    public boolean isAfternoon() {
+        return isAfternoon;
     }
 
     @Override

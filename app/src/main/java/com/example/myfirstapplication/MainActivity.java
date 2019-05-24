@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,13 +46,12 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         dateAndTimeThread.start();
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             printItems();
         }
     }
 
     public void buttonOnClick(View v) {
-        Button addNew = (Button) v;
         startActivityForResult(new Intent(this, create_item.class), 100);
     }
 
@@ -91,14 +89,20 @@ public class MainActivity extends AppCompatActivity {
             TextView itemCategory = new TextView(this);
 
             String nameString = currentItem.getName();
+            itemName.setText(nameString);
+            itemName.setTextSize(16);
+
             String itemTime = currentItem.getDueHour() + ":";
             if (currentItem.getDueMinute() < 10) {
                 itemTime += "0";
             }
             itemTime += currentItem.getDueMinute();
+            if (currentItem.isAfternoon()) {
+                itemTime += " PM";
+            } else {
+                itemTime += " AM";
+            }
 
-            itemName.setText(nameString);
-            itemName.setTextSize(16);
             timeText.setText(itemTime);
             timeText.setTextSize(16);
 
@@ -132,8 +136,14 @@ public class MainActivity extends AppCompatActivity {
             itemName.setMarqueeRepeatLimit(-1);
             itemName.setFocusableInTouchMode(true);
             itemName.setFocusable(true);
-            itemName.setSelected(true);
             itemName.setLayoutParams(sizeText);
+            itemName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TextView itemName = (TextView) v;
+                    itemName.setSelected(true);
+                }
+            });
 
             itemCheck.setLayoutParams(sizeCheck);
 
@@ -153,9 +163,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if ((requestCode == 100) && (resultCode == RESULT_OK)) {
             Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
-                    data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1));
+                    data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1), data.getBooleanExtra("isAfternoon", false));
             insertItem(toAdd);
-            System.out.println(data.getStringExtra("name"));
         }
     }
 

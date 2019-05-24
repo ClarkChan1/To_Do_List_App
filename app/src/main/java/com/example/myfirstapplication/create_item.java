@@ -14,9 +14,10 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 public class create_item extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
-    int dueHour= 0;
-    int dueMinute= 0;
+    int dueHour = 0;
+    int dueMinute = 0;
     String category = "";
+    boolean isAfternoon = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +36,30 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         textTime = findViewById(R.id.dueTime);
         dueHour = hourOfDay;
         dueMinute = minute;
-
-        if (minute < 10) {
-            textTime.setText(hourOfDay + ":0" + minute);
+        String timeString = "";
+        if (dueHour >= 12) {
+            isAfternoon = true;
+            if (hourOfDay > 12) {
+                hourOfDay -= 12;
+            }
+            //account for when time is 0:00, it should be 12:00am
         } else {
-            textTime.setText(hourOfDay + ":" + minute);
+            isAfternoon = false;
+            if (hourOfDay == 0) {
+                hourOfDay = 12;
+            }
         }
+        if (dueMinute < 10) {
+            timeString = hourOfDay + ":0" + dueMinute;
+        } else {
+            timeString = hourOfDay + ":" + dueMinute;
+        }
+        if (isAfternoon) {
+            timeString += " PM";
+        } else {
+            timeString += " AM";
+        }
+        textTime.setText(timeString);
     }
 
     public void onRadioButtonClicked(View v) {
@@ -66,7 +85,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         if (category.equals("")) {
             Toast correctCategory = Toast.makeText(getApplicationContext(), "Choose a category", Toast.LENGTH_LONG);
             correctCategory.show();
-        } else{
+        } else {
             goodCategory = true;
         }
         Calendar c = Calendar.getInstance();
@@ -75,7 +94,10 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         if ((currentHour > dueHour) || ((currentHour == dueHour) && (currentMinute >= dueMinute))) {
             Toast correctTime = Toast.makeText(getApplicationContext(), "Task must be due sometime after this moment", Toast.LENGTH_LONG);
             correctTime.show();
-        } else{
+        } else {
+            if (dueHour > 12) {
+                dueHour -= 12;
+            }
             goodTime = true;
         }
         if (goodName && goodCategory && goodTime) {
@@ -84,6 +106,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             i.putExtra("category", category);
             i.putExtra("dueHour", dueHour);
             i.putExtra("dueMinute", dueMinute);
+            i.putExtra("isAfternoon", isAfternoon);
             setResult(RESULT_OK, i);
             finish();
         }
