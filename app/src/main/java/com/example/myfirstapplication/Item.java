@@ -6,17 +6,13 @@ import android.os.Parcelable;
 public class Item implements Parcelable {
     private String name;
     private String category;
-    private int startHour;
-    private int startMinute;
-    private int endHour;
-    private int endtMinute;
-    public Item(String name, String category, int startHour, int startMinute, int endHour, int endtMinute) {
+    private int dueHour;
+    private int dueMinute;
+    public Item(String name, String category, int dueHour, int dueMinute) {
         this.name = name;
         this.category = category;
-        this.startHour = startHour;
-        this.startMinute = startMinute;
-        this.endHour = endHour;
-        this.endtMinute = endtMinute;
+        this.dueHour = dueHour;
+        this.dueMinute = dueMinute;
     }
 
     public String getName() {
@@ -27,20 +23,12 @@ public class Item implements Parcelable {
         return category;
     }
 
-    public int getStartHour() {
-        return startHour;
+    public int getDueHour() {
+        return dueHour;
     }
 
-    public int getStartMinute() {
-        return startMinute;
-    }
-
-    public int getEndHour() {
-        return endHour;
-    }
-
-    public int getEndtMinute() {
-        return endtMinute;
+    public int getDueMinute() {
+        return dueMinute;
     }
 
     @Override

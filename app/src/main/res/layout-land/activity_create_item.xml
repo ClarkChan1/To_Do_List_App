@@ -67,10 +67,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/startTime"
+                android:id="@+id/dueTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/startTimeText"
+                android:text="@string/dueText"
                 android:textSize="18sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/button2"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -89,16 +89,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView"
                 tools:targetApi="o" />
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:onClick="endButtonOnClick"
-                android:text="End Time"
-                app:layout_constraintStart_toStartOf="@+id/button2"
-                app:layout_constraintTop_toBottomOf="@+id/button2" />
 
             <RadioGroup
                 android:id="@+id/radioGroup"
@@ -125,16 +115,6 @@
                     android:text="Life" />
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/endTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/endTimeText"
-                android:textSize="18sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/button4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/startTime" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 

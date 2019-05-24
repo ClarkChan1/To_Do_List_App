@@ -11,12 +11,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 public class create_item extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
-    boolean isStartTime = false; //keep track of which timepicker we are on
-    int startHour = 0;
-    int startMinute = 0;
-    int endHour = 0;
-    int endMinute = 0;
+    int dueHour= 0;
+    int dueMinute= 0;
     String category = "";
 
     @Override
@@ -28,27 +27,14 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     public void startButtonOnClick(View v) {
         DialogFragment timePicker = new TimePickerFragment();
         timePicker.show(getSupportFragmentManager(), "start time picker");
-        isStartTime = true;
-    }
-
-    public void endButtonOnClick(View v) {
-        DialogFragment timePicker = new TimePickerFragment();
-        timePicker.show(getSupportFragmentManager(), "end time picker");
-        isStartTime = false;
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         TextView textTime;
-        if (isStartTime) {
-            textTime = (TextView) findViewById(R.id.startTime);
-            startHour = hourOfDay;
-            startMinute = minute;
-        } else {
-            textTime = (TextView) findViewById(R.id.endTime);
-            endHour = hourOfDay;
-            endMinute = minute;
-        }
+        textTime = findViewById(R.id.dueTime);
+        dueHour = hourOfDay;
+        dueMinute = minute;
 
         if (minute < 10) {
             textTime.setText(hourOfDay + ":0" + minute);
@@ -83,10 +69,11 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         } else{
             goodCategory = true;
         }
-        if ((startHour > endHour)
-                || ((startHour == endHour) && (startMinute > endMinute))
-                || ((startHour == endHour) && (startMinute == endMinute))) {
-            Toast correctTime = Toast.makeText(getApplicationContext(), "End time must be after start time", Toast.LENGTH_LONG);
+        Calendar c = Calendar.getInstance();
+        int currentHour = c.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = c.get(Calendar.MINUTE);
+        if ((currentHour > dueHour) || ((currentHour == dueHour) && (currentMinute >= dueMinute))) {
+            Toast correctTime = Toast.makeText(getApplicationContext(), "Task must be due sometime after this moment", Toast.LENGTH_LONG);
             correctTime.show();
         } else{
             goodTime = true;
@@ -95,10 +82,8 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             Intent i = new Intent();
             i.putExtra("name", nameField.getText().toString());
             i.putExtra("category", category);
-            i.putExtra("startHour", startHour);
-            i.putExtra("startMinute", startMinute);
-            i.putExtra("endHour", endHour);
-            i.putExtra("endMinute", endMinute);
+            i.putExtra("dueHour", dueHour);
+            i.putExtra("dueMinute", dueMinute);
             setResult(RESULT_OK, i);
             finish();
         }

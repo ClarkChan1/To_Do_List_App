@@ -5,7 +5,7 @@
     <string name="createButton">Create</string>
     <string name="itemName">Name</string>
     <string name="inputItemName" />
-    <string name="startTimeText">Start</string>
+    <string name="dueText">due Time</string>
     <string name="endTimeText">End</string>
 
 </resources>

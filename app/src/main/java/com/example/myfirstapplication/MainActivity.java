@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -62,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             boolean added = false;
             for (int a = 0; a < listItems.size(); a++) {
-                if ((listItems.get(a).getStartHour() > toAdd.getStartHour())
-                        || ((listItems.get(a).getStartHour() == toAdd.getStartHour()) && (listItems.get(a).getStartMinute() > toAdd.getStartMinute()))) {
+                if ((listItems.get(a).getDueHour() > toAdd.getDueHour())
+                        || ((listItems.get(a).getDueHour() == toAdd.getDueHour()) && (listItems.get(a).getDueMinute() > toAdd.getDueMinute()))) {
                     listItems.add(a, toAdd);
                     added = true;
                     break; //since the end condition is a<listItems.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
@@ -85,26 +86,21 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout itemLayout = new LinearLayout(this);
             itemLayout.setOrientation(LinearLayout.HORIZONTAL);
             CheckBox itemCheck = new CheckBox(this);
+            TextView itemName = new TextView(this);
             TextView timeText = new TextView(this);
             TextView itemCategory = new TextView(this);
 
-            String itemName = currentItem.getName();
-            String itemTime = currentItem.getStartHour() + ":";
-            if (currentItem.getStartMinute() < 10) {
+            String nameString = currentItem.getName();
+            String itemTime = currentItem.getDueHour() + ":";
+            if (currentItem.getDueMinute() < 10) {
                 itemTime += "0";
             }
-            itemTime += currentItem.getStartMinute();
-            itemTime += " - ";
-            itemTime += currentItem.getEndHour() + ":";
-            if (currentItem.getEndtMinute() < 10) {
-                itemTime += "0";
-            }
-            itemTime += currentItem.getEndtMinute();
+            itemTime += currentItem.getDueMinute();
 
-            itemCheck.setText(itemName);
-            itemCheck.setTextSize(20);
+            itemName.setText(nameString);
+            itemName.setTextSize(16);
             timeText.setText(itemTime);
-            timeText.setTextSize(20);
+            timeText.setTextSize(16);
 
             if (currentItem.getCategory().equals("Work")) {
                 itemCategory.setText("Work");
@@ -115,18 +111,40 @@ public class MainActivity extends AppCompatActivity {
             }
 
             itemLayout.addView(itemCheck);
+            itemLayout.addView(itemName);
             itemLayout.addView(timeText);
             itemLayout.addView(itemCategory);
+
+            itemLayout.setWeightSum(9f);
             LinearLayout.LayoutParams sizeText = new LinearLayout.LayoutParams
-                    (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            sizeText.weight = 3f;
+                    (0, LinearLayout.LayoutParams.MATCH_PARENT);
+            sizeText.weight = 4f;
+            LinearLayout.LayoutParams sizeCheck = new LinearLayout.LayoutParams
+                    (0, LinearLayout.LayoutParams.MATCH_PARENT);
+            sizeCheck.weight = 1f;
             LinearLayout.LayoutParams sizeRest = new LinearLayout.LayoutParams
-                    (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            sizeRest.weight = 1f;
-            itemCheck.setLayoutParams(sizeText);
+                    (0, LinearLayout.LayoutParams.MATCH_PARENT);
+            sizeRest.weight = 2f;
+
+            itemName.setGravity(Gravity.CENTER);
+            itemName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            itemName.setSingleLine(true);
+            itemName.setMarqueeRepeatLimit(-1);
+            itemName.setFocusableInTouchMode(true);
+            itemName.setFocusable(true);
+            itemName.setSelected(true);
+            itemName.setLayoutParams(sizeText);
+
+            itemCheck.setLayoutParams(sizeCheck);
+
+            timeText.setSingleLine(true);
+            timeText.setGravity(Gravity.CENTER);
             timeText.setLayoutParams(sizeRest);
-            itemCategory.setLayoutParams(sizeRest);
+
+            itemCategory.setSingleLine(true);
             itemCategory.setGravity(Gravity.CENTER);
+            itemCategory.setLayoutParams(sizeRest);
+
             canvas.addView(itemLayout);
         }
     }
@@ -135,8 +153,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if ((requestCode == 100) && (resultCode == RESULT_OK)) {
             Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
-                    data.getIntExtra("startHour", -1), data.getIntExtra("startMinute", -1),
-                    data.getIntExtra("endHour", -1), data.getIntExtra("endMinute", -1));
+                    data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1));
             insertItem(toAdd);
             System.out.println(data.getStringExtra("name"));
         }
