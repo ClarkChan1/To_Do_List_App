@@ -2,8 +2,11 @@ package com.example.myfirstapplication;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         printItems();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void printItems() {
         LinearLayout canvas = findViewById(R.id.linearLayout);
         canvas.removeAllViews();
@@ -109,10 +113,10 @@ public class MainActivity extends AppCompatActivity {
 
             if (currentItem.getCategory().equals("Work")) {
                 itemCategory.setText("Work");
-                itemCategory.setBackgroundColor(Color.parseColor("#ff4d4d"));
+                itemCategory.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_border_red));
             } else {
                 itemCategory.setText("Life");
-                itemCategory.setBackgroundColor(Color.parseColor("#80ff80"));
+                itemCategory.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_border_green));
             }
 
             itemLayout.addView(itemCheck);
@@ -127,9 +131,13 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout.LayoutParams sizeCheck = new LinearLayout.LayoutParams
                     (0, LinearLayout.LayoutParams.MATCH_PARENT);
             sizeCheck.weight = 1f;
-            LinearLayout.LayoutParams sizeRest = new LinearLayout.LayoutParams
+            LinearLayout.LayoutParams sizeTime = new LinearLayout.LayoutParams
                     (0, LinearLayout.LayoutParams.MATCH_PARENT);
-            sizeRest.weight = 2f;
+            sizeTime.weight = 2f;
+            LinearLayout.LayoutParams sizeCategory = new LinearLayout.LayoutParams
+                    (0, LinearLayout.LayoutParams.MATCH_PARENT);
+            sizeCategory.weight = 2f;
+            sizeCategory.setMargins(0,10, 0,10);
 
             itemName.setGravity(Gravity.CENTER);
             itemName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
@@ -150,11 +158,11 @@ public class MainActivity extends AppCompatActivity {
 
             timeText.setSingleLine(true);
             timeText.setGravity(Gravity.CENTER);
-            timeText.setLayoutParams(sizeRest);
+            timeText.setLayoutParams(sizeTime);
 
             itemCategory.setSingleLine(true);
             itemCategory.setGravity(Gravity.CENTER);
-            itemCategory.setLayoutParams(sizeRest);
+            itemCategory.setLayoutParams(sizeCategory);
 
             canvas.addView(itemLayout);
 
@@ -181,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("items", listItems);
-
     }
 
     @Override
