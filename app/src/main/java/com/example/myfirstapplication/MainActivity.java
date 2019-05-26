@@ -50,9 +50,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         dateAndTimeThread.start();
-        if (savedInstanceState != null) {
-            printItems();
-        }
+        listItems = DataManager.readItems(this, "ListItems.txt");
+        printItems();
     }
 
     public void buttonOnClick(View v) {
@@ -182,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
             Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
                     data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1), data.getBooleanExtra("isAfternoon", false));
             insertItem(toAdd);
+            DataManager.saveItem(this, "ListItems.txt", toAdd);
         }
     }
 

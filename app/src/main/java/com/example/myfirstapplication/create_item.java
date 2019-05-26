@@ -73,6 +73,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     public void onCreateButtonClicked(View v) {
         //create boolean statements to check if user input was good
         boolean goodName = false;
+        boolean goodName2 = false;
         boolean goodCategory = false;
         boolean goodTime = false;
         EditText nameField = (EditText) findViewById(R.id.nameField);
@@ -81,6 +82,12 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             correctName.show();
         } else {
             goodName = true;
+        }
+        if(nameField.getText().toString().contains(",")){
+            Toast correctName2 = Toast.makeText(getApplicationContext(), "Do not type any commas", Toast.LENGTH_LONG);
+            correctName2.show();
+        } else{
+            goodName2 = true;
         }
         if (category.equals("")) {
             Toast correctCategory = Toast.makeText(getApplicationContext(), "Choose a category", Toast.LENGTH_LONG);
@@ -100,7 +107,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             }
             goodTime = true;
         }
-        if (goodName && goodCategory && goodTime) {
+        if (goodName && goodName2 && goodCategory && goodTime) {
             Intent i = new Intent();
             i.putExtra("name", nameField.getText().toString());
             i.putExtra("category", category);
