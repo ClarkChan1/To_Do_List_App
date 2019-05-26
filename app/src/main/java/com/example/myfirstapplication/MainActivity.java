@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         dateAndTimeThread.start();
-        listItems = DataManager.readItems(this, "ListItems.txt");
+        listItems = DataManager.readItems(this, "ListItems.json");
         printItems();
     }
 
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 listItems.add(toAdd);
             }
         }
+        DataManager.saveItem(this, "ListItems.json", listItems);
         printItems();
     }
 
@@ -181,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
             Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
                     data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1), data.getBooleanExtra("isAfternoon", false));
             insertItem(toAdd);
-            DataManager.saveItem(this, "ListItems.txt", toAdd);
         }
     }
 

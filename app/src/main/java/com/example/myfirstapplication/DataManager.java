@@ -2,6 +2,10 @@ package com.example.myfirstapplication;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,11 +15,14 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class DataManager {
-    public static void saveItem(Context context, String fileName, Item item) {
+    static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public static void saveItem(Context context, String fileName, ArrayList<Item> itemsToSave) {
         try {
-            String itemString = item.getName() + "," + item.getCategory() + "," + item.getDueHour() + "," + item.getDueMinute() + "," + item.isAfternoon() + "\n";
-            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_APPEND);
-            fos.write(itemString.getBytes());
+
+//            String itemString = item.getName() + "," + item.getCategory() + "," + item.getDueHour() + "," + item.getDueMinute() + "," + item.isAfternoon() + "\n";
+            String jsonString = gson.toJson(itemsToSave);
+            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            fos.write(jsonString.getBytes());
             fos.close();
         } catch (FileNotFoundException e) {
             System.out.println("FileNotFoundException while trying to save!");
@@ -30,15 +37,11 @@ public class DataManager {
         ArrayList<Item> loadedItems = new ArrayList<Item>();
         try {
             FileInputStream fis = context.openFileInput(fileName);
-            InputStreamReader irs = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(irs);
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] itemParts = line.split(",");
-                loadedItems.add(new Item(itemParts[0], itemParts[1],Integer.parseInt(itemParts[2]), Integer.parseInt(itemParts[3]), Boolean.parseBoolean(itemParts[4])));
-            }
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            loadedItems = gson.fromJson(br, new TypeToken<ArrayList<Item>>(){}.getType());
             fis.close();
-            irs.close();
+            isr.close();
             br.close();
         } catch (IOException e) {
             System.out.println("IOException while trying to load!");
