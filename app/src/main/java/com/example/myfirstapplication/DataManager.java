@@ -34,7 +34,7 @@ public class DataManager {
     }
 
     public static ArrayList<Item> readItems(Context context, String fileName) {
-        ArrayList<Item> loadedItems = new ArrayList<Item>();
+        ArrayList<Item> loadedItems = null;
         try {
             FileInputStream fis = context.openFileInput(fileName);
             InputStreamReader isr = new InputStreamReader(fis);
@@ -47,6 +47,6 @@ public class DataManager {
             System.out.println("IOException while trying to load!");
             e.printStackTrace();
         }
-        return loadedItems;
+        return loadedItems == null ? (new ArrayList<Item>()) : loadedItems;
     }
 }
