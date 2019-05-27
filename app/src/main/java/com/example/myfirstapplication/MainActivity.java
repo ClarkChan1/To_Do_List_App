@@ -28,6 +28,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        View view = this.getWindow().getDecorView();
 //        view.setBackgroundColor(Color.parseColor("#212121"));
+
+        //keep track of the current day
+        long currentTotalDate = System.currentTimeMillis();
+        SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy hh");
+        String dateString = sdfDate.format(currentTotalDate);
+        DataManager.checkDate(this, "CurrentDate.txt", dateString);
+
         Thread dateAndTimeThread = new Thread() {
             public void run() {
                 try {
@@ -50,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         dateAndTimeThread.start();
+
         listItems = DataManager.readItems(this, "ListItems.json");
         printItems();
     }

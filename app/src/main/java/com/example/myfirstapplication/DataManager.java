@@ -42,10 +42,42 @@ public class DataManager {
             isr.close();
             br.close();
         } catch (IOException e) {
-            System.out.println("IOException while trying to load!");
+            System.out.println("IOException while trying to load in readItems()!");
             e.printStackTrace();
         }
         return loadedItems == null ? (new ArrayList<Item>()) : loadedItems;
+    }
+
+    public static void checkDate(Context context, String fileName, String dateString){
+        try {
+            FileInputStream fis = context.openFileInput(fileName);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            String storedDate = br.readLine();
+
+            fis.close();
+            isr.close();
+            br.close();
+
+            //to create the file we need the FileOutputStream
+            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+
+            if(storedDate == null){
+                fos.write(dateString.getBytes());
+            } else{
+                if(!storedDate.equals(dateString)){
+                    clearData(context, "ListItems.json");
+                    fos.write(dateString.getBytes());
+                } else{
+                    //since we are rewriting the file, we need to put the date back if it is equal
+                    fos.write(storedDate.getBytes());
+                }
+            }
+            fos.close();
+        } catch (IOException e) {
+            System.out.println("IOException while trying to load in checkDate()!");
+            e.printStackTrace();
+        }
     }
 
     public static void clearData(Context context, String fileName){
