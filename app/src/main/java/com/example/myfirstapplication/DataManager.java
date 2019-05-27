@@ -18,8 +18,6 @@ public class DataManager {
     static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static void saveItem(Context context, String fileName, ArrayList<Item> itemsToSave) {
         try {
-
-//            String itemString = item.getName() + "," + item.getCategory() + "," + item.getDueHour() + "," + item.getDueMinute() + "," + item.isAfternoon() + "\n";
             String jsonString = gson.toJson(itemsToSave);
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             fos.write(jsonString.getBytes());
@@ -48,5 +46,18 @@ public class DataManager {
             e.printStackTrace();
         }
         return loadedItems == null ? (new ArrayList<Item>()) : loadedItems;
+    }
+
+    public static void clearData(Context context, String fileName){
+        try{
+            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("FileNotFoundException while trying to save!");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("IOException while trying to save!");
+            e.printStackTrace();
+        }
     }
 }
