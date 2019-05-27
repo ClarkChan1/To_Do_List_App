@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -50,6 +51,11 @@ public class DataManager {
 
     public static void checkDate(Context context, String fileName, String dateString){
         try {
+            File currentDateFile = new File(context.getFilesDir().getAbsolutePath()+"/CurrentDate.txt");
+            if(!currentDateFile.exists()){
+                FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+                fos.close();
+            }
             FileInputStream fis = context.openFileInput(fileName);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
