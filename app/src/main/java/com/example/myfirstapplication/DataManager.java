@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class DataManager {
     static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
     public static void saveItem(Context context, String fileName, ArrayList<Item> itemsToSave) {
         try {
             String jsonString = gson.toJson(itemsToSave);
@@ -35,10 +36,17 @@ public class DataManager {
     public static ArrayList<Item> readItems(Context context, String fileName) {
         ArrayList<Item> loadedItems = null;
         try {
+            //Create a FileOutputStream for the case where the device doesn't have the json file yet
+            File currentJSONFile = new File(context.getFilesDir().getAbsolutePath() + "/ListItems.json");
+            if (!currentJSONFile.exists()) {
+                FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+                fos.close();
+            }
             FileInputStream fis = context.openFileInput(fileName);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
-            loadedItems = gson.fromJson(br, new TypeToken<ArrayList<Item>>(){}.getType());
+            loadedItems = gson.fromJson(br, new TypeToken<ArrayList<Item>>() {
+            }.getType());
             fis.close();
             isr.close();
             br.close();
@@ -49,10 +57,11 @@ public class DataManager {
         return loadedItems == null ? (new ArrayList<Item>()) : loadedItems;
     }
 
-    public static void checkDate(Context context, String fileName, String dateString){
+    public static void checkDate(Context context, String fileName, String dateString) {
         try {
-            File currentDateFile = new File(context.getFilesDir().getAbsolutePath()+"/CurrentDate.txt");
-            if(!currentDateFile.exists()){
+            //Create a FileOutputStream for the case where the device doesn't have the text file yet
+            File currentDateFile = new File(context.getFilesDir().getAbsolutePath() + "/CurrentDate.txt");
+            if (!currentDateFile.exists()) {
                 FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
                 fos.close();
             }
@@ -68,13 +77,13 @@ public class DataManager {
             //to create the file we need the FileOutputStream
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
 
-            if(storedDate == null){
+            if (storedDate == null) {
                 fos.write(dateString.getBytes());
-            } else{
-                if(!storedDate.equals(dateString)){
+            } else {
+                if (!storedDate.equals(dateString)) {
                     clearData(context, "ListItems.json");
                     fos.write(dateString.getBytes());
-                } else{
+                } else {
                     //since we are rewriting the file, we need to put the date back if it is equal
                     fos.write(storedDate.getBytes());
                 }
@@ -86,8 +95,8 @@ public class DataManager {
         }
     }
 
-    public static void clearData(Context context, String fileName){
-        try{
+    public static void clearData(Context context, String fileName) {
+        try {
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             fos.close();
         } catch (FileNotFoundException e) {

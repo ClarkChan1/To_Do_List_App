@@ -41,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
                                 long currentTotalDate = System.currentTimeMillis();
                                 SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy\nhh:mm a");
                                 String dateString = sdfDate.format(currentTotalDate);
+                                //this is to get rid of the leading 0 when hours is < 10
+                                if(dateString.charAt(dateString.indexOf("\n")+1) == '0'){
+                                    dateString = dateString.substring(0,dateString.indexOf("\n")+1) + dateString.substring(dateString.indexOf("\n")+2);
+                                }
                                 dateString = String.format("%-30s", dateString.substring(0, dateString.indexOf("\n"))) + dateString.substring(dateString.indexOf("\n") + 1);
                                 dateText.setText(dateString);
                             }
@@ -145,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout.LayoutParams sizeCategory = new LinearLayout.LayoutParams
                     (0, LinearLayout.LayoutParams.MATCH_PARENT);
             sizeCategory.weight = 2f;
-            sizeCategory.setMargins(0,10, 0,10);
+            sizeCategory.setMargins(0, 10, 0, 10);
 
             itemName.setGravity(Gravity.CENTER);
             itemName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
@@ -178,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
             View lineDivider = new View(this);
             lineDivider.setBackgroundColor(Color.parseColor("#000000"));
             LinearLayout.LayoutParams lineDividerMargins = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2);
-            lineDividerMargins.setMargins(0,20,0,20);
+            lineDividerMargins.setMargins(0, 20, 0, 20);
             lineDivider.setLayoutParams(lineDividerMargins);
             canvas.addView(lineDivider);
         }

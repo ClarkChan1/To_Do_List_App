@@ -9,6 +9,7 @@ public class Item implements Parcelable {
     private int dueHour;
     private int dueMinute;
     private boolean isAfternoon = false;
+
     public Item(String name, String category, int dueHour, int dueMinute, boolean isAfternoon) {
         this.name = name;
         this.category = category;
@@ -16,6 +17,26 @@ public class Item implements Parcelable {
         this.dueMinute = dueMinute;
         this.isAfternoon = isAfternoon;
     }
+
+    protected Item(Parcel in) {
+        name = in.readString();
+        category = in.readString();
+        dueHour = in.readInt();
+        dueMinute = in.readInt();
+        isAfternoon = in.readByte() != 0;
+    }
+
+    public static final Creator<Item> CREATOR = new Creator<Item>() {
+        @Override
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
+
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -44,6 +65,10 @@ public class Item implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(name);
+        dest.writeString(category);
+        dest.writeInt(dueHour);
+        dest.writeInt(dueMinute);
+        dest.writeByte((byte) (isAfternoon ? 1 : 0));
     }
 }
