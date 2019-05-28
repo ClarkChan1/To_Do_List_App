@@ -57,7 +57,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/date"
-            android:textSize="24dp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/currentTime"
@@ -65,8 +65,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="currentTime"
-            android:textSize="24dp" />
+            android:text="@string/time"
+            android:textSize="24sp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

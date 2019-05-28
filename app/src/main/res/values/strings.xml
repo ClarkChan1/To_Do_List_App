@@ -7,5 +7,6 @@
     <string name="inputItemName" />
     <string name="dueText">due Time</string>
     <string name="endTimeText">End</string>
+    <string name="time">currentTime</string>
 
 </resources>
