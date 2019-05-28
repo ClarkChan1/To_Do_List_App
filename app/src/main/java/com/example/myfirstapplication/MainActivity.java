@@ -38,15 +38,18 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 TextView dateText = (TextView) findViewById(R.id.currentDate);
+                                TextView timeText = (TextView) findViewById(R.id.currentTime);
                                 long currentTotalDate = System.currentTimeMillis();
                                 SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy\nhh:mm a");
                                 String dateString = sdfDate.format(currentTotalDate);
+                                String timeString = dateString.substring(dateString.indexOf("\n")+1);
                                 //this is to get rid of the leading 0 when hours is < 10
                                 if(dateString.charAt(dateString.indexOf("\n")+1) == '0'){
-                                    dateString = dateString.substring(0,dateString.indexOf("\n")+1) + dateString.substring(dateString.indexOf("\n")+2);
+                                    timeString = dateString.substring(dateString.indexOf("\n")+2);
                                 }
-                                dateString = String.format("%-30s", dateString.substring(0, dateString.indexOf("\n"))) + dateString.substring(dateString.indexOf("\n") + 1);
+                                dateString = dateString.substring(0,dateString.indexOf("\n"));
                                 dateText.setText(dateString);
+                                timeText.setText(timeString);
                             }
                         });
                     }
