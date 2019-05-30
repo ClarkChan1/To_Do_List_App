@@ -7,6 +7,7 @@ public class Item implements Parcelable {
     private String name;
     private String category;
     private int dueHour;
+    private int formattedDueHour;
     private int dueMinute;
     private boolean isAfternoon = false;
 
@@ -49,6 +50,10 @@ public class Item implements Parcelable {
     public int getDueHour() {
         return dueHour;
     }
+
+    public int getFormattedDueHour() { return formattedDueHour; }
+
+    public void setFormattedDueHour(int formattedDueHour) { this.formattedDueHour = formattedDueHour; }
 
     public int getDueMinute() {
         return dueMinute;

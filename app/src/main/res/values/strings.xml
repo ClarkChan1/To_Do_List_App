@@ -8,5 +8,8 @@
     <string name="dueText">due Time</string>
     <string name="endTimeText">End</string>
     <string name="time">currentTime</string>
+    <string name="item_name">name</string>
+    <string name="item_time">time</string>
+    <string name="item_category">category</string>
 
 </resources>

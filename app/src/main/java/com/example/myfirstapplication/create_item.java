@@ -95,9 +95,6 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             Toast correctTime = Toast.makeText(getApplicationContext(), "Task must be due sometime after this moment", Toast.LENGTH_LONG);
             correctTime.show();
         } else {
-            if (dueHour > 12) {
-                dueHour -= 12;
-            }
             goodTime = true;
         }
         if (goodName && goodCategory && goodTime) {
