@@ -14,24 +14,27 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="4"
-        android:gravity="center"
-
         android:focusableInTouchMode="true"
-        android:text="@string/item_name" />
+        android:gravity="center"
+        android:text="@string/item_name"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
+        android:gravity="center"
         android:text="@string/item_time"
-        android:gravity="center"/>
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/category"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
-        android:text="@string/item_category"
-        android:gravity="center"/>
+        android:background="@drawable/rounded_border_green"
+        android:gravity="center"
+        android:text="work"
+        android:textSize="18sp" />
 </LinearLayout>

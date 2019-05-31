@@ -88,7 +88,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         } else {
             goodTime = true;
         }
-        if (goodName && goodCategory /*&& goodTime*/) {
+        if (goodName && goodCategory && goodTime) {
             Intent i = new Intent();
             i.putExtra("name", nameField.getText().toString());
             i.putExtra("category", category);

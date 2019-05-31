@@ -14,9 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<Item> listItems = new ArrayList<Item>();
-    ItemAdapter itemAdapter;
-
+    private ArrayList<Item> listItems = new ArrayList<Item>();
+    private ItemAdapter itemAdapter;
+    private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,10 +61,15 @@ public class MainActivity extends AppCompatActivity {
         DataManager.checkDate(this, "CurrentDate.txt", dateString);
 
         listItems = DataManager.readItems(this, "ListItems.json");
-        ListView listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
         itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
-        listView.setAdapter(itemAdapter);
+        resetAdapter();
         //printItems();
+    }
+
+    public void resetAdapter(){
+        listView.setAdapter(itemAdapter);
+        DataManager.saveItems(this, "ListItems.json", listItems);
     }
 
     public void buttonOnClick(View v) {
@@ -89,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 listItems.add(toAdd);
             }
         }
-        DataManager.saveItem(this, "ListItems.json", listItems);
+        DataManager.saveItems(this, "ListItems.json", listItems);
         itemAdapter.notifyDataSetChanged();
 //        printItems();
     }

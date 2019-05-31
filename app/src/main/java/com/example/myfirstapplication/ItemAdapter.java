@@ -1,6 +1,7 @@
 package com.example.myfirstapplication;
 
-import android.content.Context;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,11 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemAdapter extends ArrayAdapter<Item> {
-    private Context context;
+    private MainActivity context;
     private List<Item> items;
     private int template_resource;
-
-    public ItemAdapter(Context context, int resource, ArrayList<Item> items) {
+    private long deleteCooldown = 0;
+    public ItemAdapter(MainActivity context, int resource, ArrayList<Item> items) {
         super(context, resource, items);
         this.context = context;
         this.items = items;
@@ -30,7 +31,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = new TextView(context);
             LayoutInflater inflater = LayoutInflater.from(context);
@@ -48,7 +49,19 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                while(SystemClock.elapsedRealtime() - deleteCooldown < 1000){
+                    return;
+                }
                 StartSmartAnimation.startAnimation((LinearLayout) finalConvertView.findViewById(R.id.item), AnimationType.SlideOutRight, 1000,0,true);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        items.remove(position);
+                        context.resetAdapter();
+                    }
+                }, 1000);
+                deleteCooldown = SystemClock.elapsedRealtime();
             }
         });
         //set name and the rolling text

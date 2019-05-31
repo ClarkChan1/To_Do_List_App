@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class DataManager {
     static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static void saveItem(Context context, String fileName, ArrayList<Item> itemsToSave) {
+    public static void saveItems(Context context, String fileName, ArrayList<Item> itemsToSave) {
         try {
             String jsonString = gson.toJson(itemsToSave);
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
