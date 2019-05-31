@@ -89,14 +89,6 @@ public class MainActivity extends AppCompatActivity {
                 listItems.add(toAdd);
             }
         }
-        //format the hour so it will be in 12hr format since earlier we needed 24 hr format to do conversions
-        if (toAdd.getDueHour() > 12) {
-            toAdd.setFormattedDueHour(toAdd.getDueHour() - 12);
-        } else if (toAdd.getDueHour() == 0) {
-            toAdd.setFormattedDueHour(12);
-        } else {
-            toAdd.setFormattedDueHour(toAdd.getDueHour());
-        }
         DataManager.saveItem(this, "ListItems.json", listItems);
         itemAdapter.notifyDataSetChanged();
 //        printItems();
@@ -203,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if ((requestCode == 100) && (resultCode == RESULT_OK)) {
             Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
-                    data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1), data.getBooleanExtra("isAfternoon", false));
+                    data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1));
             insertItem(toAdd);
         }
     }

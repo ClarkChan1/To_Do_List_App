@@ -17,7 +17,6 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     int dueHour = 0;
     int dueMinute = 0;
     String category = "";
-    boolean isAfternoon = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,24 +36,16 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         dueHour = hourOfDay;
         dueMinute = minute;
         String timeString = "";
-        if (dueHour >= 12) {
-            isAfternoon = true;
-            if (hourOfDay > 12) {
-                hourOfDay -= 12;
-            }
-            //account for when time is 0:00, it should be 12:00am
+        if (dueHour % 12 == 0) {
+            timeString = 12 + ":";
         } else {
-            isAfternoon = false;
-            if (hourOfDay == 0) {
-                hourOfDay = 12;
-            }
+            timeString = (dueHour % 12) + ":";
         }
         if (dueMinute < 10) {
-            timeString = hourOfDay + ":0" + dueMinute;
-        } else {
-            timeString = hourOfDay + ":" + dueMinute;
+            timeString += "0";
         }
-        if (isAfternoon) {
+        timeString += dueMinute;
+        if (dueHour >= 12) {
             timeString += " PM";
         } else {
             timeString += " AM";
@@ -97,13 +88,12 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         } else {
             goodTime = true;
         }
-        if (goodName && goodCategory && goodTime) {
+        if (goodName && goodCategory /*&& goodTime*/) {
             Intent i = new Intent();
             i.putExtra("name", nameField.getText().toString());
             i.putExtra("category", category);
             i.putExtra("dueHour", dueHour);
             i.putExtra("dueMinute", dueMinute);
-            i.putExtra("isAfternoon", isAfternoon);
             setResult(RESULT_OK, i);
             finish();
         }

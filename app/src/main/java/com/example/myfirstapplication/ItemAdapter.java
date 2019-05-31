@@ -67,12 +67,19 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         });
 
         //set time
-        String itemTime = currentItem.getFormattedDueHour() + ":";
-        if (currentItem.getDueMinute() < 10) {
+        int dueHour = currentItem.getDueHour();
+        int dueMinute = currentItem.getDueMinute();
+        String itemTime = "";
+        if(dueHour % 12 == 0){
+            itemTime = 12+":";
+        } else{
+            itemTime = (dueHour % 12) + ":";
+        }
+        if (dueMinute < 10) {
             itemTime += "0";
         }
-        itemTime += currentItem.getDueMinute();
-        if (currentItem.isAfternoon()) {
+        itemTime += dueMinute;
+        if (dueHour >= 12) {
             itemTime += " PM";
         } else {
             itemTime += " AM";
