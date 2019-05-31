@@ -7,7 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.podcopic.animationlib.library.AnimationType;
+import com.podcopic.animationlib.library.StartSmartAnimation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +38,19 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         }
 
         Item currentItem = (Item) getItem(position);
+        CheckBox check = (CheckBox) convertView.findViewById(R.id.check);
         TextView name = (TextView) convertView.findViewById(R.id.name);
         TextView time = (TextView) convertView.findViewById(R.id.time);
         TextView category = (TextView) convertView.findViewById(R.id.category);
 
+        //set click listener on checkbox and code animation
+        final View finalConvertView = convertView;
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartSmartAnimation.startAnimation((LinearLayout) finalConvertView.findViewById(R.id.item), AnimationType.SlideOutRight, 1000,0,true);
+            }
+        });
         //set name and the rolling text
         name.setText(currentItem.getName());
         name.setEllipsize(TextUtils.TruncateAt.MARQUEE);
