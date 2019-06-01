@@ -1,7 +1,6 @@
 package com.example.myfirstapplication;
 
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -21,12 +20,16 @@ import java.util.List;
 public class ItemAdapter extends ArrayAdapter<Item> {
     private MainActivity context;
     private List<Item> items;
+    private List<Item> toRemove;
     private int template_resource;
     private long deleteCooldown = 0;
+    int instances = 0;
+
     public ItemAdapter(MainActivity context, int resource, ArrayList<Item> items) {
         super(context, resource, items);
         this.context = context;
         this.items = items;
+        toRemove = new ArrayList<Item>();
         template_resource = resource;
     }
 
@@ -49,19 +52,21 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                while(SystemClock.elapsedRealtime() - deleteCooldown < 1000){
-                    return;
-                }
-                StartSmartAnimation.startAnimation((LinearLayout) finalConvertView.findViewById(R.id.item), AnimationType.SlideOutRight, 1000,0,true);
+                instances++;
+                StartSmartAnimation.startAnimation((LinearLayout) finalConvertView.findViewById(R.id.item), AnimationType.SlideOutRight, 1000, 0, true);
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        items.remove(position);
-                        context.resetAdapter();
+                        toRemove.add(items.get(position));
+                        instances--;
+                        if (instances == 0) {
+                            items.removeAll(toRemove);
+                            context.resetAdapter();
+                        }
                     }
                 }, 1000);
-                deleteCooldown = SystemClock.elapsedRealtime();
+
             }
         });
         //set name and the rolling text
@@ -83,9 +88,9 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         int dueHour = currentItem.getDueHour();
         int dueMinute = currentItem.getDueMinute();
         String itemTime = "";
-        if(dueHour % 12 == 0){
-            itemTime = 12+":";
-        } else{
+        if (dueHour % 12 == 0) {
+            itemTime = 12 + ":";
+        } else {
             itemTime = (dueHour % 12) + ":";
         }
         if (dueMinute < 10) {
