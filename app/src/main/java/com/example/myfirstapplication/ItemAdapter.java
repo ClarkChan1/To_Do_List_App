@@ -22,7 +22,6 @@ public class ItemAdapter extends ArrayAdapter<Item> {
     private List<Item> items;
     private List<Item> toRemove;
     private int template_resource;
-    private long deleteCooldown = 0;
     int instances = 0;
 
     public ItemAdapter(MainActivity context, int resource, ArrayList<Item> items) {
