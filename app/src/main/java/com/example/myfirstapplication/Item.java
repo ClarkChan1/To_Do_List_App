@@ -7,7 +7,6 @@ public class Item implements Parcelable {
     private String name;
     private String category;
     private int dueHour;
-    private int formattedDueHour;
     private int dueMinute;
 
 

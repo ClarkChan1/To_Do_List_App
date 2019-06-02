@@ -209,12 +209,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("items", listItems);
+
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        listItems = savedInstanceState.getParcelableArrayList("items");
+        listItems.clear();
+        listItems.addAll((ArrayList)savedInstanceState.getParcelableArrayList("items"));
 //        printItems();
     }
 }
