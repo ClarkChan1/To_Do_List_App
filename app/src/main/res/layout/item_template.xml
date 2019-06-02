@@ -2,12 +2,14 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
     android:id="@+id/item">
     <CheckBox
         android:id="@+id/check"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight=".6"/>
+        android:layout_weight=".6" />
 
     <TextView
         android:id="@+id/name"
@@ -22,8 +24,8 @@
     <TextView
         android:id="@+id/time"
         android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
         android:gravity="center"
         android:text="@string/item_time"
         android:textSize="18sp" />
@@ -32,11 +34,22 @@
         android:id="@+id/category"
         android:layout_width="0dp"
         android:layout_height="25dp"
-        android:layout_weight="1.5"
-        android:layout_marginRight="15dp"
+        android:layout_weight="1.25"
 
         android:background="@drawable/rounded_border_green"
         android:gravity="center"
         android:text="work"
         android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/edit"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight=".5"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/edit_icon2" />
 </LinearLayout>

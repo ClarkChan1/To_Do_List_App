@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Item> listItems = new ArrayList<Item>();
     private ItemAdapter itemAdapter;
     private ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,13 +68,22 @@ public class MainActivity extends AppCompatActivity {
         //printItems();
     }
 
-    public void resetAdapter(){
+    public void resetAdapter() {
         listView.setAdapter(itemAdapter);
         DataManager.saveItems(this, "ListItems.json", listItems);
     }
 
-    public void buttonOnClick(View v) {
-        startActivityForResult(new Intent(this, create_item.class), 100);
+    public void createItem(View v) {
+        Intent createIntent = new Intent(this, create_item.class);
+        createIntent.putExtra("type", "create");
+        startActivityForResult(createIntent, 100);
+    }
+
+    public void editItem(View v, int position) {
+        Intent editIntent = new Intent(this, create_item.class);
+        editIntent.putExtra("type", "edit");
+        editIntent.putExtra("position", position);
+        startActivityForResult(editIntent, 200);
     }
 
     public void insertItem(Item toAdd) {
@@ -203,6 +213,17 @@ public class MainActivity extends AppCompatActivity {
                     data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1));
             insertItem(toAdd);
         }
+        if ((requestCode == 200) && (resultCode == RESULT_OK)) {
+            listItems.remove(data.getIntExtra("position", -1)); //MAY CAUSE ERROR IF DEFAULT VALUE IS USED
+            if (data.getStringExtra("action").equals("edit")) {
+                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
+                        data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1));
+                insertItem(toAdd);
+            } else {
+                DataManager.saveItems(this, "ListItems.json", listItems);
+                itemAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override
@@ -216,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         listItems.clear();
-        listItems.addAll((ArrayList)savedInstanceState.getParcelableArrayList("items"));
+        listItems.addAll((ArrayList) savedInstanceState.getParcelableArrayList("items"));
 //        printItems();
     }
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,6 +46,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         TextView name = (TextView) convertView.findViewById(R.id.name);
         TextView time = (TextView) convertView.findViewById(R.id.time);
         TextView category = (TextView) convertView.findViewById(R.id.category);
+        ImageView edit = (ImageView) convertView.findViewById(R.id.edit);
 
         //set click listener on checkbox and code animation
         final View finalConvertView = convertView;
@@ -111,7 +113,12 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             category.setText("Life");
             category.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_green));
         }
-
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.editItem(v, position);
+            }
+        });
         return convertView;
     }
 }

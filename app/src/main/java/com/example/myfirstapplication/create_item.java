@@ -14,19 +14,32 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 public class create_item extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
+    String name="";
     int dueHour = -1;
     int dueMinute = -1;
     String category = "";
+    //This is to track which item in the Listview is to be edited
+    int editPosition = -1;
+
+    //create boolean statements to check if user input was good
+    boolean goodName = false;
+    boolean goodCategory = false;
+    boolean goodTime = false;
 
     //these are for remembering what data the user has already inputted when they rotate screen and we need to restore data
     boolean collectCategory = false;
     boolean collectDueTime = false;
 
+    String activityType = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_item);
-        if(savedInstanceState != null){
+        if(savedInstanceState != null) {
+            if(savedInstanceState.getString("type").equals("create")){
+                setContentView(R.layout.activity_create_item);
+            } else {
+                setContentView(R.layout.activity_edit_item);
+            }
             if(savedInstanceState.getBoolean("collectCategory")){
                 category = savedInstanceState.getString("category");
                 collectCategory = false;
@@ -38,6 +51,17 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 collectDueTime = false;
             }
         }
+        //This is for the start of activity when we are either editing or creating an item
+        Intent data = getIntent();
+        if(data.getStringExtra("type").equals("create")){
+            setContentView(R.layout.activity_create_item);
+            activityType = "create";
+        } else {
+            setContentView(R.layout.activity_edit_item);
+            activityType = "edit";
+            editPosition = data.getIntExtra("position", -1);
+        }
+
     }
 
     public void startButtonOnClick(View v) {
@@ -81,12 +105,45 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     }
 
     public void onCreateButtonClicked(View v) {
-        //create boolean statements to check if user input was good
-        boolean goodName = false;
-        boolean goodCategory = false;
-        boolean goodTime = false;
+        checkData(v);
+        if (goodName && goodCategory && goodTime) {
+            Intent i = new Intent();
+            i.putExtra("name", name);
+            i.putExtra("category", category);
+            i.putExtra("dueHour", dueHour);
+            i.putExtra("dueMinute", dueMinute);
+            setResult(RESULT_OK, i);
+            finish();
+        }
+    }
+
+    public void onEditButtonClicked(View v){
+        checkData(v);
+        if (goodName && goodCategory && goodTime) {
+            Intent i = new Intent();
+            i.putExtra("name", name);
+            i.putExtra("category", category);
+            i.putExtra("dueHour", dueHour);
+            i.putExtra("dueMinute", dueMinute);
+            i.putExtra("action", "edit");
+            i.putExtra("position", editPosition);
+            setResult(RESULT_OK, i);
+            finish();
+        }
+    }
+
+    public void onDeleteButtonClicked(View v){
+        Intent i = new Intent();
+        i.putExtra("action", "delete");
+        i.putExtra("position", editPosition);
+        setResult(RESULT_OK, i);
+        finish();
+    }
+
+    public void checkData(View v){
         EditText nameField = (EditText) findViewById(R.id.nameField);
-        if (nameField.getText().toString().equals("")) {
+        name = nameField.getText().toString();
+        if (name.equals("")) {
             Toast correctName = Toast.makeText(getApplicationContext(), "Fill in the name field", Toast.LENGTH_LONG);
             correctName.show();
         } else {
@@ -107,20 +164,12 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         } else {
             goodTime = true;
         }
-        if (goodName && goodCategory && goodTime) {
-            Intent i = new Intent();
-            i.putExtra("name", nameField.getText().toString());
-            i.putExtra("category", category);
-            i.putExtra("dueHour", dueHour);
-            i.putExtra("dueMinute", dueMinute);
-            setResult(RESULT_OK, i);
-            finish();
-        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putString("type", activityType);
         if(!category.equals("")){
             outState.putString("category", category);
             collectCategory = true;
