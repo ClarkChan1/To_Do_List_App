@@ -10,6 +10,7 @@
     <string name="time">currentTime</string>
     <string name="item_name">name</string>
     <string name="item_time">time</string>
+    //
 
 
 </resources>
