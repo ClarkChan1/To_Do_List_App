@@ -24,7 +24,7 @@
         <EditText
             android:id="@+id/nameField"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:ems="10"
@@ -45,6 +45,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="Category"
             android:textSize="18sp" />
 
@@ -52,6 +53,7 @@
             android:id="@+id/radioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1">
 
             <RadioButton
@@ -79,16 +81,21 @@
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             android:onClick="startButtonOnClick"
             android:text="Due By" />
 
 
         <TextView
             android:id="@+id/dueTime"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
             android:text="@string/dueText"
             android:textSize="18sp" />
     </LinearLayout>
