@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -50,16 +51,22 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 setTimeString();
                 collectDueTime = false;
             }
-        }
-        //This is for the start of activity when we are either editing or creating an item
-        Intent data = getIntent();
-        if(data.getStringExtra("type").equals("create")){
-            setContentView(R.layout.activity_create_item);
-            activityType = "create";
         } else {
-            setContentView(R.layout.activity_edit_item);
-            activityType = "edit";
-            editPosition = data.getIntExtra("position", -1);
+            //This is for the start of activity when we are either editing or creating an item
+            Intent data = getIntent();
+            if (data.getStringExtra("type").equals("create")) {
+                setContentView(R.layout.activity_create_item);
+                activityType = "create";
+            } else if (data.getStringExtra("type").equals("edit")) {
+                setContentView(R.layout.activity_edit_item);
+                activityType = "edit";
+                name = data.getStringExtra("name");
+                category = data.getStringExtra("category");
+                dueHour = data.getIntExtra("dueHour", -1);
+                dueMinute = data.getIntExtra("dueMinute", -1);
+                editPosition = data.getIntExtra("position", -1);
+                populateData();
+            }
         }
 
     }
@@ -138,6 +145,19 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         i.putExtra("position", editPosition);
         setResult(RESULT_OK, i);
         finish();
+    }
+
+    public void populateData(){
+        EditText nameField = (EditText) findViewById(R.id.nameField);
+        nameField.setText(name);
+        setTimeString();
+        if(category.equals("Work")){
+            RadioButton workButton = findViewById(R.id.radio1);
+            workButton.setChecked(true);
+        } else {
+            RadioButton lifeButton = findViewById(R.id.radio2);
+            lifeButton.setChecked(true);
+        }
     }
 
     public void checkData(View v){

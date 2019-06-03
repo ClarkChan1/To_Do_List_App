@@ -82,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
     public void editItem(View v, int position) {
         Intent editIntent = new Intent(this, create_item.class);
         editIntent.putExtra("type", "edit");
+        editIntent.putExtra("name", listItems.get(position).getName());
+        editIntent.putExtra("category", listItems.get(position).getCategory());
+        editIntent.putExtra("dueHour", listItems.get(position).getDueHour());
+        editIntent.putExtra("dueMinute", listItems.get(position).getDueMinute());
         editIntent.putExtra("position", position);
         startActivityForResult(editIntent, 200);
     }
