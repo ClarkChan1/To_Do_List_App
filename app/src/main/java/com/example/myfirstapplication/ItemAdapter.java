@@ -72,6 +72,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         });
         //set name and the rolling text
         name.setText(currentItem.getName());
+        //name.setTypeface(context.professionalFont);
         name.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         name.setSingleLine(true);
         name.setMarqueeRepeatLimit(-1);

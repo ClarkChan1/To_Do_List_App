@@ -1,6 +1,7 @@
 package com.example.myfirstapplication;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,11 +18,17 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Item> listItems = new ArrayList<Item>();
     private ItemAdapter itemAdapter;
     private ListView listView;
+    //global fonts to be used by all classes
+    Typeface headerFont;
+    Typeface professionalFont;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //set up the fonts to be used in this activity
+        headerFont = Typeface.createFromAsset(getAssets(), "fonts/nevis.ttf");
+        professionalFont = Typeface.createFromAsset(getAssets(), "fonts/Euphemia UCAS Regular 2.6.6.ttf");
 //        View view = this.getWindow().getDecorView();
 //        view.setBackgroundColor(Color.parseColor("#212121"));
 
@@ -44,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
                                     timeString = dateString.substring(dateString.indexOf("\n") + 2);
                                 }
                                 dateString = dateString.substring(0, dateString.indexOf("\n"));
+                                //dateText.setTypeface(headerFont);
                                 dateText.setText(dateString);
                                 timeText.setText(timeString);
                             }
