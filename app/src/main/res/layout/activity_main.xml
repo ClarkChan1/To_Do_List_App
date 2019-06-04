@@ -64,7 +64,7 @@
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/circle_border"
+            android:background="@drawable/add_button_border"
             android:textColor="#ffffff"
             android:onClick="createItem"
             android:text="+"
