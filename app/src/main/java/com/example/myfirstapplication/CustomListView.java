@@ -10,6 +10,7 @@ public class CustomListView extends ListView {
         super(context, attributeSet);
     }
 
+    //This is so that the ListView doesn't fade out at the top, only the bottom
     @Override
     protected float getTopFadingEdgeStrength() {
         return 0;
