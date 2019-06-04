@@ -109,10 +109,10 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         //set category
         if (currentItem.getCategory().equals("Work")) {
             category.setText("Work");
-            category.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_red));
+            category.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_work));
         } else {
             category.setText("Life");
-            category.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_green));
+            category.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_life));
         }
         edit.setOnClickListener(new View.OnClickListener() {
             @Override

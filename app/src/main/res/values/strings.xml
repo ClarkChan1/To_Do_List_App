@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">My First Application</string>
-    <string name="workButton">Add New</string>
+    <string name="addNewButton">Add New</string>
     <string name="createButton">Create</string>
     <string name="itemName">Name</string>
     <string name="inputItemName" />

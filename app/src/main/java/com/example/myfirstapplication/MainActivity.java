@@ -155,10 +155,10 @@ public class MainActivity extends AppCompatActivity {
 //
 //            if (currentItem.getCategory().equals("Work")) {
 //                itemCategory.setText("Work");
-//                itemCategory.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_border_red));
+//                itemCategory.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_border_work));
 //            } else {
 //                itemCategory.setText("Life");
-//                itemCategory.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_border_green));
+//                itemCategory.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_border_life));
 //            }
 //
 //            itemLayout.addView(itemCheck);

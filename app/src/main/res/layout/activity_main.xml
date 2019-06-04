@@ -14,7 +14,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:background="#1a75ff"
+        android:background="#3385ff"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -56,8 +57,9 @@
         android:layout_height="0dp"
         android:layout_weight=".75"
         android:background="#752196F3"
+        android:textColor="#000000"
         android:onClick="createItem"
-        android:text="@string/workButton"
+        android:text="@string/addNewButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

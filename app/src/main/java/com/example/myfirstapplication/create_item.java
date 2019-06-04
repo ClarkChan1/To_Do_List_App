@@ -36,7 +36,8 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState != null) {
-            if(savedInstanceState.getString("type").equals("create")){
+            activityType = savedInstanceState.getString("type");
+            if(activityType.equals("create")){
                 setContentView(R.layout.activity_create_item);
             } else {
                 setContentView(R.layout.activity_edit_item);
@@ -51,6 +52,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 setTimeString();
                 collectDueTime = false;
             }
+            editPosition = savedInstanceState.getInt("position");
         } else {
             //This is for the start of activity when we are either editing or creating an item
             Intent data = getIntent();
@@ -205,5 +207,6 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         } else{
             outState.putBoolean("collectDueTime", false);
         }
+        outState.putInt("position", editPosition);
     }
 }

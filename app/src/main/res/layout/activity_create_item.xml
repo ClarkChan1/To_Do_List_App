@@ -37,7 +37,8 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/itemName"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:textColor="#000000"/>
 
         <EditText
             android:id="@+id/nameField"
@@ -67,6 +68,7 @@
             android:gravity="center"
             android:text="Category"
             android:textSize="18sp"
+            android:textColor="#000000"
             app:layout_constraintStart_toStartOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -131,6 +133,7 @@
             android:gravity="center"
             android:text="@string/dueText"
             android:textSize="18sp"
+            android:textColor="#000000"
             app:layout_constraintBaseline_toBaselineOf="@+id/button2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/button2" />
