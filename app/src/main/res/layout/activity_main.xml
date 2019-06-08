@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal"
         android:background="#3385ff"
+        android:orientation="horizontal"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,20 +24,61 @@
             android:id="@+id/currentDate"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
             android:layout_marginLeft="10dp"
-            android:textColor="#ffffff"
+            android:layout_weight="2"
+            android:autoSizeTextType="uniform"
             android:gravity="center"
-            android:autoSizeTextType="uniform" />
+            android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/currentTime"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textColor="#ffffff"
             android:gravity="center"
+            android:textColor="#ffffff"
             android:textSize="24sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="0dp"
+        android:layout_weight=".75">
+
+        <TextView
+            android:id="@+id/toDoSection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:onClick="switchToDo"
+            android:text="To Do"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/completedSection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:onClick="switchCompleted"
+            android:text="Completed"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/overdueSection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:onClick="switchOverdue"
+            android:text="Overdue"
+            android:textColor="#000000" />
+
     </LinearLayout>
 
     <!--xmlns:custom="http://schemas.android.com/apk/res/com.example.myfirstapplication">-->
@@ -47,56 +88,34 @@
         android:layout_height="0dp"
         android:layout_weight="6"
         android:cacheColorHint="#00000000"
-        android:requiresFadingEdge="vertical"
         android:fadingEdgeLength="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        android:requiresFadingEdge="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/createItemButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"/>
+        app:layout_constraintTop_toBottomOf="@+id/header" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".8">
+
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/createItemButton"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:autoSizeTextType="uniform"
             android:background="@drawable/add_button_border"
-            android:textColor="#ffffff"
             android:onClick="createItem"
             android:text="+"
+            android:textColor="#ffffff"
             android:typeface="monospace"
-            android:autoSizeTextType="uniform"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/completed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/top_green_line"
-            android:text="Completed"
-            android:textColor="#00cc66"
-            android:textSize="20dp" />
-
-        <TextView
-            android:id="@+id/overdue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/top_red_line"
-            android:text="Overdue"
-            android:textColor="#ff0066"
-            android:textSize="20dp" />
     </RelativeLayout>
 
 </LinearLayout>

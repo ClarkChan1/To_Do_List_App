@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Item> listItems = new ArrayList<Item>();
     private ItemAdapter itemAdapter;
     private ListView listView;
+    private int currentSection = 0;
     //global fonts to be used by all classes
     Typeface headerFont;
     Typeface professionalFont;
@@ -69,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
         String dateString = sdfDate.format(currentTotalDate);
         DataManager.checkDate(this, "CurrentDate.txt", dateString);
 
+        //make the toDoSection large initially
+        TextView toDoTextView = findViewById(R.id.toDoSection);
+        growSection(toDoTextView);
+
         listItems = DataManager.readItems(this, "ListItems.json");
         listView = (ListView) findViewById(R.id.listView);
         itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
@@ -119,6 +126,55 @@ public class MainActivity extends AppCompatActivity {
         DataManager.saveItems(this, "ListItems.json", listItems);
         itemAdapter.notifyDataSetChanged();
 //        printItems();
+    }
+
+    public void shrinkCurrent(int currentSection) {
+        Animation shrinkAnimation = AnimationUtils.loadAnimation(this, R.anim.shrink);
+        TextView toShrink = new TextView(this);
+        switch (currentSection) {
+            case 0:
+                toShrink = (TextView)findViewById(R.id.toDoSection);
+                break;
+            case 1:
+                toShrink = (TextView)findViewById(R.id.completedSection);
+                break;
+            case 2:
+                toShrink = (TextView)findViewById(R.id.overdueSection);
+                break;
+            default:
+                break;
+        }
+        toShrink.startAnimation(shrinkAnimation);
+    }
+
+    public void growSection(View v){
+        Animation growAnimation = AnimationUtils.loadAnimation(this, R.anim.grow);
+        TextView toGrow = (TextView)v;
+        toGrow.startAnimation(growAnimation);
+    }
+
+    public void switchToDo(View v) {
+        if (currentSection != 0) {
+            shrinkCurrent(currentSection);
+            currentSection = 0;
+            growSection(v);
+        }
+    }
+
+    public void switchCompleted(View v) {
+        if (currentSection != 1) {
+            shrinkCurrent(currentSection);
+            currentSection = 1;
+            growSection(v);
+        }
+    }
+
+    public void switchOverdue(View v) {
+        if (currentSection != 2) {
+            shrinkCurrent(currentSection);
+            currentSection = 2;
+            growSection(v);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
