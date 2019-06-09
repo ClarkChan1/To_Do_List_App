@@ -61,10 +61,13 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                         instances--;
                         if (instances == 0) {
                             items.removeAll(toRemove);
+                            //get current time
+
                             for (int a = 0; a < toRemove.size(); a++) {
                                 context.insertItem(context.completedItems, toRemove.get(a), "completed");
                             }
                             context.resetAdapter();
+                            //save everything
                             context.saveItems("ListItems.json", items);
                             context.saveItems("CompletedItems.json", context.completedItems);
                             //reset toRemove so it doesn't just infinitely grow

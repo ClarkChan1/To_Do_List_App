@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private ListView listView;
@@ -60,16 +62,23 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case 2:
                     growSection(findViewById(R.id.overdueSection));
+                    overdueItems = DataManager.readItems(this, "OverdueItems.json");
+                    overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.overdue_item_template, overdueItems);
+                    switchAdapter(overdueItemsAdapter);
                     break;
             }
         } else {
             //make the toDoSection large initially
             TextView toDoTextView = findViewById(R.id.toDoSection);
             growSection(toDoTextView);
-
+            //need to instantiate listItems first bc checkOverdue uses it
+            listItems = DataManager.readItems(this, "ListItems.json");
+            overdueItems = DataManager.readItems(this, "OverdueItems.json");
+            checkOverdue();
             listItems = DataManager.readItems(this, "ListItems.json");
             itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
             resetAdapter();
+
         }
 
 //        saveItems("ListItems.json", listItems);
@@ -109,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         long currentTotalDate = System.currentTimeMillis();
         SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy");
         String dateString = sdfDate.format(currentTotalDate);
-        DataManager.checkDate(this, (new String[]{"ListItems.json", "CompletedItems.json"}), dateString);
+        DataManager.checkDate(this, (new String[]{"ListItems.json", "CompletedItems.json", "OverdueItems.json"}), dateString);
     }
 
     public void resetAdapter() {
@@ -161,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 addTo.add(toAdd);
             }
         }
-        if(section.equals("todo")) {
+        if (section.equals("todo")) {
             DataManager.saveItems(this, "ListItems.json", listItems);
             itemAdapter.notifyDataSetChanged();
         }
@@ -220,7 +229,39 @@ public class MainActivity extends AppCompatActivity {
             shrinkCurrent(currentSection);
             currentSection = 2;
             growSection(v);
+            overdueItems = DataManager.readItems(this, "OverdueItems.json");
+            checkOverdue();
+            overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.overdue_item_template, overdueItems);
+            switchAdapter(overdueItemsAdapter);
         }
+    }
+
+    public void checkOverdue(){
+        //get current time
+        String time = getCurrentTime();
+        int currentHour = Integer.parseInt(time.substring(0, time.indexOf(":")));
+        int currentMinute = Integer.parseInt(time.substring(time.indexOf(":") + 1));
+        ArrayList<Item> toPutInOverdue = new ArrayList<>();
+        for (int a = 0; a < listItems.size(); a++) {
+            Item currentItem = listItems.get(a);
+            if ((currentItem.getDueHour() < currentHour)
+                    || ((currentItem.getDueHour() == currentHour) && (currentItem.getDueMinute() < currentMinute))) {
+                toPutInOverdue.add(currentItem);
+            }
+        }
+        overdueItems.addAll(toPutInOverdue);
+        listItems.removeAll(toPutInOverdue);
+        DataManager.saveItems(this,"OverdueItems.json", overdueItems);
+        DataManager.saveItems(this,"ListItems.json", listItems);
+    }
+
+    public String getCurrentTime() {
+        Calendar c = Calendar.getInstance();
+        Date date = c.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String formattedTime = sdf.format(date);
+        return formattedTime;
+
     }
 
     @Override

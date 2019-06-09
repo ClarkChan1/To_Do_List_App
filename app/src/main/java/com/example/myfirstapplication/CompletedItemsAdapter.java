@@ -12,15 +12,11 @@ import java.util.ArrayList;
 
 public class CompletedItemsAdapter extends ArrayAdapter<Item> {
     private MainActivity context;
-    private ArrayList<Item> items;
-    private ArrayList<Item> toRemove;
     private int template_resource;
 
     public CompletedItemsAdapter(MainActivity context, int resource, ArrayList<Item> items) {
         super(context, resource, items);
         this.context = context;
-        this.items = items;
-        toRemove = new ArrayList<Item>();
         template_resource = resource;
     }
 
