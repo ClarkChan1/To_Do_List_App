@@ -1,6 +1,7 @@
 package com.example.myfirstapplication;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -205,6 +207,8 @@ public class MainActivity extends AppCompatActivity {
     public void switchToDo(View v) {
         if ((currentSection != 0) && (ItemAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
+            LinearLayout header = (LinearLayout)findViewById(R.id.header);
+            header.setBackgroundColor(Color.parseColor("#000000"));
             currentSection = 0;
             growSection(v);
             listItems = DataManager.readItems(this, "ListItems.json");
