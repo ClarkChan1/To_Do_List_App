@@ -5,11 +5,13 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,6 +23,9 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private ListView listView;
+    //variable so we can change color of header background when switching sections
+    LinearLayout header;
+    Button createItemButton;
 
     private ArrayList<Item> listItems = new ArrayList<>();
     private ItemAdapter itemAdapter;
@@ -30,9 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Item> overdueItems = new ArrayList<>();
     private OverdueItemsAdapter overdueItemsAdapter;
-
-    //variable so we can change color of header background when switching sections
-    LinearLayout header;
 
     private int currentSection = 0;
     //global fonts to be used by all classes
@@ -51,12 +53,15 @@ public class MainActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listView);
         header = (LinearLayout)findViewById(R.id.header);
+        createItemButton = (Button)findViewById(R.id.createItemButton);
         if (savedInstanceState != null) {
             currentSection = savedInstanceState.getInt("section");
             switch (currentSection) {
                 case 0:
                     growSection(findViewById(R.id.toDoSection));
                     header.setBackgroundColor(Color.parseColor("#3385ff"));
+                    createItemButton.setEnabled(true);
+                    createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
                     listItems = DataManager.readItems(this, "ListItems.json");
                     itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
                     switchAdapter(itemAdapter);
@@ -64,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     growSection(findViewById(R.id.completedSection));
                     header.setBackgroundColor(Color.parseColor("#00cc66"));
+                    createItemButton.setEnabled(false);
+                    createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
                     completedItems = DataManager.readItems(this, "CompletedItems.json");
                     completedItemsAdapter = new CompletedItemsAdapter(this, R.layout.completed_item_template, completedItems);
                     switchAdapter(completedItemsAdapter);
@@ -71,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 case 2:
                     growSection(findViewById(R.id.overdueSection));
                     header.setBackgroundColor(Color.parseColor("#ff0066"));
+                    createItemButton.setEnabled(false);
+                    createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
                     overdueItems = DataManager.readItems(this, "OverdueItems.json");
                     overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.overdue_item_template, overdueItems);
                     switchAdapter(overdueItemsAdapter);
@@ -216,6 +225,8 @@ public class MainActivity extends AppCompatActivity {
             shrinkCurrent(currentSection);
 
             header.setBackgroundColor(Color.parseColor("#3385ff"));
+            createItemButton.setEnabled(true);
+            createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
             currentSection = 0;
             growSection(v);
             listItems = DataManager.readItems(this, "ListItems.json");
@@ -229,6 +240,8 @@ public class MainActivity extends AppCompatActivity {
             shrinkCurrent(currentSection);
 
             header.setBackgroundColor(Color.parseColor("#00cc66"));
+            createItemButton.setEnabled(false);
+            createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
             currentSection = 1;
             growSection(v);
             completedItems = DataManager.readItems(this, "CompletedItems.json");
@@ -242,6 +255,8 @@ public class MainActivity extends AppCompatActivity {
             shrinkCurrent(currentSection);
 
             header.setBackgroundColor(Color.parseColor("#ff0066"));
+            createItemButton.setEnabled(false);
+            createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
             currentSection = 2;
             growSection(v);
             overdueItems = DataManager.readItems(this, "OverdueItems.json");
