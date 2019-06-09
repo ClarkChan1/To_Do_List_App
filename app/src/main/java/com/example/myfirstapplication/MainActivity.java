@@ -56,18 +56,21 @@ public class MainActivity extends AppCompatActivity {
             switch (currentSection) {
                 case 0:
                     growSection(findViewById(R.id.toDoSection));
+                    header.setBackgroundColor(Color.parseColor("#3385ff"));
                     listItems = DataManager.readItems(this, "ListItems.json");
                     itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
                     switchAdapter(itemAdapter);
                     break;
                 case 1:
                     growSection(findViewById(R.id.completedSection));
+                    header.setBackgroundColor(Color.parseColor("#00cc66"));
                     completedItems = DataManager.readItems(this, "CompletedItems.json");
                     completedItemsAdapter = new CompletedItemsAdapter(this, R.layout.completed_item_template, completedItems);
                     switchAdapter(completedItemsAdapter);
                     break;
                 case 2:
                     growSection(findViewById(R.id.overdueSection));
+                    header.setBackgroundColor(Color.parseColor("#ff0066"));
                     overdueItems = DataManager.readItems(this, "OverdueItems.json");
                     overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.overdue_item_template, overdueItems);
                     switchAdapter(overdueItemsAdapter);
