@@ -37,7 +37,7 @@ public class DataManager {
         ArrayList<Item> loadedItems = null;
         try {
             //Create a FileOutputStream for the case where the device doesn't have the json file yet
-            File currentJSONFile = new File(context.getFilesDir().getAbsolutePath() + "/ListItems.json");
+            File currentJSONFile = new File(context.getFilesDir().getAbsolutePath() + "/" + fileName);
             if (!currentJSONFile.exists()) {
                 FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
                 fos.close();
@@ -57,15 +57,16 @@ public class DataManager {
         return loadedItems == null ? (new ArrayList<Item>()) : loadedItems;
     }
 
-    public static void checkDate(Context context, String fileName, String dateString) {
+    public static void checkDate(Context context, String[] fileNames, String dateString) {
         try {
             //Create a FileOutputStream for the case where the device doesn't have the text file yet
-            File currentDateFile = new File(context.getFilesDir().getAbsolutePath() + "/CurrentDate.txt");
+            String dateFileName = "CurrentDate.txt";
+            File currentDateFile = new File(context.getFilesDir().getAbsolutePath() + "/" + dateFileName);
             if (!currentDateFile.exists()) {
-                FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+                FileOutputStream fos = context.openFileOutput(dateFileName, Context.MODE_PRIVATE);
                 fos.close();
             }
-            FileInputStream fis = context.openFileInput(fileName);
+            FileInputStream fis = context.openFileInput(dateFileName);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
             String storedDate = br.readLine();
@@ -75,13 +76,15 @@ public class DataManager {
             br.close();
 
             //to create the file we need the FileOutputStream
-            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(dateFileName, Context.MODE_PRIVATE);
 
             if (storedDate == null) {
                 fos.write(dateString.getBytes());
             } else {
                 if (!storedDate.equals(dateString)) {
-                    clearData(context, "ListItems.json");
+                    for(int a =0; a<fileNames.length; a++){
+                        clearData(context, fileNames[a]);
+                    }
                     fos.write(dateString.getBytes());
                 } else {
                     //since we are rewriting the file, we need to put the date back if it is equal

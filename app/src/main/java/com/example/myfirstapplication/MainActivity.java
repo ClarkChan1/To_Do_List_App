@@ -2,14 +2,13 @@ package com.example.myfirstapplication;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,9 +16,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private ArrayList<Item> listItems = new ArrayList<Item>();
-    private ItemAdapter itemAdapter;
     private ListView listView;
+
+    private ArrayList<Item> listItems = new ArrayList<>();
+    private ItemAdapter itemAdapter;
+
+    ArrayList<Item> completedItems = new ArrayList<>();
+    private CompletedItemsAdapter completedItemsAdapter;
+
+    private ArrayList<Item> overdueItems = new ArrayList<>();
+    private OverdueItemsAdapter overdueItemsAdapter;
+
     private int currentSection = 0;
     //global fonts to be used by all classes
     Typeface headerFont;
@@ -34,6 +41,38 @@ public class MainActivity extends AppCompatActivity {
         professionalFont = Typeface.createFromAsset(getAssets(), "fonts/Euphemia UCAS Regular 2.6.6.ttf");
 //        View view = this.getWindow().getDecorView();
 //        view.setBackgroundColor(Color.parseColor("#212121"));
+
+        listView = (ListView) findViewById(R.id.listView);
+        if (savedInstanceState != null) {
+            currentSection = savedInstanceState.getInt("section");
+            switch (currentSection) {
+                case 0:
+                    growSection(findViewById(R.id.toDoSection));
+                    listItems = DataManager.readItems(this, "ListItems.json");
+                    itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
+                    switchAdapter(itemAdapter);
+                    break;
+                case 1:
+                    growSection(findViewById(R.id.completedSection));
+                    completedItems = DataManager.readItems(this, "CompletedItems.json");
+                    completedItemsAdapter = new CompletedItemsAdapter(this, R.layout.completed_item_template, completedItems);
+                    switchAdapter(completedItemsAdapter);
+                    break;
+                case 2:
+                    growSection(findViewById(R.id.overdueSection));
+                    break;
+            }
+        } else {
+            //make the toDoSection large initially
+            TextView toDoTextView = findViewById(R.id.toDoSection);
+            growSection(toDoTextView);
+
+            listItems = DataManager.readItems(this, "ListItems.json");
+            itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
+            resetAdapter();
+        }
+
+//        saveItems("ListItems.json", listItems);
 
         Thread dateAndTimeThread = new Thread() {
             public void run() {
@@ -70,22 +109,21 @@ public class MainActivity extends AppCompatActivity {
         long currentTotalDate = System.currentTimeMillis();
         SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy");
         String dateString = sdfDate.format(currentTotalDate);
-        DataManager.checkDate(this, "CurrentDate.txt", dateString);
-
-        //make the toDoSection large initially
-        TextView toDoTextView = findViewById(R.id.toDoSection);
-        growSection(toDoTextView);
-
-        listItems = DataManager.readItems(this, "ListItems.json");
-        listView = (ListView) findViewById(R.id.listView);
-        itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
-        resetAdapter();
-        //printItems();
+        DataManager.checkDate(this, (new String[]{"ListItems.json", "CompletedItems.json"}), dateString);
     }
 
     public void resetAdapter() {
         listView.setAdapter(itemAdapter);
-        DataManager.saveItems(this, "ListItems.json", listItems);
+//        DataManager.saveItems(this,"ListItems.json", listItems);
+    }
+
+    public void saveItems(String fileName, ArrayList<Item> toSave) {
+        DataManager.saveItems(this, fileName, toSave);
+    }
+
+    public void switchAdapter(ArrayAdapter adapter) {
+        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     public void createItem(View v) {
@@ -133,13 +171,13 @@ public class MainActivity extends AppCompatActivity {
         TextView toShrink = new TextView(this);
         switch (currentSection) {
             case 0:
-                toShrink = (TextView)findViewById(R.id.toDoSection);
+                toShrink = (TextView) findViewById(R.id.toDoSection);
                 break;
             case 1:
-                toShrink = (TextView)findViewById(R.id.completedSection);
+                toShrink = (TextView) findViewById(R.id.completedSection);
                 break;
             case 2:
-                toShrink = (TextView)findViewById(R.id.overdueSection);
+                toShrink = (TextView) findViewById(R.id.overdueSection);
                 break;
             default:
                 break;
@@ -147,132 +185,41 @@ public class MainActivity extends AppCompatActivity {
         toShrink.startAnimation(shrinkAnimation);
     }
 
-    public void growSection(View v){
+    public void growSection(View v) {
         Animation growAnimation = AnimationUtils.loadAnimation(this, R.anim.grow);
-        TextView toGrow = (TextView)v;
+        TextView toGrow = (TextView) v;
         toGrow.startAnimation(growAnimation);
     }
 
     public void switchToDo(View v) {
-        if (currentSection != 0) {
+        if ((currentSection != 0) && (ItemAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
             currentSection = 0;
             growSection(v);
+            listItems = DataManager.readItems(this, "ListItems.json");
+            itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
+            switchAdapter(itemAdapter);
         }
     }
 
     public void switchCompleted(View v) {
-        if (currentSection != 1) {
+        if ((currentSection != 1) && (ItemAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
             currentSection = 1;
             growSection(v);
+            completedItems = DataManager.readItems(this, "CompletedItems.json");
+            completedItemsAdapter = new CompletedItemsAdapter(this, R.layout.completed_item_template, completedItems);
+            switchAdapter(completedItemsAdapter);
         }
     }
 
     public void switchOverdue(View v) {
-        if (currentSection != 2) {
+        if ((currentSection != 2) && (ItemAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
             currentSection = 2;
             growSection(v);
         }
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-//    public void printItems() {
-//        LinearLayout canvas = findViewById(R.id.linearLayout);
-//        canvas.removeAllViews();
-//        for (int a = 0; a < listItems.size(); a++) {
-//            Item currentItem = listItems.get(a);
-//
-//            LinearLayout itemLayout = new LinearLayout(this);
-//            itemLayout.setOrientation(LinearLayout.HORIZONTAL);
-//            CheckBox itemCheck = new CheckBox(this);
-//            TextView itemName = new TextView(this);
-//            TextView timeText = new TextView(this);
-//            TextView itemCategory = new TextView(this);
-//
-//            String nameString = currentItem.getName();
-//            itemName.setText(nameString);
-//            itemName.setTextSize(16);
-//
-//            String itemTime = currentItem.getDueHour() + ":";
-//            if (currentItem.getDueMinute() < 10) {
-//                itemTime += "0";
-//            }
-//            itemTime += currentItem.getDueMinute();
-//            if (currentItem.isAfternoon()) {
-//                itemTime += " PM";
-//            } else {
-//                itemTime += " AM";
-//            }
-//
-//            timeText.setText(itemTime);
-//            timeText.setTextSize(16);
-//
-//            if (currentItem.getCategory().equals("Work")) {
-//                itemCategory.setText("Work");
-//                itemCategory.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_border_work));
-//            } else {
-//                itemCategory.setText("Life");
-//                itemCategory.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_border_life));
-//            }
-//
-//            itemLayout.addView(itemCheck);
-//            itemLayout.addView(itemName);
-//            itemLayout.addView(timeText);
-//            itemLayout.addView(itemCategory);
-//
-//            itemLayout.setWeightSum(9f);
-//            LinearLayout.LayoutParams sizeText = new LinearLayout.LayoutParams
-//                    (0, LinearLayout.LayoutParams.MATCH_PARENT);
-//            sizeText.weight = 4f;
-//            LinearLayout.LayoutParams sizeCheck = new LinearLayout.LayoutParams
-//                    (0, LinearLayout.LayoutParams.MATCH_PARENT);
-//            sizeCheck.weight = 1f;
-//            LinearLayout.LayoutParams sizeTime = new LinearLayout.LayoutParams
-//                    (0, LinearLayout.LayoutParams.MATCH_PARENT);
-//            sizeTime.weight = 2f;
-//            LinearLayout.LayoutParams sizeCategory = new LinearLayout.LayoutParams
-//                    (0, LinearLayout.LayoutParams.MATCH_PARENT);
-//            sizeCategory.weight = 2f;
-//            sizeCategory.setMargins(0, 10, 0, 10);
-//
-//            itemName.setGravity(Gravity.CENTER);
-//            itemName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-//            itemName.setSingleLine(true);
-//            itemName.setMarqueeRepeatLimit(-1);
-//            itemName.setFocusableInTouchMode(true);
-//            itemName.setFocusable(true);
-//            itemName.setLayoutParams(sizeText);
-//            itemName.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    TextView itemName = (TextView) v;
-//                    itemName.setSelected(true);
-//                }
-//            });
-//
-//            itemCheck.setLayoutParams(sizeCheck);
-//
-//            timeText.setSingleLine(true);
-//            timeText.setGravity(Gravity.CENTER);
-//            timeText.setLayoutParams(sizeTime);
-//
-//            itemCategory.setSingleLine(true);
-//            itemCategory.setGravity(Gravity.CENTER);
-//            itemCategory.setLayoutParams(sizeCategory);
-//
-//            canvas.addView(itemLayout);
-//
-//            //add the horizontal line separator
-//            View lineDivider = new View(this);
-//            lineDivider.setBackgroundColor(Color.parseColor("#000000"));
-//            LinearLayout.LayoutParams lineDividerMargins = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2);
-//            lineDividerMargins.setMargins(0, 20, 0, 20);
-//            lineDivider.setLayoutParams(lineDividerMargins);
-//            canvas.addView(lineDivider);
-//        }
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -297,15 +244,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("items", listItems);
-
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        listItems.clear();
-        listItems.addAll((ArrayList) savedInstanceState.getParcelableArrayList("items"));
-//        printItems();
+        outState.putInt("section", currentSection);
     }
 }

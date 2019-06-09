@@ -1,34 +1,26 @@
 package com.example.myfirstapplication;
 
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.podcopic.animationlib.library.AnimationType;
-import com.podcopic.animationlib.library.StartSmartAnimation;
 
 import java.util.ArrayList;
 
-public class ItemAdapter extends ArrayAdapter<Item> {
+public class CompletedItemsAdapter extends ArrayAdapter<Item> {
     private MainActivity context;
     private ArrayList<Item> items;
     private ArrayList<Item> toRemove;
     private int template_resource;
-    static int instances = 0;
 
-    public ItemAdapter(MainActivity context, int resource, ArrayList<Item> items) {
+    public CompletedItemsAdapter(MainActivity context, int resource, ArrayList<Item> items) {
         super(context, resource, items);
         this.context = context;
         this.items = items;
-        toRemove = new ArrayList<>();
+        toRemove = new ArrayList<Item>();
         template_resource = resource;
     }
 
@@ -41,39 +33,10 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         }
 
         Item currentItem = (Item) getItem(position);
-        CheckBox check = (CheckBox) convertView.findViewById(R.id.check);
         TextView name = (TextView) convertView.findViewById(R.id.name);
         TextView time = (TextView) convertView.findViewById(R.id.time);
         TextView category = (TextView) convertView.findViewById(R.id.category);
-        ImageView edit = (ImageView) convertView.findViewById(R.id.edit);
 
-        //set click listener on checkbox and code animation
-        final View finalConvertView = convertView;
-        check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                instances++;
-                StartSmartAnimation.startAnimation((LinearLayout) finalConvertView.findViewById(R.id.item), AnimationType.SlideOutRight, 1000, 0, true);
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        toRemove.add(items.get(position));
-                        instances--;
-                        if (instances == 0) {
-                            items.removeAll(toRemove);
-                            context.completedItems.addAll(toRemove);
-                            context.resetAdapter();
-                            context.saveItems("ListItems.json", items);
-                            context.saveItems("CompletedItems.json", context.completedItems);
-                            //reset toRemove so it doesn't just infinitely grow
-                            toRemove = new ArrayList<>();
-                        }
-                    }
-                }, 1000);
-
-            }
-        });
         //set name and the rolling text
         name.setText(currentItem.getName());
         //name.setTypeface(context.professionalFont);
@@ -118,12 +81,6 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             category.setText("Life");
             category.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_life));
         }
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.editItem(v, position);
-            }
-        });
         return convertView;
     }
 }
