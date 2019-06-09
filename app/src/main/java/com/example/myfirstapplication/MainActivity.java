@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Item> overdueItems = new ArrayList<>();
     private OverdueItemsAdapter overdueItemsAdapter;
 
+    //variable so we can change color of header background when switching sections
+    LinearLayout header;
+
     private int currentSection = 0;
     //global fonts to be used by all classes
     Typeface headerFont;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 //        view.setBackgroundColor(Color.parseColor("#212121"));
 
         listView = (ListView) findViewById(R.id.listView);
+        header = (LinearLayout)findViewById(R.id.header);
         if (savedInstanceState != null) {
             currentSection = savedInstanceState.getInt("section");
             switch (currentSection) {
@@ -207,8 +211,8 @@ public class MainActivity extends AppCompatActivity {
     public void switchToDo(View v) {
         if ((currentSection != 0) && (ItemAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
-            LinearLayout header = (LinearLayout)findViewById(R.id.header);
-            header.setBackgroundColor(Color.parseColor("#000000"));
+
+            header.setBackgroundColor(Color.parseColor("#3385ff"));
             currentSection = 0;
             growSection(v);
             listItems = DataManager.readItems(this, "ListItems.json");
@@ -220,6 +224,8 @@ public class MainActivity extends AppCompatActivity {
     public void switchCompleted(View v) {
         if ((currentSection != 1) && (ItemAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
+
+            header.setBackgroundColor(Color.parseColor("#00cc66"));
             currentSection = 1;
             growSection(v);
             completedItems = DataManager.readItems(this, "CompletedItems.json");
@@ -231,6 +237,8 @@ public class MainActivity extends AppCompatActivity {
     public void switchOverdue(View v) {
         if ((currentSection != 2) && (ItemAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
+
+            header.setBackgroundColor(Color.parseColor("#ff0066"));
             currentSection = 2;
             growSection(v);
             overdueItems = DataManager.readItems(this, "OverdueItems.json");
