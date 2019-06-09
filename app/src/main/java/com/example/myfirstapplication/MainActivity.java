@@ -143,26 +143,28 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(editIntent, 200);
     }
 
-    public void insertItem(Item toAdd) {
-        if (listItems.isEmpty()) {
-            listItems.add(toAdd);
+    public void insertItem(ArrayList<Item> addTo, Item toAdd, String section) {
+        if (addTo.isEmpty()) {
+            addTo.add(toAdd);
         } else {
             boolean added = false;
-            for (int a = 0; a < listItems.size(); a++) {
-                Item currentItem = listItems.get(a);
+            for (int a = 0; a < addTo.size(); a++) {
+                Item currentItem = addTo.get(a);
                 if ((currentItem.getDueHour() > toAdd.getDueHour())
                         || ((currentItem.getDueHour() == toAdd.getDueHour()) && (currentItem.getDueMinute() > toAdd.getDueMinute()))) {
-                    listItems.add(a, toAdd);
+                    addTo.add(a, toAdd);
                     added = true;
-                    break; //since the end condition is a<listItems.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
+                    break; //since the end condition is a<addTo.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
                 }
             }
             if (!added) {
-                listItems.add(toAdd);
+                addTo.add(toAdd);
             }
         }
-        DataManager.saveItems(this, "ListItems.json", listItems);
-        itemAdapter.notifyDataSetChanged();
+        if(section.equals("todo")) {
+            DataManager.saveItems(this, "ListItems.json", listItems);
+            itemAdapter.notifyDataSetChanged();
+        }
 //        printItems();
     }
 
@@ -226,14 +228,14 @@ public class MainActivity extends AppCompatActivity {
         if ((requestCode == 100) && (resultCode == RESULT_OK)) {
             Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
                     data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1));
-            insertItem(toAdd);
+            insertItem(listItems, toAdd, "todo");
         }
         if ((requestCode == 200) && (resultCode == RESULT_OK)) {
             listItems.remove(data.getIntExtra("position", -1)); //MAY CAUSE ERROR IF DEFAULT VALUE IS USED
             if (data.getStringExtra("action").equals("edit")) {
                 Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
                         data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1));
-                insertItem(toAdd);
+                insertItem(listItems, toAdd, "todo");
             } else {
                 DataManager.saveItems(this, "ListItems.json", listItems);
                 itemAdapter.notifyDataSetChanged();

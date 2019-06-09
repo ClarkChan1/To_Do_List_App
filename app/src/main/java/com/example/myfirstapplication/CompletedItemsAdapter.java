@@ -27,7 +27,6 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = new TextView(context);
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(template_resource, parent, false);
         }

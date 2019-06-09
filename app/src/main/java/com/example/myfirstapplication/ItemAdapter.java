@@ -35,7 +35,6 @@ public class ItemAdapter extends ArrayAdapter<Item> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = new TextView(context);
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(template_resource, parent, false);
         }
@@ -62,7 +61,9 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                         instances--;
                         if (instances == 0) {
                             items.removeAll(toRemove);
-                            context.completedItems.addAll(toRemove);
+                            for (int a = 0; a < toRemove.size(); a++) {
+                                context.insertItem(context.completedItems, toRemove.get(a), "completed");
+                            }
                             context.resetAdapter();
                             context.saveItems("ListItems.json", items);
                             context.saveItems("CompletedItems.json", context.completedItems);
