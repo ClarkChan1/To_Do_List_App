@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchToDo(View v) {
-        if ((currentSection != 0) && (ItemAdapter.instances == 0)) {
+        if ((currentSection != 0) && (OverdueItemsAdapter.completeInstances == 0) && (OverdueItemsAdapter.deleteInstances == 0)) {
             shrinkCurrent(currentSection);
             header.setBackgroundColor(Color.parseColor("#3385ff"));
             createItemButton.setEnabled(true);
@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchCompleted(View v) {
-        if ((currentSection != 1) && (ItemAdapter.instances == 0)) {
+        if ((currentSection != 1) && (ItemAdapter.instances == 0) && (OverdueItemsAdapter.completeInstances == 0) && (OverdueItemsAdapter.deleteInstances == 0)) {
             shrinkCurrent(currentSection);
             header.setBackgroundColor(Color.parseColor("#00cc66"));
             createItemButton.setEnabled(false);
