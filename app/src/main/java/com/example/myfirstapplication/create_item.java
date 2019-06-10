@@ -1,11 +1,13 @@
 package com.example.myfirstapplication;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -59,6 +61,11 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             Intent data = getIntent();
             if (data.getStringExtra("type").equals("create")) {
                 setContentView(R.layout.activity_create_item);
+                EditText nameField = (EditText)findViewById(R.id.nameField);
+                nameField.requestFocus();
+                //get keyboard to appear upon entering create item
+                InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                 activityType = "create";
             } else if (data.getStringExtra("type").equals("edit")) {
                 setContentView(R.layout.activity_edit_item);
