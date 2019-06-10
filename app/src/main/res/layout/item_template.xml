@@ -10,18 +10,19 @@
         android:id="@+id/check"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight=".6" />
+        android:layout_weight=".6"
+        android:layout_marginRight="5dp"/>
 
     <TextView
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="4"
+        android:layout_weight="3.8"
         android:focusableInTouchMode="true"
         android:gravity="center"
         android:text="@string/item_name"
         android:textColor="#000000"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/time"
@@ -29,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_weight="1.5"
+        android:layout_weight="1.6"
         android:gravity="center"
         android:text="@string/item_time"
         android:textColor="#000000"
@@ -52,9 +53,9 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dp"
-        android:layout_weight=".4"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight=".42"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:src="@drawable/edit_icon2" />
