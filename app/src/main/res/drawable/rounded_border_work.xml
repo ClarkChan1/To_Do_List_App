@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
     <!--Lighter colors-->
     <!--<solid android:color="#ffb84d"/>-->
-    <solid android:color="#ff9999"/>
+    <solid android:color="#ff9999" />
     <!--<solid android:color="#ff8080"/>-->
     <!--<solid android:color="#ff6666"/>-->
     <!--<solid android:color="#ff4d4d"/>-->
 
     <!--Intense Colors-->
     <!--<solid android:color="#ff1a1a"/>-->
-    <corners android:radius="80dp"/>
+    <corners android:radius="80dp" />
 </shape>

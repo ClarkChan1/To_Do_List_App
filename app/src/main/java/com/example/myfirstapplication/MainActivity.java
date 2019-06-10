@@ -2,7 +2,6 @@ package com.example.myfirstapplication;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -38,22 +37,20 @@ public class MainActivity extends AppCompatActivity {
 
     private int currentSection = 0;
     //global fonts to be used by all classes
-    Typeface headerFont;
-    Typeface professionalFont;
+//    Typeface headerFont;
+//    Typeface professionalFont;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //set up the fonts to be used in this activity
-        headerFont = Typeface.createFromAsset(getAssets(), "fonts/nevis.ttf");
-        professionalFont = Typeface.createFromAsset(getAssets(), "fonts/Euphemia UCAS Regular 2.6.6.ttf");
-//        View view = this.getWindow().getDecorView();
-//        view.setBackgroundColor(Color.parseColor("#212121"));
+//        headerFont = Typeface.createFromAsset(getAssets(), "fonts/nevis.ttf");
+//        professionalFont = Typeface.createFromAsset(getAssets(), "fonts/Euphemia UCAS Regular 2.6.6.ttf");
 
         listView = (ListView) findViewById(R.id.listView);
-        header = (LinearLayout)findViewById(R.id.header);
-        createItemButton = (Button)findViewById(R.id.createItemButton);
+        header = (LinearLayout) findViewById(R.id.header);
+        createItemButton = (Button) findViewById(R.id.createItemButton);
 
         listItems = DataManager.readItems(this, "ListItems.json");
         overdueItems = DataManager.readItems(this, "OverdueItems.json");
@@ -135,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         checkDate();
     }
 
-    public void checkDate(){
+    public void checkDate() {
         //keep track of the current day
         long currentTotalDate = System.currentTimeMillis();
         SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy");
@@ -269,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void checkOverdue(){
+    public void checkOverdue() {
         //get current time
         String time = getCurrentTime();
         int currentHour = Integer.parseInt(time.substring(0, time.indexOf(":")));
@@ -284,8 +281,8 @@ public class MainActivity extends AppCompatActivity {
         }
         overdueItems.addAll(toPutInOverdue);
         listItems.removeAll(toPutInOverdue);
-        DataManager.saveItems(this,"OverdueItems.json", overdueItems);
-        DataManager.saveItems(this,"ListItems.json", listItems);
+        DataManager.saveItems(this, "OverdueItems.json", overdueItems);
+        DataManager.saveItems(this, "ListItems.json", listItems);
     }
 
     public String getCurrentTime() {

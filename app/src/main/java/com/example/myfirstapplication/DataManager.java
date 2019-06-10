@@ -82,7 +82,7 @@ public class DataManager {
                 fos.write(dateString.getBytes());
             } else {
                 if (!storedDate.equals(dateString)) {
-                    for(int a =0; a<fileNames.length; a++){
+                    for (int a = 0; a < fileNames.length; a++) {
                         clearData(context, fileNames[a]);
                     }
                     fos.write(dateString.getBytes());

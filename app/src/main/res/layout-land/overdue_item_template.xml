@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:id="@+id/item">
+    android:paddingBottom="10dp">
 
     <CheckBox
         android:id="@+id/check"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight=".6" />
+
     <TextView
         android:id="@+id/name"
         android:layout_width="0dp"
@@ -19,8 +20,8 @@
         android:focusableInTouchMode="true"
         android:gravity="center"
         android:text="@string/item_name"
-        android:textSize="18sp"
-        android:textColor="#000000"/>
+        android:textColor="#000000"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/time"
@@ -29,8 +30,8 @@
         android:layout_weight="1.5"
         android:gravity="center"
         android:text="@string/item_time"
-        android:textSize="16sp"
-        android:textColor="#000000"/>
+        android:textColor="#000000"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/category"
@@ -40,18 +41,19 @@
         android:background="@drawable/rounded_border_life"
         android:gravity="center"
         android:text="work"
-        android:textSize="16sp"
-        android:textColor="#000000"/>
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
     <ImageView
         android:id="@+id/deleteButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight=".3"
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:src="@drawable/delete_icon"
+        android:layout_weight=".3"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter"
+        android:src="@drawable/delete_icon" />
 
 </LinearLayout>

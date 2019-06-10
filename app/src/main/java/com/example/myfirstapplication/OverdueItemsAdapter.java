@@ -47,14 +47,14 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         TextView time = (TextView) convertView.findViewById(R.id.time);
         TextView category = (TextView) convertView.findViewById(R.id.category);
         CheckBox check = (CheckBox) convertView.findViewById(R.id.check);
-        ImageView deleteButton = (ImageView)convertView.findViewById(R.id.deleteButton);
+        ImageView deleteButton = (ImageView) convertView.findViewById(R.id.deleteButton);
 
         //set click listener on deleteButton and code animation
         final View finalConvertView = convertView;
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(deleteInstances == 0) {
+                if (deleteInstances == 0) {
                     completeInstances++;
                     StartSmartAnimation.startAnimation((LinearLayout) finalConvertView.findViewById(R.id.item), AnimationType.FadeOut, 1000, 0, true);
                     final Handler handler = new Handler();

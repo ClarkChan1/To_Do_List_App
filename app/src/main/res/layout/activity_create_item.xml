@@ -9,8 +9,6 @@
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
@@ -22,6 +20,8 @@
         android:layout_marginRight="0dp"
         android:background="#80ff80"
         android:onClick="onCreateButtonClicked"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         android:text="@string/createButton" />
 
     <LinearLayout
@@ -29,25 +29,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/categoryLinearLayout">
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/itemName"
-            android:textSize="18sp"
-            android:textColor="#000000"/>
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/nameField"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_weight="1"
             android:ems="10"
+            android:gravity="center"
             android:hint="type here"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
@@ -59,16 +60,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
+
         <TextView
             android:id="@+id/textView3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="Category"
-            android:textSize="18sp"
             android:textColor="#000000"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -116,8 +118,8 @@
             android:id="@+id/button2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:onClick="startButtonOnClick"
             android:text="Due By"
             app:layout_constraintStart_toStartOf="@+id/textView3"
@@ -128,12 +130,12 @@
             android:id="@+id/dueTime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/dueText"
-            android:textSize="18sp"
             android:textColor="#000000"
+            android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/button2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/button2" />

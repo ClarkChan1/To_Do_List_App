@@ -15,7 +15,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 public class create_item extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
-    String name="";
+    String name = "";
     int dueHour = -1;
     int dueMinute = -1;
     String category = "";
@@ -32,21 +32,22 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     boolean collectDueTime = false;
 
     String activityType = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             activityType = savedInstanceState.getString("type");
-            if(activityType.equals("create")){
+            if (activityType.equals("create")) {
                 setContentView(R.layout.activity_create_item);
             } else {
                 setContentView(R.layout.activity_edit_item);
             }
-            if(savedInstanceState.getBoolean("collectCategory")){
+            if (savedInstanceState.getBoolean("collectCategory")) {
                 category = savedInstanceState.getString("category");
                 collectCategory = false;
             }
-            if(savedInstanceState.getBoolean("collectDueTime")){
+            if (savedInstanceState.getBoolean("collectDueTime")) {
                 dueHour = savedInstanceState.getInt("dueHour");
                 dueMinute = savedInstanceState.getInt("dueMinute");
                 setTimeString();
@@ -85,7 +86,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         setTimeString();
     }
 
-    public void setTimeString(){
+    public void setTimeString() {
         TextView textTime;
         textTime = findViewById(R.id.dueTime);
         String timeString = "";
@@ -105,6 +106,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         }
         textTime.setText(timeString);
     }
+
     public void onRadioButtonClicked(View v) {
         if (v.getId() == R.id.radio1) {
             category = "Work";
@@ -126,7 +128,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         }
     }
 
-    public void onEditButtonClicked(View v){
+    public void onEditButtonClicked(View v) {
         checkData(v);
         if (goodName && goodCategory && goodTime) {
             Intent i = new Intent();
@@ -141,7 +143,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         }
     }
 
-    public void onDeleteButtonClicked(View v){
+    public void onDeleteButtonClicked(View v) {
         Intent i = new Intent();
         i.putExtra("action", "delete");
         i.putExtra("position", editPosition);
@@ -149,11 +151,11 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         finish();
     }
 
-    public void populateData(){
+    public void populateData() {
         EditText nameField = (EditText) findViewById(R.id.nameField);
         nameField.setText(name);
         setTimeString();
-        if(category.equals("Work")){
+        if (category.equals("Work")) {
             RadioButton workButton = findViewById(R.id.radio1);
             workButton.setChecked(true);
         } else {
@@ -162,7 +164,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         }
     }
 
-    public void checkData(View v){
+    public void checkData(View v) {
         EditText nameField = (EditText) findViewById(R.id.nameField);
         name = nameField.getText().toString();
         if (name.equals("")) {
@@ -192,19 +194,19 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("type", activityType);
-        if(!category.equals("")){
+        if (!category.equals("")) {
             outState.putString("category", category);
             collectCategory = true;
             outState.putBoolean("collectCategory", true);
-        } else{
+        } else {
             outState.putBoolean("collectCategory", false);
         }
-        if(dueHour != -1){
+        if (dueHour != -1) {
             outState.putInt("dueHour", dueHour);
             outState.putInt("dueMinute", dueMinute);
             collectDueTime = true;
             outState.putBoolean("collectDueTime", true);
-        } else{
+        } else {
             outState.putBoolean("collectDueTime", false);
         }
         outState.putInt("position", editPosition);
