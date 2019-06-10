@@ -5,12 +5,12 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
     android:id="@+id/item">
-
     <CheckBox
         android:id="@+id/check"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight=".6" />
+
     <TextView
         android:id="@+id/name"
         android:layout_width="0dp"
@@ -27,6 +27,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:gravity="center"
         android:text="@string/item_time"
         android:textSize="16sp"
@@ -37,21 +39,22 @@
         android:layout_width="0dp"
         android:layout_height="25dp"
         android:layout_weight="1.2"
+
         android:background="@drawable/rounded_border_life"
         android:gravity="center"
         android:text="work"
         android:textSize="16sp"
         android:textColor="#000000"/>
+
     <ImageView
-        android:id="@+id/deleteButton"
+        android:id="@+id/edit"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight=".5"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/delete_icon"
+        android:layout_marginRight="5dp"
+        android:layout_weight=".3"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"/>
-
+        android:scaleType="fitCenter"
+        android:src="@drawable/edit_icon2" />
 </LinearLayout>

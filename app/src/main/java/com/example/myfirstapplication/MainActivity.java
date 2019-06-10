@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private CompletedItemsAdapter completedItemsAdapter;
 
     private ArrayList<Item> overdueItems = new ArrayList<>();
-    private OverdueItemsAdapter overdueItemsAdapter;
+    OverdueItemsAdapter overdueItemsAdapter;
 
     private int currentSection = 0;
     //global fonts to be used by all classes
@@ -54,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
         header = (LinearLayout)findViewById(R.id.header);
         createItemButton = (Button)findViewById(R.id.createItemButton);
+
+        listItems = DataManager.readItems(this, "ListItems.json");
+        overdueItems = DataManager.readItems(this, "OverdueItems.json");
+        completedItems = DataManager.readItems(this, "CompletedItems.json");
+
         if (savedInstanceState != null) {
             currentSection = savedInstanceState.getInt("section");
             switch (currentSection) {
@@ -62,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                     header.setBackgroundColor(Color.parseColor("#3385ff"));
                     createItemButton.setEnabled(true);
                     createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
-                    listItems = DataManager.readItems(this, "ListItems.json");
                     itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
                     switchAdapter(itemAdapter);
                     break;
@@ -71,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
                     header.setBackgroundColor(Color.parseColor("#00cc66"));
                     createItemButton.setEnabled(false);
                     createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
-                    completedItems = DataManager.readItems(this, "CompletedItems.json");
                     completedItemsAdapter = new CompletedItemsAdapter(this, R.layout.completed_item_template, completedItems);
                     switchAdapter(completedItemsAdapter);
                     break;
@@ -80,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                     header.setBackgroundColor(Color.parseColor("#ff0066"));
                     createItemButton.setEnabled(false);
                     createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
-                    overdueItems = DataManager.readItems(this, "OverdueItems.json");
                     overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.overdue_item_template, overdueItems);
                     switchAdapter(overdueItemsAdapter);
                     break;
@@ -96,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
             listItems = DataManager.readItems(this, "ListItems.json");
             itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
             resetAdapter();
-
         }
 
 //        saveItems("ListItems.json", listItems);
@@ -131,7 +132,10 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         dateAndTimeThread.start();
+        checkDate();
+    }
 
+    public void checkDate(){
         //keep track of the current day
         long currentTotalDate = System.currentTimeMillis();
         SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy");
@@ -223,13 +227,13 @@ public class MainActivity extends AppCompatActivity {
     public void switchToDo(View v) {
         if ((currentSection != 0) && (ItemAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
-
             header.setBackgroundColor(Color.parseColor("#3385ff"));
             createItemButton.setEnabled(true);
             createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
             currentSection = 0;
             growSection(v);
             listItems = DataManager.readItems(this, "ListItems.json");
+            checkOverdue();
             itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
             switchAdapter(itemAdapter);
         }
@@ -238,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
     public void switchCompleted(View v) {
         if ((currentSection != 1) && (ItemAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
-
             header.setBackgroundColor(Color.parseColor("#00cc66"));
             createItemButton.setEnabled(false);
             createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
