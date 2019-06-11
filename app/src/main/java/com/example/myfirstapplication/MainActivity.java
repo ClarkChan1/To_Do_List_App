@@ -40,13 +40,10 @@ public class MainActivity extends AppCompatActivity {
 //    Typeface headerFont;
 //    Typeface professionalFont;
 
-    volatile boolean appIsPaused;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        appIsPaused = false;
         //set up the fonts to be used in this activity
 //        headerFont = Typeface.createFromAsset(getAssets(), "fonts/nevis.ttf");
 //        professionalFont = Typeface.createFromAsset(getAssets(), "fonts/Euphemia UCAS Regular 2.6.6.ttf");
@@ -99,9 +96,6 @@ public class MainActivity extends AppCompatActivity {
             itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
             resetAdapter();
         }
-
-//        saveItems("ListItems.json", listItems);
-
         Thread dateAndTimeThread = new Thread() {
             public void run() {
                 try {
@@ -136,15 +130,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        appIsPaused = true;
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-//        appIsPaused = false;
         checkOverdue();
         switch (currentSection){
             case 0:
