@@ -8,13 +8,15 @@ public class Item implements Parcelable {
     private String category;
     private int dueHour;
     private int dueMinute;
+    private int notificationID;
 
 
-    public Item(String name, String category, int dueHour, int dueMinute) {
+    public Item(String name, String category, int dueHour, int dueMinute, int notificationID) {
         this.name = name;
         this.category = category;
         this.dueHour = dueHour;
         this.dueMinute = dueMinute;
+        this.notificationID = notificationID;
     }
 
     protected Item(Parcel in) {
@@ -50,6 +52,10 @@ public class Item implements Parcelable {
 
     public int getDueMinute() {
         return dueMinute;
+    }
+
+    public int getNotificationID() {
+        return notificationID;
     }
 
     @Override

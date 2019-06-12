@@ -1,7 +1,11 @@
 package com.example.myfirstapplication;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -36,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     OverdueItemsAdapter overdueItemsAdapter;
 
     private int currentSection = 0;
+
+    int notificationID = 0;
     //global fonts to be used by all classes
 //    Typeface headerFont;
 //    Typeface professionalFont;
@@ -87,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         listItems = DataManager.readItems(this, "ListItems.json");
         overdueItems = DataManager.readItems(this, "OverdueItems.json");
         completedItems = DataManager.readItems(this, "CompletedItems.json");
+
 
         if (savedInstanceState != null) {
             currentSection = savedInstanceState.getInt("section");
@@ -171,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
     public void createItem(View v) {
         Intent createIntent = new Intent(this, create_item.class);
         createIntent.putExtra("type", "create");
+        createIntent.putExtra("notificationID", notificationID);
         startActivityForResult(createIntent, 100);
     }
 
@@ -207,7 +215,33 @@ public class MainActivity extends AppCompatActivity {
             DataManager.saveItems(this, "ListItems.json", listItems);
             itemAdapter.notifyDataSetChanged();
         }
-//        printItems();
+        //if we are inserting item into the to do section, make a notification
+        if(section.equals("todo")) {
+            Calendar taskDueTime = Calendar.getInstance();
+            taskDueTime.set(Calendar.HOUR_OF_DAY, toAdd.getDueHour());
+            taskDueTime.set(Calendar.MINUTE, toAdd.getDueMinute());
+            taskDueTime.set(Calendar.SECOND, 0);
+            setNotification(taskDueTime, toAdd.getName());
+            notificationID++;
+        }
+    }
+
+    public void setNotification(Calendar taskDueTime, String taskName){
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        intent.putExtra("notificationID", notificationID);
+        intent.putExtra("name", taskName);
+        PendingIntent pi = PendingIntent.getBroadcast(this, notificationID, intent, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            am.setExact(AlarmManager.RTC_WAKEUP, taskDueTime.getTimeInMillis(), pi);
+        }
+    }
+
+    public void cancelNotification(int toRemoveID){
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pi = PendingIntent.getBroadcast(this, toRemoveID, intent, 0);
+        am.cancel(pi);
     }
 
     public void shrinkCurrent(int currentSection) {
@@ -312,14 +346,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if ((requestCode == 100) && (resultCode == RESULT_OK)) {
             Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
-                    data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1));
+                    data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1), data.getIntExtra("notificationID", -1));
             insertItem(listItems, toAdd, "todo");
         }
         if ((requestCode == 200) && (resultCode == RESULT_OK)) {
             listItems.remove(data.getIntExtra("position", -1)); //MAY CAUSE ERROR IF DEFAULT VALUE IS USED
             if (data.getStringExtra("action").equals("edit")) {
                 Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
-                        data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1));
+                        data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1), data.getIntExtra("notificationID", -1));
                 insertItem(listItems, toAdd, "todo");
             } else {
                 DataManager.saveItems(this, "ListItems.json", listItems);

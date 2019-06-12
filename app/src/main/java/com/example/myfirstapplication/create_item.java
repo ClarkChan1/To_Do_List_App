@@ -21,6 +21,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     int dueHour = -1;
     int dueMinute = -1;
     String category = "";
+    int notificationID = 0;
     //This is to track which item in the Listview is to be edited
     int editPosition = -1;
 
@@ -66,6 +67,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 //get keyboard to appear upon entering create item
                 InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                notificationID = data.getIntExtra("notificationID", -1);
                 activityType = "create";
             } else if (data.getStringExtra("type").equals("edit")) {
                 setContentView(R.layout.activity_edit_item);
@@ -75,6 +77,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 dueHour = data.getIntExtra("dueHour", -1);
                 dueMinute = data.getIntExtra("dueMinute", -1);
                 editPosition = data.getIntExtra("position", -1);
+                notificationID = data.getIntExtra("id", -1);
                 populateData();
             }
         }
@@ -130,6 +133,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             i.putExtra("category", category);
             i.putExtra("dueHour", dueHour);
             i.putExtra("dueMinute", dueMinute);
+            i.putExtra("notificationID", notificationID);
             setResult(RESULT_OK, i);
             finish();
         }
@@ -145,6 +149,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             i.putExtra("dueMinute", dueMinute);
             i.putExtra("action", "edit");
             i.putExtra("position", editPosition);
+            i.putExtra("notificationID", notificationID);
             setResult(RESULT_OK, i);
             finish();
         }

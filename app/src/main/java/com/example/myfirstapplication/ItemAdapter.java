@@ -61,10 +61,11 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                         instances--;
                         if (instances == 0) {
                             items.removeAll(toRemove);
-                            //get current time
 
+                            //cancel notifications for all the items to remove and in the same loop add them to completedItems list
                             for (int a = 0; a < toRemove.size(); a++) {
                                 context.insertItem(context.completedItems, toRemove.get(a), "completed");
+                                context.cancelNotification(toRemove.get(a).getNotificationID());
                             }
                             context.resetAdapter();
                             //save everything
