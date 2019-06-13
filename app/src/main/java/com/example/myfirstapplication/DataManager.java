@@ -57,7 +57,7 @@ public class DataManager {
         return loadedItems == null ? (new ArrayList<Item>()) : loadedItems;
     }
 
-    public static void checkDate(Context context, String[] fileNames, String dateString) {
+    public static void checkDate(Context context, String[] fileNames, int notificationID, String dateString) {
         try {
             //Create a FileOutputStream for the case where the device doesn't have the text file yet
             String dateFileName = "CurrentDate.txt";
@@ -85,6 +85,8 @@ public class DataManager {
                     for (int a = 0; a < fileNames.length; a++) {
                         clearData(context, fileNames[a]);
                     }
+                    FileOutputStream fosID = context.openFileOutput("NotificationID.json", Context.MODE_PRIVATE);
+                    fosID.write("0".getBytes());
                     fos.write(dateString.getBytes());
                 } else {
                     //since we are rewriting the file, we need to put the date back if it is equal
@@ -110,4 +112,44 @@ public class DataManager {
             e.printStackTrace();
         }
     }
+
+    public static int readNotificationID(Context context, String fileName){
+        int notificationID = 0;
+        try {
+            //Create a FileOutputStream for the case where the device doesn't have the json file yet
+            File currentJSONFile = new File(context.getFilesDir().getAbsolutePath() + "/" + fileName);
+            if (!currentJSONFile.exists()) {
+                FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+                fos.write(0);
+                fos.close();
+            }
+            FileInputStream fis = context.openFileInput(fileName);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            notificationID = Integer.parseInt(br.readLine());
+
+            fis.close();
+            isr.close();
+            br.close();
+        } catch (IOException e) {
+            System.out.println("IOException while trying to load in readItems()!");
+            e.printStackTrace();
+        }
+        return notificationID;
+    }
+
+    public static void saveNotificationID(Context context, int toSave){
+        try {
+            FileOutputStream fos = context.openFileOutput("NotificationID.json", Context.MODE_PRIVATE);
+            fos.write(String.valueOf(toSave).getBytes());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("FileNotFoundException while trying to save!");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("IOException while trying to save!");
+            e.printStackTrace();
+        }
+    }
+
 }

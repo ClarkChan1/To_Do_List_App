@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int currentSection = 0;
 
-    int notificationID = 0;
+    int notificationID;
     //global fonts to be used by all classes
 //    Typeface headerFont;
 //    Typeface professionalFont;
@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         overdueItems = DataManager.readItems(this, "OverdueItems.json");
         completedItems = DataManager.readItems(this, "CompletedItems.json");
 
-
         if (savedInstanceState != null) {
             currentSection = savedInstanceState.getInt("section");
             switch (currentSection) {
@@ -138,6 +137,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        DataManager.saveNotificationID(this, notificationID);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         checkOverdue();
@@ -158,7 +163,8 @@ public class MainActivity extends AppCompatActivity {
         long currentTotalDate = System.currentTimeMillis();
         SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy");
         String dateString = sdfDate.format(currentTotalDate);
-        DataManager.checkDate(this, (new String[]{"ListItems.json", "CompletedItems.json", "OverdueItems.json"}), dateString);
+        DataManager.checkDate(this, (new String[]{"ListItems.json", "CompletedItems.json", "OverdueItems.json"}), notificationID, dateString);
+        notificationID = DataManager.readNotificationID(this, "NotificationID.json");
     }
 
     public void resetAdapter() {
@@ -366,5 +372,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("section", currentSection);
+        DataManager.saveNotificationID(this, notificationID);
     }
 }
