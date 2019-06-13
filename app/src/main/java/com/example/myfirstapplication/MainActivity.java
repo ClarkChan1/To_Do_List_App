@@ -356,6 +356,7 @@ public class MainActivity extends AppCompatActivity {
             insertItem(listItems, toAdd, "todo");
         }
         if ((requestCode == 200) && (resultCode == RESULT_OK)) {
+            cancelNotification(listItems.get(data.getIntExtra("position", -1)).getNotificationID());
             listItems.remove(data.getIntExtra("position", -1)); //MAY CAUSE ERROR IF DEFAULT VALUE IS USED
             if (data.getStringExtra("action").equals("edit")) {
                 Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
