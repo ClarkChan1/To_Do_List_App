@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         long currentTotalDate = System.currentTimeMillis();
         SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy");
         String dateString = sdfDate.format(currentTotalDate);
-        DataManager.checkDate(this, (new String[]{"ListItems.json", "CompletedItems.json", "OverdueItems.json"}), notificationID, dateString);
+        DataManager.checkDate(this, (new String[]{"ListItems.json", "CompletedItems.json", "OverdueItems.json"}), dateString);
         notificationID = DataManager.readNotificationID(this, "NotificationID.json");
     }
 

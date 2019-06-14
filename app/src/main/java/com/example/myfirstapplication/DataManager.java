@@ -57,7 +57,7 @@ public class DataManager {
         return loadedItems == null ? (new ArrayList<Item>()) : loadedItems;
     }
 
-    public static void checkDate(Context context, String[] fileNames, int notificationID, String dateString) {
+    public static void checkDate(Context context, String[] fileNames, String dateString) {
         try {
             //Create a FileOutputStream for the case where the device doesn't have the text file yet
             String dateFileName = "CurrentDate.txt";
