@@ -125,6 +125,10 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         isPaused = false;
         checkOverdue();
+        setupSection();
+    }
+
+    public void setupSection(){
         switch (currentSection) {
             case 0:
                 growSection(findViewById(R.id.toDoSection));
@@ -345,6 +349,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        setupSection();
         if(resultCode == RESULT_OK) {
             if (requestCode == 100) {
                 Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
