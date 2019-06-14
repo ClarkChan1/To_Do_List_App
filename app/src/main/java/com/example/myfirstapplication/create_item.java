@@ -57,6 +57,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 collectDueTime = false;
             }
             editPosition = savedInstanceState.getInt("position");
+            notificationID = savedInstanceState.getInt("notificationID");
         } else {
             //This is for the start of activity when we are either editing or creating an item
             Intent data = getIntent();
@@ -67,7 +68,6 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 //get keyboard to appear upon entering create item
                 InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-                notificationID = data.getIntExtra("notificationID", -1);
                 activityType = "create";
             } else if (data.getStringExtra("type").equals("edit")) {
                 setContentView(R.layout.activity_edit_item);
@@ -77,9 +77,9 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 dueHour = data.getIntExtra("dueHour", -1);
                 dueMinute = data.getIntExtra("dueMinute", -1);
                 editPosition = data.getIntExtra("position", -1);
-                notificationID = data.getIntExtra("notificationID", -1);
                 populateData();
             }
+            notificationID = data.getIntExtra("notificationID", -1);
         }
 
     }
@@ -222,5 +222,6 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             outState.putBoolean("collectDueTime", false);
         }
         outState.putInt("position", editPosition);
+        outState.putInt("notificationID", notificationID);
     }
 }
