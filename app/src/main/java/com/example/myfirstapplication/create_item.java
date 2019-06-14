@@ -77,7 +77,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 dueHour = data.getIntExtra("dueHour", -1);
                 dueMinute = data.getIntExtra("dueMinute", -1);
                 editPosition = data.getIntExtra("position", -1);
-                notificationID = data.getIntExtra("id", -1);
+                notificationID = data.getIntExtra("notificationID", -1);
                 populateData();
             }
         }

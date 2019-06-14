@@ -125,10 +125,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         isPaused = false;
         checkOverdue();
-        setupSection();
-    }
-
-    public void setupSection(){
         switch (currentSection) {
             case 0:
                 growSection(findViewById(R.id.toDoSection));
@@ -194,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         editIntent.putExtra("category", listItems.get(position).getCategory());
         editIntent.putExtra("dueHour", listItems.get(position).getDueHour());
         editIntent.putExtra("dueMinute", listItems.get(position).getDueMinute());
+        editIntent.putExtra("notificationID", notificationID);
         editIntent.putExtra("position", position);
         startActivityForResult(editIntent, 200);
     }
@@ -349,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        setupSection();
+        itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
         if(resultCode == RESULT_OK) {
             if (requestCode == 100) {
                 Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
