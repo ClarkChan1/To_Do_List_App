@@ -93,9 +93,6 @@ public class MainActivity extends AppCompatActivity {
         header = (LinearLayout) findViewById(R.id.header);
         createItemButton = (Button) findViewById(R.id.createItemButton);
 
-        listItems = DataManager.readItems(this, "ListItems.json");
-        overdueItems = DataManager.readItems(this, "OverdueItems.json");
-        completedItems = DataManager.readItems(this, "CompletedItems.json");
 
         if (savedInstanceState != null) {
             currentSection = savedInstanceState.getInt("section");
@@ -124,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         isPaused = false;
+        checkDate();
         checkOverdue();
         switch (currentSection) {
             case 0:
@@ -160,6 +158,10 @@ public class MainActivity extends AppCompatActivity {
         String dateString = sdfDate.format(currentTotalDate);
         DataManager.checkDate(this, (new String[]{"ListItems.json", "CompletedItems.json", "OverdueItems.json"}), dateString);
         notificationID = DataManager.readNotificationID(this, "NotificationID.json");
+        //reset all lists
+        listItems = DataManager.readItems(this, "ListItems.json");
+        overdueItems = DataManager.readItems(this, "OverdueItems.json");
+        completedItems = DataManager.readItems(this, "CompletedItems.json");
     }
 
     public void resetAdapter() {
@@ -225,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
             taskDueTime.set(Calendar.SECOND, 0);
             setNotification(taskDueTime, toAdd.getName());
             notificationID++;
+            DataManager.saveNotificationID(this, notificationID);
         }
     }
 
