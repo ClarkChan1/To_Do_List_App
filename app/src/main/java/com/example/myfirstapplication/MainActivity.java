@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     //global fonts to be used by all classes
 //    Typeface headerFont;
 //    Typeface professionalFont;
+    private volatile boolean isPaused;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,20 +63,22 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                TextView dateText = (TextView) findViewById(R.id.currentDate);
-                                TextView timeText = (TextView) findViewById(R.id.currentTime);
-                                long currentTotalDate = System.currentTimeMillis();
-                                SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy\nhh:mm a");
-                                String dateString = sdfDate.format(currentTotalDate);
-                                String timeString = dateString.substring(dateString.indexOf("\n") + 1);
-                                //this is to get rid of the leading 0 when hours is < 10
-                                if (dateString.charAt(dateString.indexOf("\n") + 1) == '0') {
-                                    timeString = dateString.substring(dateString.indexOf("\n") + 2);
+                                if(!isPaused) {
+                                    TextView dateText = (TextView) findViewById(R.id.currentDate);
+                                    TextView timeText = (TextView) findViewById(R.id.currentTime);
+                                    long currentTotalDate = System.currentTimeMillis();
+                                    SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy\nhh:mm a");
+                                    String dateString = sdfDate.format(currentTotalDate);
+                                    String timeString = dateString.substring(dateString.indexOf("\n") + 1);
+                                    //this is to get rid of the leading 0 when hours is < 10
+                                    if (dateString.charAt(dateString.indexOf("\n") + 1) == '0') {
+                                        timeString = dateString.substring(dateString.indexOf("\n") + 2);
+                                    }
+                                    dateString = dateString.substring(0, dateString.indexOf("\n"));
+                                    //dateText.setTypeface(headerFont);
+                                    dateText.setText(dateString);
+                                    timeText.setText(timeString);
                                 }
-                                dateString = dateString.substring(0, dateString.indexOf("\n"));
-                                //dateText.setTypeface(headerFont);
-                                dateText.setText(dateString);
-                                timeText.setText(timeString);
                             }
                         });
                     }
@@ -113,12 +116,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        isPaused = true;
         DataManager.saveNotificationID(this, notificationID);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        isPaused = false;
         checkOverdue();
         switch (currentSection) {
             case 0:
