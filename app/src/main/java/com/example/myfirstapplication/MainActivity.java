@@ -345,22 +345,25 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if ((requestCode == 100) && (resultCode == RESULT_OK)) {
-            Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
-                    data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1), data.getIntExtra("notificationID", -1));
-            insertItem(listItems, toAdd, "todo");
-        }
-        if ((requestCode == 200) && (resultCode == RESULT_OK)) {
-            cancelNotification(listItems.get(data.getIntExtra("position", -1)).getNotificationID());
-            listItems.remove(data.getIntExtra("position", -1)); //MAY CAUSE ERROR IF DEFAULT VALUE IS USED
-            if (data.getStringExtra("action").equals("edit")) {
+        if(resultCode == RESULT_OK) {
+            if (requestCode == 100) {
                 Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
                         data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1), data.getIntExtra("notificationID", -1));
                 insertItem(listItems, toAdd, "todo");
-            } else {
-                DataManager.saveItems(this, "ListItems.json", listItems);
-                itemAdapter.notifyDataSetChanged();
             }
+            if (requestCode == 200) {
+                cancelNotification(listItems.get(data.getIntExtra("position", -1)).getNotificationID());
+                listItems.remove(data.getIntExtra("position", -1)); //MAY CAUSE ERROR IF DEFAULT VALUE IS USED
+                if (data.getStringExtra("action").equals("edit")) {
+                    Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
+                            data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1), data.getIntExtra("notificationID", -1));
+                    insertItem(listItems, toAdd, "todo");
+                } else {
+                    DataManager.saveItems(this, "ListItems.json", listItems);
+                    itemAdapter.notifyDataSetChanged();
+                }
+            }
+            checkOverdue();
         }
     }
 
