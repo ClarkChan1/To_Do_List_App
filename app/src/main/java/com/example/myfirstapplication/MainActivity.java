@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if(!isPaused) {
+                                if (!isPaused) {
                                     TextView dateText = (TextView) findViewById(R.id.currentDate);
                                     TextView timeText = (TextView) findViewById(R.id.currentTime);
                                     long currentTotalDate = System.currentTimeMillis();
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
             itemAdapter.notifyDataSetChanged();
         }
         //if we are inserting item into the to do section, make a notification
-        if(section.equals("todo")) {
+        if (section.equals("todo")) {
             Calendar taskDueTime = Calendar.getInstance();
             taskDueTime.set(Calendar.HOUR_OF_DAY, toAdd.getDueHour());
             taskDueTime.set(Calendar.MINUTE, toAdd.getDueMinute());
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setNotification(Calendar taskDueTime, String taskName){
+    public void setNotification(Calendar taskDueTime, String taskName) {
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
         intent.putExtra("notificationID", notificationID);
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void cancelNotification(int toRemoveID){
+    public void cancelNotification(int toRemoveID) {
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(this, toRemoveID, intent, 0);
@@ -350,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
-        if(resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             if (requestCode == 100) {
                 Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),
                         data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1), data.getIntExtra("notificationID", -1));

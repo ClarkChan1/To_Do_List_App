@@ -85,6 +85,7 @@ public class DataManager {
                     for (int a = 0; a < fileNames.length; a++) {
                         clearData(context, fileNames[a]);
                     }
+                    //reset notificationID to 0
                     FileOutputStream fosID = context.openFileOutput("NotificationID.json", Context.MODE_PRIVATE);
                     fosID.write("0".getBytes());
                     fos.write(dateString.getBytes());
