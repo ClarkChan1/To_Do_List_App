@@ -96,32 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             currentSection = savedInstanceState.getInt("section");
-            switch (currentSection) {
-                case 0:
-                    growSection(findViewById(R.id.toDoSection));
-                    header.setBackgroundColor(Color.parseColor("#3385ff"));
-                    createItemButton.setEnabled(true);
-                    createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
-                    itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
-                    switchAdapter(itemAdapter);
-                    break;
-                case 1:
-                    growSection(findViewById(R.id.completedSection));
-                    header.setBackgroundColor(Color.parseColor("#00cc66"));
-                    createItemButton.setEnabled(false);
-                    createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
-                    completedItemsAdapter = new CompletedItemsAdapter(this, R.layout.completed_item_template, completedItems);
-                    switchAdapter(completedItemsAdapter);
-                    break;
-                case 2:
-                    growSection(findViewById(R.id.overdueSection));
-                    header.setBackgroundColor(Color.parseColor("#ff0066"));
-                    createItemButton.setEnabled(false);
-                    createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
-                    overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.overdue_item_template, overdueItems);
-                    switchAdapter(overdueItemsAdapter);
-                    break;
-            }
         } else {
             //make the toDoSection large initially
             TextView toDoTextView = findViewById(R.id.toDoSection);
@@ -146,15 +120,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         checkOverdue();
-        switch (currentSection){
+        switch (currentSection) {
             case 0:
-                itemAdapter.notifyDataSetChanged();
+                growSection(findViewById(R.id.toDoSection));
+                header.setBackgroundColor(Color.parseColor("#3385ff"));
+                createItemButton.setEnabled(true);
+                createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
+                itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
+                switchAdapter(itemAdapter);
                 break;
             case 1:
-                //don't need to do anything bc completedItems will only be updated when user checks off items
+                growSection(findViewById(R.id.completedSection));
+                header.setBackgroundColor(Color.parseColor("#00cc66"));
+                createItemButton.setEnabled(false);
+                createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
+                completedItemsAdapter = new CompletedItemsAdapter(this, R.layout.completed_item_template, completedItems);
+                switchAdapter(completedItemsAdapter);
                 break;
             case 2:
-                overdueItemsAdapter.notifyDataSetChanged();
+                growSection(findViewById(R.id.overdueSection));
+                header.setBackgroundColor(Color.parseColor("#ff0066"));
+                createItemButton.setEnabled(false);
+                createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
+                overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.overdue_item_template, overdueItems);
+                switchAdapter(overdueItemsAdapter);
+                break;
         }
     }
 
