@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     private int currentSection = 0;
 
     int notificationID;
+
+    Handler displayDateAndTime;
+    Runnable dateAndTimeRun;
     //global fonts to be used by all classes
 //    Typeface headerFont;
 //    Typeface professionalFont;
@@ -58,38 +62,60 @@ public class MainActivity extends AppCompatActivity {
 //        headerFont = Typeface.createFromAsset(getAssets(), "fonts/nevis.ttf");
 //        professionalFont = Typeface.createFromAsset(getAssets(), "fonts/Euphemia UCAS Regular 2.6.6.ttf");
 
-        Thread dateAndTimeThread = new Thread() {
+        displayDateAndTime = new Handler();
+        dateAndTimeRun = new Runnable() {
+            @Override
             public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(1000);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (!isPaused) {
-                                    TextView dateText = (TextView) findViewById(R.id.currentDate);
-                                    TextView timeText = (TextView) findViewById(R.id.currentTime);
-                                    long currentTotalDate = System.currentTimeMillis();
-                                    SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy\nhh:mm a");
-                                    String dateString = sdfDate.format(currentTotalDate);
-                                    String timeString = dateString.substring(dateString.indexOf("\n") + 1);
-                                    //this is to get rid of the leading 0 when hours is < 10
-                                    if (dateString.charAt(dateString.indexOf("\n") + 1) == '0') {
-                                        timeString = dateString.substring(dateString.indexOf("\n") + 2);
-                                    }
-                                    dateString = dateString.substring(0, dateString.indexOf("\n"));
-                                    //dateText.setTypeface(headerFont);
-                                    dateText.setText(dateString);
-                                    timeText.setText(timeString);
-                                }
-                            }
-                        });
-                    }
-                } catch (InterruptedException e) {
+                TextView dateText = (TextView) findViewById(R.id.currentDate);
+                TextView timeText = (TextView) findViewById(R.id.currentTime);
+                long currentTotalDate = System.currentTimeMillis();
+                SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy\nhh:mm a");
+                String dateString = sdfDate.format(currentTotalDate);
+                String timeString = dateString.substring(dateString.indexOf("\n") + 1);
+                //this is to get rid of the leading 0 when hours is < 10
+                if (dateString.charAt(dateString.indexOf("\n") + 1) == '0') {
+                    timeString = dateString.substring(dateString.indexOf("\n") + 2);
                 }
+                dateString = dateString.substring(0, dateString.indexOf("\n"));
+                //dateText.setTypeface(headerFont);
+                dateText.setText(dateString);
+                timeText.setText(timeString);
+                displayDateAndTime.postDelayed(this, 1000);
             }
         };
-        dateAndTimeThread.start();
+
+//        Thread dateAndTimeThread = new Thread() {
+//            public void run() {
+//                try {
+//                    while (!isInterrupted()) {
+//                        Thread.sleep(1000);
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (!isPaused) {
+//                                    TextView dateText = (TextView) findViewById(R.id.currentDate);
+//                                    TextView timeText = (TextView) findViewById(R.id.currentTime);
+//                                    long currentTotalDate = System.currentTimeMillis();
+//                                    SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy\nhh:mm a");
+//                                    String dateString = sdfDate.format(currentTotalDate);
+//                                    String timeString = dateString.substring(dateString.indexOf("\n") + 1);
+//                                    //this is to get rid of the leading 0 when hours is < 10
+//                                    if (dateString.charAt(dateString.indexOf("\n") + 1) == '0') {
+//                                        timeString = dateString.substring(dateString.indexOf("\n") + 2);
+//                                    }
+//                                    dateString = dateString.substring(0, dateString.indexOf("\n"));
+//                                    //dateText.setTypeface(headerFont);
+//                                    dateText.setText(dateString);
+//                                    timeText.setText(timeString);
+//                                }
+//                            }
+//                        });
+//                    }
+//                } catch (InterruptedException e) {
+//                }
+//            }
+//        };
+//        dateAndTimeThread.start();
         checkDate();
 
         listView = (ListView) findViewById(R.id.listView);
@@ -116,14 +142,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        isPaused = true;
+//        isPaused = true;
+        displayDateAndTime.removeCallbacks(dateAndTimeRun);
         DataManager.saveNotificationID(this, notificationID);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        isPaused = false;
+//        isPaused = false;
+        displayDateAndTime.post(dateAndTimeRun);
         checkDate();
         checkOverdue();
         switch (currentSection) {
