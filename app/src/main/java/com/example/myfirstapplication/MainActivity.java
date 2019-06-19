@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -26,6 +27,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private ListView listView;
+    RelativeLayout bottomPortion;
     //variable so we can change color of header background when switching sections
     LinearLayout header;
     Button createItemButton;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bottomPortion = (RelativeLayout) findViewById(R.id.bottomPortion);
         //set up the fonts to be used in this activity
 //        headerFont = Typeface.createFromAsset(getAssets(), "fonts/nevis.ttf");
 //        professionalFont = Typeface.createFromAsset(getAssets(), "fonts/Euphemia UCAS Regular 2.6.6.ttf");
@@ -129,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 header.setBackgroundColor(Color.parseColor("#3385ff"));
                 createItemButton.setEnabled(true);
                 createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
+                bottomPortion.setBackgroundColor(Color.TRANSPARENT);
                 itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
                 switchAdapter(itemAdapter);
                 break;
@@ -136,7 +140,8 @@ public class MainActivity extends AppCompatActivity {
                 growSection(findViewById(R.id.completedSection));
                 header.setBackgroundColor(Color.parseColor("#00cc66"));
                 createItemButton.setEnabled(false);
-                createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
+                createItemButton.setVisibility(View.INVISIBLE);
+                bottomPortion.setBackgroundColor(Color.parseColor("#00cc66"));
                 completedItemsAdapter = new CompletedItemsAdapter(this, R.layout.completed_item_template, completedItems);
                 switchAdapter(completedItemsAdapter);
                 break;
@@ -144,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
                 growSection(findViewById(R.id.overdueSection));
                 header.setBackgroundColor(Color.parseColor("#ff0066"));
                 createItemButton.setEnabled(false);
-                createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
+                createItemButton.setVisibility(View.INVISIBLE);
+                bottomPortion.setBackgroundColor(Color.parseColor("#ff0066"));
                 overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.overdue_item_template, overdueItems);
                 switchAdapter(overdueItemsAdapter);
                 break;
@@ -279,7 +285,9 @@ public class MainActivity extends AppCompatActivity {
             shrinkCurrent(currentSection);
             header.setBackgroundColor(Color.parseColor("#3385ff"));
             createItemButton.setEnabled(true);
+            createItemButton.setVisibility(View.VISIBLE);
             createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
+            bottomPortion.setBackgroundColor(Color.TRANSPARENT);
             currentSection = 0;
             growSection(v);
             listItems = DataManager.readItems(this, "ListItems.json");
@@ -294,7 +302,8 @@ public class MainActivity extends AppCompatActivity {
             shrinkCurrent(currentSection);
             header.setBackgroundColor(Color.parseColor("#00cc66"));
             createItemButton.setEnabled(false);
-            createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
+            createItemButton.setVisibility(View.INVISIBLE);
+            bottomPortion.setBackgroundColor(Color.parseColor("#00cc66"));
             currentSection = 1;
             growSection(v);
             completedItems = DataManager.readItems(this, "CompletedItems.json");
@@ -309,7 +318,8 @@ public class MainActivity extends AppCompatActivity {
 
             header.setBackgroundColor(Color.parseColor("#ff0066"));
             createItemButton.setEnabled(false);
-            createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_add_button_border));
+            createItemButton.setVisibility(View.INVISIBLE);
+            bottomPortion.setBackgroundColor(Color.parseColor("#ff0066"));
             currentSection = 2;
             growSection(v);
             overdueItems = DataManager.readItems(this, "OverdueItems.json");
