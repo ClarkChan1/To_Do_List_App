@@ -1,5 +1,6 @@
 package com.example.myfirstapplication;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -16,8 +18,11 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class create_item extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
+public class create_item extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
     String name = "";
+    int dueYear = -1;
+    int dueMonth = -1;
+    int dueDay = -1;
     int dueHour = -1;
     int dueMinute = -1;
     String category = "";
@@ -84,7 +89,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
 
     }
 
-    public void startButtonOnClick(View v) {
+    public void selectTimeButtonClicked(View v) {
         DialogFragment timePicker = new TimePickerFragment();
         timePicker.show(getSupportFragmentManager(), "start time picker");
     }
@@ -96,9 +101,20 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         setTimeString();
     }
 
+    public void selectDateButtonClicked(View v) {
+        DialogFragment datePicker = new DatePickerFragment();
+        datePicker.show(getSupportFragmentManager(), "start time picker");
+    }
+
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+    }
+
     public void setTimeString() {
         TextView textTime;
-        textTime = findViewById(R.id.dueTime);
+        textTime = findViewById(R.id.selectDueTime);
         String timeString = "";
         if (dueHour % 12 == 0) {
             timeString = 12 + ":";
