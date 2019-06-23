@@ -191,7 +191,9 @@ public class MainActivity extends AppCompatActivity {
         editIntent.putExtra("type", "edit");
         editIntent.putExtra("name", listItems.get(position).getName());
         editIntent.putExtra("category", listItems.get(position).getCategory());
-        editIntent.putExtra("datePicked", listItems.get(position).getDatePicked());
+        editIntent.putExtra("dueYear", listItems.get(position).getDueYear());
+        editIntent.putExtra("dueMonth", listItems.get(position).getDueMonth());
+        editIntent.putExtra("dueDay", listItems.get(position).getDueDay());
         editIntent.putExtra("dueHour", listItems.get(position).getDueHour());
         editIntent.putExtra("dueMinute", listItems.get(position).getDueMinute());
         editIntent.putExtra("notificationID", notificationID);
@@ -222,9 +224,12 @@ public class MainActivity extends AppCompatActivity {
             itemAdapter.notifyDataSetChanged();
         }
         //if we are inserting item into the to do section, make a notification
-        //todo change this to make notifications set at a certain date instead of just a certain time in the current day
+        //todo (I did a bit already but)change this to make notifications set at a certain date instead of just a certain time in the current day
         if (section.equals("todo")) {
             Calendar taskDueTime = Calendar.getInstance();
+            taskDueTime.set(Calendar.YEAR, toAdd.getDueYear());
+            taskDueTime.set(Calendar.MONTH, toAdd.getDueMonth());
+            taskDueTime.set(Calendar.DAY_OF_MONTH, toAdd.getDueDay());
             taskDueTime.set(Calendar.HOUR_OF_DAY, toAdd.getDueHour());
             taskDueTime.set(Calendar.MINUTE, toAdd.getDueMinute());
             taskDueTime.set(Calendar.SECOND, 0);
@@ -359,16 +364,18 @@ public class MainActivity extends AppCompatActivity {
         itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
         if (resultCode == RESULT_OK) {
             if (requestCode == 100) {
-                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), (Calendar) data.getSerializableExtra("datePicked"),
-                        data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1), data.getIntExtra("notificationID", -1));
+                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),  data.getIntExtra("dueYear", -1),
+                        data.getIntExtra("dueMonth", -1), data.getIntExtra("dueDay", -1), data.getIntExtra("dueHour", -1),
+                        data.getIntExtra("dueMinute", -1), data.getIntExtra("notificationID", -1));
                 insertItem(listItems, toAdd, "todo");
             }
             if (requestCode == 200) {
                 cancelNotification(listItems.get(data.getIntExtra("position", -1)).getNotificationID());
                 listItems.remove(data.getIntExtra("position", -1)); //MAY CAUSE ERROR IF DEFAULT VALUE IS USED
                 if (data.getStringExtra("action").equals("edit")) {
-                    Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), (Calendar) data.getSerializableExtra("datePicked"),
-                            data.getIntExtra("dueHour", -1), data.getIntExtra("dueMinute", -1), data.getIntExtra("notificationID", -1));
+                    Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getIntExtra("dueYear", -1),
+                            data.getIntExtra("dueMonth", -1), data.getIntExtra("dueDay", -1), data.getIntExtra("dueHour", -1),
+                            data.getIntExtra("dueMinute", -1), data.getIntExtra("notificationID", -1));
                     insertItem(listItems, toAdd, "todo");
                 } else {
                     DataManager.saveItems(this, "ListItems.json", listItems);

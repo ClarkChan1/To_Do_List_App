@@ -16,11 +16,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 
 public class create_item extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
     String name = "";
-    Calendar datePicked;
+    int dueYear = -1;
+    int dueMonth = -1;
+    int dueDay = -1;
     int dueHour = -1;
     int dueMinute = -1;
     String category = "";
@@ -51,7 +54,10 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 category = savedInstanceState.getString("category");
             }
             if (savedInstanceState.getBoolean("collectDate")) {
-                datePicked = (Calendar) savedInstanceState.getSerializable("datePicked");
+                dueYear = savedInstanceState.getInt("dueYear");
+                dueMonth = savedInstanceState.getInt("dueMonth");
+                dueDay = savedInstanceState.getInt("dueDay");
+                setDateString();
             }
             if (savedInstanceState.getBoolean("collectDueTime")) {
                 dueHour = savedInstanceState.getInt("dueHour");
@@ -76,7 +82,9 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 activityType = "edit";
                 name = data.getStringExtra("name");
                 category = data.getStringExtra("category");
-                datePicked = (Calendar) data.getSerializableExtra("datePicked");
+                dueYear = data.getIntExtra("dueYear", -1);
+                dueMonth = data.getIntExtra("dueMonth", -1);
+                dueDay = data.getIntExtra("dueDay", -1);
                 dueHour = data.getIntExtra("dueHour", -1);
                 dueMinute = data.getIntExtra("dueMinute", -1);
                 editPosition = data.getIntExtra("position", -1);
@@ -107,10 +115,10 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        datePicked = Calendar.getInstance();
-        datePicked.set(Calendar.YEAR, year);
-        datePicked.set(Calendar.MONTH, month);
-        datePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        dueYear = year;
+        dueMonth = month;
+        dueDay = dayOfMonth;
+        setDateString();
     }
 
     public void setTimeString() {
@@ -134,6 +142,17 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         textTime.setText(timeString);
     }
 
+    public void setDateString(){
+        TextView textDate;
+        textDate = findViewById(R.id.selectDueDate);
+        Calendar datePicked = Calendar.getInstance();
+        datePicked.set(Calendar.YEAR, dueYear);
+        datePicked.set(Calendar.MONTH, dueMonth);
+        datePicked.set(Calendar.DAY_OF_MONTH, dueDay);
+        String dateString = DateFormat.getDateInstance().format(datePicked.getTime());
+        textDate.setText(dateString);
+    }
+
     public void onRadioButtonClicked(View v) {
         if (v.getId() == R.id.radio1) {
             category = "Work";
@@ -148,7 +167,9 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             Intent i = new Intent();
             i.putExtra("name", name);
             i.putExtra("category", category);
-            i.putExtra("datePicked", datePicked);
+            i.putExtra("dueYear", dueYear);
+            i.putExtra("dueMonth", dueMonth);
+            i.putExtra("dueDay", dueDay);
             i.putExtra("dueHour", dueHour);
             i.putExtra("dueMinute", dueMinute);
             i.putExtra("notificationID", notificationID);
@@ -163,7 +184,9 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             Intent i = new Intent();
             i.putExtra("name", name);
             i.putExtra("category", category);
-            i.putExtra("datePicked", datePicked);
+            i.putExtra("dueYear", dueYear);
+            i.putExtra("dueMonth", dueMonth);
+            i.putExtra("dueDay", dueDay);
             i.putExtra("dueHour", dueHour);
             i.putExtra("dueMinute", dueMinute);
             i.putExtra("action", "edit");
@@ -186,6 +209,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         EditText nameField = (EditText) findViewById(R.id.nameField);
         nameField.setText(name);
         setTimeString();
+        setDateString();
         if (category.equals("Work")) {
             RadioButton workButton = findViewById(R.id.radio1);
             workButton.setChecked(true);
@@ -214,11 +238,8 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         int currentYear = c.get(Calendar.YEAR);
         int currentMonth = c.get(Calendar.MONTH);
         int currentDay = c.get(Calendar.DAY_OF_MONTH);
-        int pickedYear = datePicked.get(Calendar.YEAR);
-        int pickedMonth = datePicked.get(Calendar.MONTH);
-        int pickedDay = datePicked.get(Calendar.DAY_OF_MONTH);
-        if ((currentYear > pickedYear) || ((currentYear == pickedYear) && (currentMonth > pickedMonth)) || ((currentYear == pickedYear) && (currentMonth == pickedMonth) && (currentDay > pickedDay))) {
-            Toast correctDate = Toast.makeText(getApplicationContext(), "Task must be due sometime after Today", Toast.LENGTH_LONG);
+        if ((currentYear > dueYear) || ((currentYear == dueYear) && (currentMonth > dueMonth)) || ((currentYear == dueYear) && (currentMonth == dueMonth) && (currentDay > dueDay))) {
+            Toast correctDate = Toast.makeText(getApplicationContext(), "Task must be due at or sometime after current date", Toast.LENGTH_LONG);
             correctDate.show();
         } else {
             goodDate = true;
@@ -243,8 +264,10 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         } else {
             outState.putBoolean("collectCategory", false);
         }
-        if (datePicked != null) {
-            outState.putSerializable("datePicked", datePicked);
+        if (dueYear != -1) {
+            outState.putInt("dueYear", dueYear);
+            outState.putInt("dueMonth", dueMonth);
+            outState.putInt("dueDay", dueDay);
             outState.putBoolean("collectDate", true);
         } else {
             outState.putBoolean("collectDate", false);
