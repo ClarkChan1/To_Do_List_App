@@ -3,17 +3,21 @@ package com.example.myfirstapplication;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Calendar;
+
 public class Item implements Parcelable {
     private String name;
     private String category;
+    private Calendar datePicked;
     private int dueHour;
     private int dueMinute;
     private int notificationID;
 
 
-    public Item(String name, String category, int dueHour, int dueMinute, int notificationID) {
+    public Item(String name, String category, Calendar datePicked, int dueHour, int dueMinute, int notificationID) {
         this.name = name;
         this.category = category;
+        this.datePicked = datePicked;
         this.dueHour = dueHour;
         this.dueMinute = dueMinute;
         this.notificationID = notificationID;
@@ -45,6 +49,8 @@ public class Item implements Parcelable {
     public String getCategory() {
         return category;
     }
+
+    public Calendar getDatePicked() { return datePicked; }
 
     public int getDueHour() {
         return dueHour;

@@ -20,9 +20,7 @@ import java.util.Calendar;
 
 public class create_item extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
     String name = "";
-    int dueYear = -1;
-    int dueMonth = -1;
-    int dueDay = -1;
+    Calendar datePicked;
     int dueHour = -1;
     int dueMinute = -1;
     String category = "";
@@ -33,11 +31,9 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     //create boolean statements to check if user input was good
     boolean goodName = false;
     boolean goodCategory = false;
+    boolean goodDate = false;
     boolean goodTime = false;
 
-    //these are for remembering what data the user has already inputted when they rotate screen and we need to restore data
-    boolean collectCategory = false;
-    boolean collectDueTime = false;
 
     String activityType = "";
 
@@ -53,13 +49,14 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             }
             if (savedInstanceState.getBoolean("collectCategory")) {
                 category = savedInstanceState.getString("category");
-                collectCategory = false;
+            }
+            if (savedInstanceState.getBoolean("collectDate")) {
+                datePicked = (Calendar) savedInstanceState.getSerializable("datePicked");
             }
             if (savedInstanceState.getBoolean("collectDueTime")) {
                 dueHour = savedInstanceState.getInt("dueHour");
                 dueMinute = savedInstanceState.getInt("dueMinute");
                 setTimeString();
-                collectDueTime = false;
             }
             editPosition = savedInstanceState.getInt("position");
             notificationID = savedInstanceState.getInt("notificationID");
@@ -68,7 +65,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             Intent data = getIntent();
             if (data.getStringExtra("type").equals("create")) {
                 setContentView(R.layout.activity_create_item);
-                EditText nameField = (EditText)findViewById(R.id.nameField);
+                EditText nameField = (EditText) findViewById(R.id.nameField);
                 nameField.requestFocus();
                 //get keyboard to appear upon entering create item
                 InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -79,6 +76,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 activityType = "edit";
                 name = data.getStringExtra("name");
                 category = data.getStringExtra("category");
+                datePicked = (Calendar) data.getSerializableExtra("datePicked");
                 dueHour = data.getIntExtra("dueHour", -1);
                 dueMinute = data.getIntExtra("dueMinute", -1);
                 editPosition = data.getIntExtra("position", -1);
@@ -103,13 +101,16 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
 
     public void selectDateButtonClicked(View v) {
         DialogFragment datePicker = new DatePickerFragment();
-        datePicker.show(getSupportFragmentManager(), "start time picker");
+        datePicker.show(getSupportFragmentManager(), "start date picker");
     }
 
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
+        datePicked = Calendar.getInstance();
+        datePicked.set(Calendar.YEAR, year);
+        datePicked.set(Calendar.MONTH, month);
+        datePicked.set(Calendar.DAY_OF_MONTH, dayOfMonth);
     }
 
     public void setTimeString() {
@@ -143,10 +144,11 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
 
     public void onCreateButtonClicked(View v) {
         checkData(v);
-        if (goodName && goodCategory && goodTime) {
+        if (goodName && goodCategory && goodDate && goodTime) {
             Intent i = new Intent();
             i.putExtra("name", name);
             i.putExtra("category", category);
+            i.putExtra("datePicked", datePicked);
             i.putExtra("dueHour", dueHour);
             i.putExtra("dueMinute", dueMinute);
             i.putExtra("notificationID", notificationID);
@@ -157,10 +159,11 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
 
     public void onEditButtonClicked(View v) {
         checkData(v);
-        if (goodName && goodCategory && goodTime) {
+        if (goodName && goodCategory && goodDate && goodTime) {
             Intent i = new Intent();
             i.putExtra("name", name);
             i.putExtra("category", category);
+            i.putExtra("datePicked", datePicked);
             i.putExtra("dueHour", dueHour);
             i.putExtra("dueMinute", dueMinute);
             i.putExtra("action", "edit");
@@ -208,6 +211,18 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             goodCategory = true;
         }
         Calendar c = Calendar.getInstance();
+        int currentYear = c.get(Calendar.YEAR);
+        int currentMonth = c.get(Calendar.MONTH);
+        int currentDay = c.get(Calendar.DAY_OF_MONTH);
+        int pickedYear = datePicked.get(Calendar.YEAR);
+        int pickedMonth = datePicked.get(Calendar.MONTH);
+        int pickedDay = datePicked.get(Calendar.DAY_OF_MONTH);
+        if ((currentYear > pickedYear) || ((currentYear == pickedYear) && (currentMonth > pickedMonth)) || ((currentYear == pickedYear) && (currentMonth == pickedMonth) && (currentDay > pickedDay))) {
+            Toast correctDate = Toast.makeText(getApplicationContext(), "Task must be due sometime after Today", Toast.LENGTH_LONG);
+            correctDate.show();
+        } else {
+            goodDate = true;
+        }
         int currentHour = c.get(Calendar.HOUR_OF_DAY);
         int currentMinute = c.get(Calendar.MINUTE);
         if ((currentHour > dueHour) || ((currentHour == dueHour) && (currentMinute >= dueMinute))) {
@@ -224,15 +239,19 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         outState.putString("type", activityType);
         if (!category.equals("")) {
             outState.putString("category", category);
-            collectCategory = true;
             outState.putBoolean("collectCategory", true);
         } else {
             outState.putBoolean("collectCategory", false);
         }
+        if (datePicked != null) {
+            outState.putSerializable("datePicked", datePicked);
+            outState.putBoolean("collectDate", true);
+        } else {
+            outState.putBoolean("collectDate", false);
+        }
         if (dueHour != -1) {
             outState.putInt("dueHour", dueHour);
             outState.putInt("dueMinute", dueMinute);
-            collectDueTime = true;
             outState.putBoolean("collectDueTime", true);
         } else {
             outState.putBoolean("collectDueTime", false);
