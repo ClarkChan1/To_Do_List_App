@@ -47,7 +47,6 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         TextView name = (TextView) convertView.findViewById(R.id.name);
         TextView time = (TextView) convertView.findViewById(R.id.time);
         TextView category = (TextView) convertView.findViewById(R.id.category);
-        ImageView edit = (ImageView) convertView.findViewById(R.id.edit);
 
         //set click listener on checkbox and code animation
         final View finalConvertView = convertView;
@@ -107,12 +106,6 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             category.setText("Life");
             category.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_life));
         }
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.editItem(v, position);
-            }
-        });
         return convertView;
     }
 
@@ -139,7 +132,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         return itemTime;
     }
 
-    public void showPopup(int position){
+    public void showPopup(final int position){
         final Dialog itemPopup = new Dialog(context);
         itemPopup.setContentView(R.layout.item_popup);
         ImageView close = (ImageView) itemPopup.findViewById(R.id.close);
@@ -153,6 +146,9 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         TextView category= (TextView)itemPopup.findViewById(R.id.category);
         TextView dueDate= (TextView)itemPopup.findViewById(R.id.dueDate);
         TextView dueTime= (TextView)itemPopup.findViewById(R.id.dueTime);
+        TextView editButton =(TextView)itemPopup.findViewById(R.id.editButton);
+        TextView deleteButton =(TextView)itemPopup.findViewById(R.id.deleteButton);
+
         name.setText(items.get(position).getName());
         category.setText(items.get(position).getCategory());
 
@@ -162,6 +158,20 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         String dueDateText = DateFormat.getDateInstance().format(itemdueDate.getTime());
         dueDate.setText(dueDateText);
         dueTime.setText(getTimeString(currentItem));
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemPopup.dismiss();
+                context.editItem(position);
+            }
+        });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.deleteItem(position);
+                itemPopup.dismiss();
+            }
+        });
         itemPopup.show();
     }
 

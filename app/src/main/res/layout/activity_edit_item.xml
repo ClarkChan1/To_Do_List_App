@@ -135,33 +135,14 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/buttonsLinearLayout"
+    <Button
+        android:id="@+id/editButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/editButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#80ff80"
-            android:onClick="onEditButtonClicked"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:text="Edit" />
-
-        <Button
-            android:id="@+id/deleteButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#ff4d4d"
-            android:onClick="onDeleteButtonClicked"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:text="delete" />
-    </LinearLayout>
+        android:background="#80ff80"
+        android:onClick="onEditButtonClicked"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:text="Edit" />
 
 </LinearLayout>

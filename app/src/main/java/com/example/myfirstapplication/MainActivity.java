@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(createIntent, 100);
     }
 
-    public void editItem(View v, int position) {
+    public void editItem(int position) {
         Intent editIntent = new Intent(this, create_item.class);
         editIntent.putExtra("type", "edit");
         editIntent.putExtra("name", listItems.get(position).getName());
@@ -194,6 +194,13 @@ public class MainActivity extends AppCompatActivity {
         editIntent.putExtra("notificationID", notificationID);
         editIntent.putExtra("position", position);
         startActivityForResult(editIntent, 200);
+    }
+
+    public void deleteItem(int position){
+        cancelNotification(listItems.get(position).getNotificationID());
+        listItems.remove(position); //MAY CAUSE ERROR IF DEFAULT VALUE IS USED
+        DataManager.saveItems(this, "ListItems.json", listItems);
+        itemAdapter.notifyDataSetChanged();
     }
 
     public void insertItem(ArrayList<Item> addTo, Item toAdd, String section) {
@@ -351,15 +358,9 @@ public class MainActivity extends AppCompatActivity {
                 insertItem(listItems, toAdd, "todo");
             }
             if (requestCode == 200) {
-                cancelNotification(listItems.get(data.getIntExtra("position", -1)).getNotificationID());
-                listItems.remove(data.getIntExtra("position", -1)); //MAY CAUSE ERROR IF DEFAULT VALUE IS USED
-                if (data.getStringExtra("action").equals("edit")) {
-                    Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getLongExtra("timeStamp", -1), data.getIntExtra("notificationID", -1));
-                    insertItem(listItems, toAdd, "todo");
-                } else {
-                    DataManager.saveItems(this, "ListItems.json", listItems);
-                    itemAdapter.notifyDataSetChanged();
-                }
+                deleteItem(data.getIntExtra("position", -1));
+                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getLongExtra("timeStamp", -1), data.getIntExtra("notificationID", -1));
+                insertItem(listItems, toAdd, "todo");
             }
             checkOverdue();
         }

@@ -194,7 +194,6 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
             dateAndTime.set(Calendar.MINUTE, dueMinute);
             i.putExtra("timeStamp", dateAndTime.getTimeInMillis());
-            i.putExtra("action", "edit");
             i.putExtra("position", editPosition);
             i.putExtra("notificationID", notificationID);
             setResult(RESULT_OK, i);
@@ -202,13 +201,6 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         }
     }
 
-    public void onDeleteButtonClicked(View v) {
-        Intent i = new Intent();
-        i.putExtra("action", "delete");
-        i.putExtra("position", editPosition);
-        setResult(RESULT_OK, i);
-        finish();
-    }
 
     public void populateData() {
         EditText nameField = (EditText) findViewById(R.id.nameField);
