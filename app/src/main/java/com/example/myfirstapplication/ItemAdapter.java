@@ -3,6 +3,7 @@ package com.example.myfirstapplication;
 import android.app.Dialog;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.podcopic.animationlib.library.AnimationType;
 import com.podcopic.animationlib.library.StartSmartAnimation;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -81,13 +83,9 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             }
         });
         //set name and the rolling text
-//        name.setText(currentItem.getName());
-//        //name.setTypeface(context.professionalFont);
-//        name.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-//        name.setSingleLine(true);
-//        name.setMarqueeRepeatLimit(-1);
-//        name.setFocusableInTouchMode(true);
-//        name.setFocusable(true);
+        name.setText(currentItem.getName());
+        name.setEllipsize(TextUtils.TruncateAt.END);
+        name.setSingleLine(true);
         name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +97,26 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         });
 
         //set time
+        time.setText(getTimeString(items.get(position)));
+
+        //set category
+        if (currentItem.getCategory().equals("Work")) {
+            category.setText("Work");
+            category.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_work));
+        } else {
+            category.setText("Life");
+            category.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_life));
+        }
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.editItem(v, position);
+            }
+        });
+        return convertView;
+    }
+
+    public String getTimeString(Item currentItem){
         Calendar currentItemTime = Calendar.getInstance();
         currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
         int dueHour = currentItemTime.get(Calendar.HOUR_OF_DAY);
@@ -118,23 +136,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         } else {
             itemTime += " AM";
         }
-        time.setText(itemTime);
-
-        //set category
-        if (currentItem.getCategory().equals("Work")) {
-            category.setText("Work");
-            category.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_work));
-        } else {
-            category.setText("Life");
-            category.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_life));
-        }
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.editItem(v, position);
-            }
-        });
-        return convertView;
+        return itemTime;
     }
 
     public void showPopup(int position){
@@ -153,8 +155,13 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         TextView dueTime= (TextView)itemPopup.findViewById(R.id.dueTime);
         name.setText(items.get(position).getName());
         category.setText(items.get(position).getCategory());
-//        dueDate.setText(items.get(position).getDueYear());
-//        dueTime.setText(items.get(position).getDueHour());
+
+        Item currentItem = items.get(position);
+        Calendar itemdueDate = Calendar.getInstance();
+        itemdueDate.setTimeInMillis(currentItem.getTimeStamp());
+        String dueDateText = DateFormat.getDateInstance().format(itemdueDate.getTime());
+        dueDate.setText(dueDateText);
+        dueTime.setText(getTimeString(currentItem));
         itemPopup.show();
     }
 
