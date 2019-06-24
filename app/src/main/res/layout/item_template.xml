@@ -7,7 +7,7 @@
     android:paddingBottom="10dp"
     android:layout_marginRight="5dp"
     android:layout_marginLeft="5dp"
-    android:background="@drawable/rounded_border_white">
+    android:background="#ffffff">
 
     <CheckBox
         android:id="@+id/check"
