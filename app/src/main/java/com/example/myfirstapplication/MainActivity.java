@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     Button createItemButton;
 
     private ArrayList<Item> listItems = new ArrayList<>();
-    private ItemAdapter itemAdapter;
+    ItemAdapter itemAdapter;
 
     ArrayList<Item> completedItems = new ArrayList<>();
     private CompletedItemsAdapter completedItemsAdapter;

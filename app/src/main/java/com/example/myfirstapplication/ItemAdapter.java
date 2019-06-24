@@ -141,7 +141,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             public void onClick(View v) {
                 itemPopup.dismiss();
                 context.checkOverdue();
-                context.resetAdapter();
+                context.itemAdapter.notifyDataSetChanged();
             }
         });
         TextView name = (TextView)itemPopup.findViewById(R.id.name);
