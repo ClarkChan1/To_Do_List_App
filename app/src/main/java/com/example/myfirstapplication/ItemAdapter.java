@@ -1,8 +1,8 @@
 package com.example.myfirstapplication;
 
+import android.app.Dialog;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +16,7 @@ import com.podcopic.animationlib.library.AnimationType;
 import com.podcopic.animationlib.library.StartSmartAnimation;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ItemAdapter extends ArrayAdapter<Item> {
     private MainActivity context;
@@ -80,24 +81,28 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             }
         });
         //set name and the rolling text
-        name.setText(currentItem.getName());
-        //name.setTypeface(context.professionalFont);
-        name.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        name.setSingleLine(true);
-        name.setMarqueeRepeatLimit(-1);
-        name.setFocusableInTouchMode(true);
-        name.setFocusable(true);
+//        name.setText(currentItem.getName());
+//        //name.setTypeface(context.professionalFont);
+//        name.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+//        name.setSingleLine(true);
+//        name.setMarqueeRepeatLimit(-1);
+//        name.setFocusableInTouchMode(true);
+//        name.setFocusable(true);
         name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView itemName = (TextView) v;
-                itemName.setSelected(true);
+                showPopup(position);
+
+//                TextView itemName = (TextView) v;
+//                itemName.setSelected(true);
             }
         });
 
         //set time
-        int dueHour = currentItem.getDueHour();
-        int dueMinute = currentItem.getDueMinute();
+        Calendar currentItemTime = Calendar.getInstance();
+        currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
+        int dueHour = currentItemTime.get(Calendar.HOUR_OF_DAY);
+        int dueMinute = currentItemTime.get(Calendar.MINUTE);
         String itemTime = "";
         if (dueHour % 12 == 0) {
             itemTime = 12 + ":";
@@ -131,4 +136,26 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         });
         return convertView;
     }
+
+    public void showPopup(int position){
+        final Dialog itemPopup = new Dialog(context);
+        itemPopup.setContentView(R.layout.item_popup);
+        ImageView close = (ImageView) itemPopup.findViewById(R.id.close);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemPopup.dismiss();
+            }
+        });
+        TextView name = (TextView)itemPopup.findViewById(R.id.name);
+        TextView category= (TextView)itemPopup.findViewById(R.id.category);
+        TextView dueDate= (TextView)itemPopup.findViewById(R.id.dueDate);
+        TextView dueTime= (TextView)itemPopup.findViewById(R.id.dueTime);
+        name.setText(items.get(position).getName());
+        category.setText(items.get(position).getCategory());
+//        dueDate.setText(items.get(position).getDueYear());
+//        dueTime.setText(items.get(position).getDueHour());
+        itemPopup.show();
+    }
+
 }

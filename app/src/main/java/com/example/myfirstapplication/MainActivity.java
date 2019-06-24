@@ -24,7 +24,6 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private ListView listView;
@@ -191,11 +190,7 @@ public class MainActivity extends AppCompatActivity {
         editIntent.putExtra("type", "edit");
         editIntent.putExtra("name", listItems.get(position).getName());
         editIntent.putExtra("category", listItems.get(position).getCategory());
-        editIntent.putExtra("dueYear", listItems.get(position).getDueYear());
-        editIntent.putExtra("dueMonth", listItems.get(position).getDueMonth());
-        editIntent.putExtra("dueDay", listItems.get(position).getDueDay());
-        editIntent.putExtra("dueHour", listItems.get(position).getDueHour());
-        editIntent.putExtra("dueMinute", listItems.get(position).getDueMinute());
+        editIntent.putExtra("timeStamp", listItems.get(position).getTimeStamp());
         editIntent.putExtra("notificationID", notificationID);
         editIntent.putExtra("position", position);
         startActivityForResult(editIntent, 200);
@@ -206,10 +201,14 @@ public class MainActivity extends AppCompatActivity {
             addTo.add(toAdd);
         } else {
             boolean added = false;
+            Calendar toAddTime = Calendar.getInstance();
+            toAddTime.setTimeInMillis(toAdd.getTimeStamp());
+
             for (int a = 0; a < addTo.size(); a++) {
                 Item currentItem = addTo.get(a);
-                if ((currentItem.getDueHour() > toAdd.getDueHour())
-                        || ((currentItem.getDueHour() == toAdd.getDueHour()) && (currentItem.getDueMinute() > toAdd.getDueMinute()))) {
+                Calendar currentItemTime = Calendar.getInstance();
+                currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
+                if (toAddTime.compareTo(currentItemTime) < 0) {
                     addTo.add(a, toAdd);
                     added = true;
                     break; //since the end condition is a<addTo.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
@@ -227,12 +226,7 @@ public class MainActivity extends AppCompatActivity {
         //todo (I did a bit already but)change this to make notifications set at a certain date instead of just a certain time in the current day
         if (section.equals("todo")) {
             Calendar taskDueTime = Calendar.getInstance();
-            taskDueTime.set(Calendar.YEAR, toAdd.getDueYear());
-            taskDueTime.set(Calendar.MONTH, toAdd.getDueMonth());
-            taskDueTime.set(Calendar.DAY_OF_MONTH, toAdd.getDueDay());
-            taskDueTime.set(Calendar.HOUR_OF_DAY, toAdd.getDueHour());
-            taskDueTime.set(Calendar.MINUTE, toAdd.getDueMinute());
-            taskDueTime.set(Calendar.SECOND, 0);
+            taskDueTime.setTimeInMillis(toAdd.getTimeStamp());
             setNotification(taskDueTime, toAdd.getName());
             notificationID++;
             DataManager.saveNotificationID(this, notificationID);
@@ -333,14 +327,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkOverdue() {
         //get current time
-        String time = getCurrentTime();
-        int currentHour = Integer.parseInt(time.substring(0, time.indexOf(":")));
-        int currentMinute = Integer.parseInt(time.substring(time.indexOf(":") + 1));
         ArrayList<Item> toPutInOverdue = new ArrayList<>();
         for (int a = 0; a < listItems.size(); a++) {
             Item currentItem = listItems.get(a);
-            if ((currentItem.getDueHour() < currentHour)
-                    || ((currentItem.getDueHour() == currentHour) && (currentItem.getDueMinute() < currentMinute))) {
+            Calendar currentItemTime = Calendar.getInstance();
+            currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
+            if (currentItemTime.compareTo(Calendar.getInstance()) < 0) {
                 toPutInOverdue.add(currentItem);
             }
         }
@@ -350,32 +342,19 @@ public class MainActivity extends AppCompatActivity {
         DataManager.saveItems(this, "ListItems.json", listItems);
     }
 
-    public String getCurrentTime() {
-        Calendar c = Calendar.getInstance();
-        Date date = c.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        String formattedTime = sdf.format(date);
-        return formattedTime;
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
         if (resultCode == RESULT_OK) {
             if (requestCode == 100) {
-                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"),  data.getIntExtra("dueYear", -1),
-                        data.getIntExtra("dueMonth", -1), data.getIntExtra("dueDay", -1), data.getIntExtra("dueHour", -1),
-                        data.getIntExtra("dueMinute", -1), data.getIntExtra("notificationID", -1));
+                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getLongExtra("timeStamp", -1), data.getIntExtra("notificationID", -1));
                 insertItem(listItems, toAdd, "todo");
             }
             if (requestCode == 200) {
                 cancelNotification(listItems.get(data.getIntExtra("position", -1)).getNotificationID());
                 listItems.remove(data.getIntExtra("position", -1)); //MAY CAUSE ERROR IF DEFAULT VALUE IS USED
                 if (data.getStringExtra("action").equals("edit")) {
-                    Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getIntExtra("dueYear", -1),
-                            data.getIntExtra("dueMonth", -1), data.getIntExtra("dueDay", -1), data.getIntExtra("dueHour", -1),
-                            data.getIntExtra("dueMinute", -1), data.getIntExtra("notificationID", -1));
+                    Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getLongExtra("timeStamp", -1), data.getIntExtra("notificationID", -1));
                     insertItem(listItems, toAdd, "todo");
                 } else {
                     DataManager.saveItems(this, "ListItems.json", listItems);

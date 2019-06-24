@@ -16,6 +16,7 @@ import com.podcopic.animationlib.library.AnimationType;
 import com.podcopic.animationlib.library.StartSmartAnimation;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class OverdueItemsAdapter extends ArrayAdapter<Item> {
     private MainActivity context;
@@ -126,8 +127,10 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         });
 
         //set time
-        int dueHour = currentItem.getDueHour();
-        int dueMinute = currentItem.getDueMinute();
+        Calendar currentItemTime = Calendar.getInstance();
+        currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
+        int dueHour = currentItemTime.get(Calendar.HOUR_OF_DAY);
+        int dueMinute = currentItemTime.get(Calendar.MINUTE);
         String itemTime = "";
         if (dueHour % 12 == 0) {
             itemTime = 12 + ":";

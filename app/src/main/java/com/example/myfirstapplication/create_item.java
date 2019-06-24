@@ -34,8 +34,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     //create boolean statements to check if user input was good
     boolean goodName = false;
     boolean goodCategory = false;
-    boolean goodDate = false;
-    boolean goodTime = false;
+    boolean goodDateAndTime = false;
 
 
     String activityType = "";
@@ -82,11 +81,13 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 activityType = "edit";
                 name = data.getStringExtra("name");
                 category = data.getStringExtra("category");
-                dueYear = data.getIntExtra("dueYear", -1);
-                dueMonth = data.getIntExtra("dueMonth", -1);
-                dueDay = data.getIntExtra("dueDay", -1);
-                dueHour = data.getIntExtra("dueHour", -1);
-                dueMinute = data.getIntExtra("dueMinute", -1);
+                Calendar setDateAndTime = Calendar.getInstance();
+                setDateAndTime.setTimeInMillis(data.getLongExtra("timeStamp", -1));
+                dueYear = setDateAndTime.get(Calendar.YEAR);
+                dueMonth =setDateAndTime.get(Calendar.MONTH);
+                dueDay = setDateAndTime.get(Calendar.DAY_OF_MONTH);
+                dueHour = setDateAndTime.get(Calendar.HOUR_OF_DAY);
+                dueMinute = setDateAndTime.get(Calendar.MINUTE);
                 editPosition = data.getIntExtra("position", -1);
                 populateData();
             }
@@ -163,15 +164,17 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
 
     public void onCreateButtonClicked(View v) {
         checkData(v);
-        if (goodName && goodCategory && goodDate && goodTime) {
+        if (goodName && goodCategory && goodDateAndTime) {
             Intent i = new Intent();
             i.putExtra("name", name);
             i.putExtra("category", category);
-            i.putExtra("dueYear", dueYear);
-            i.putExtra("dueMonth", dueMonth);
-            i.putExtra("dueDay", dueDay);
-            i.putExtra("dueHour", dueHour);
-            i.putExtra("dueMinute", dueMinute);
+            Calendar dateAndTime = Calendar.getInstance();
+            dateAndTime.set(Calendar.YEAR, dueYear);
+            dateAndTime.set(Calendar.MONTH, dueMonth);
+            dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
+            dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
+            dateAndTime.set(Calendar.MINUTE, dueMinute);
+            i.putExtra("timeStamp", dateAndTime.getTimeInMillis());
             i.putExtra("notificationID", notificationID);
             setResult(RESULT_OK, i);
             finish();
@@ -180,15 +183,17 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
 
     public void onEditButtonClicked(View v) {
         checkData(v);
-        if (goodName && goodCategory && goodDate && goodTime) {
+        if (goodName && goodCategory && goodDateAndTime) {
             Intent i = new Intent();
             i.putExtra("name", name);
             i.putExtra("category", category);
-            i.putExtra("dueYear", dueYear);
-            i.putExtra("dueMonth", dueMonth);
-            i.putExtra("dueDay", dueDay);
-            i.putExtra("dueHour", dueHour);
-            i.putExtra("dueMinute", dueMinute);
+            Calendar dateAndTime = Calendar.getInstance();
+            dateAndTime.set(Calendar.YEAR, dueYear);
+            dateAndTime.set(Calendar.MONTH, dueMonth);
+            dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
+            dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
+            dateAndTime.set(Calendar.MINUTE, dueMinute);
+            i.putExtra("timeStamp", dateAndTime.getTimeInMillis());
             i.putExtra("action", "edit");
             i.putExtra("position", editPosition);
             i.putExtra("notificationID", notificationID);
@@ -234,23 +239,17 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         } else {
             goodCategory = true;
         }
-        Calendar c = Calendar.getInstance();
-        int currentYear = c.get(Calendar.YEAR);
-        int currentMonth = c.get(Calendar.MONTH);
-        int currentDay = c.get(Calendar.DAY_OF_MONTH);
-        if ((currentYear > dueYear) || ((currentYear == dueYear) && (currentMonth > dueMonth)) || ((currentYear == dueYear) && (currentMonth == dueMonth) && (currentDay > dueDay))) {
-            Toast correctDate = Toast.makeText(getApplicationContext(), "Task must be due at or sometime after current date", Toast.LENGTH_LONG);
-            correctDate.show();
-        } else {
-            goodDate = true;
-        }
-        int currentHour = c.get(Calendar.HOUR_OF_DAY);
-        int currentMinute = c.get(Calendar.MINUTE);
-        if ((currentHour > dueHour) || ((currentHour == dueHour) && (currentMinute >= dueMinute))) {
+        Calendar timePicked = Calendar.getInstance();
+        timePicked.set(Calendar.YEAR, dueYear);
+        timePicked.set(Calendar.MONTH, dueMonth);
+        timePicked.set(Calendar.DAY_OF_MONTH, dueDay);
+        timePicked.set(Calendar.HOUR_OF_DAY, dueHour);
+        timePicked.set(Calendar.MINUTE, dueMinute);
+        if (timePicked.compareTo(Calendar.getInstance()) < 0) {
             Toast correctTime = Toast.makeText(getApplicationContext(), "Task must be due sometime after this moment", Toast.LENGTH_LONG);
             correctTime.show();
         } else {
-            goodTime = true;
+            goodDateAndTime = true;
         }
     }
 

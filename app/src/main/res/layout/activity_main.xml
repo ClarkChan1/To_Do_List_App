@@ -5,6 +5,7 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#19334d"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -44,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".75"
+        android:background="#ffffff"
         android:orientation="horizontal">
 
         <TextView
@@ -87,6 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="6"
+        android:layout_marginTop="10dp"
         android:cacheColorHint="#00000000"
         android:fadingEdgeLength="20dp"
         android:requiresFadingEdge="vertical"

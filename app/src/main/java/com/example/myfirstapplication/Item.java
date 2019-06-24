@@ -6,30 +6,21 @@ import android.os.Parcelable;
 public class Item implements Parcelable {
     private String name;
     private String category;
-    private int dueYear;
-    private int dueMonth;
-    private int dueDay;
-    private int dueHour;
-    private int dueMinute;
+    private long timeStamp;
     private int notificationID;
 
 
-    public Item(String name, String category, int dueYear, int dueMonth, int dueDay, int dueHour, int dueMinute, int notificationID) {
+    public Item(String name, String category, long timeStamp, int notificationID) {
         this.name = name;
         this.category = category;
-        this.dueYear = dueYear;
-        this.dueMonth = dueMonth;
-        this.dueDay = dueDay;
-        this.dueHour = dueHour;
-        this.dueMinute = dueMinute;
+        this.timeStamp = timeStamp;
         this.notificationID = notificationID;
     }
 
     protected Item(Parcel in) {
         name = in.readString();
         category = in.readString();
-        dueHour = in.readInt();
-        dueMinute = in.readInt();
+        timeStamp = in.readLong();
     }
 
     public static final Creator<Item> CREATOR = new Creator<Item>() {
@@ -52,19 +43,7 @@ public class Item implements Parcelable {
         return category;
     }
 
-    public int getDueYear() { return dueYear; }
-
-    public int getDueMonth() { return dueMonth; }
-
-    public int getDueDay() { return dueDay; }
-
-    public int getDueHour() {
-        return dueHour;
-    }
-
-    public int getDueMinute() {
-        return dueMinute;
-    }
+    public long getTimeStamp() { return timeStamp; }
 
     public int getNotificationID() {
         return notificationID;
@@ -79,7 +58,6 @@ public class Item implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(category);
-        dest.writeInt(dueHour);
-        dest.writeInt(dueMinute);
+        dest.writeLong(timeStamp);
     }
 }
