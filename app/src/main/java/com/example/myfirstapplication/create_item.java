@@ -174,6 +174,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
             dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
             dateAndTime.set(Calendar.MINUTE, dueMinute);
+            dateAndTime.set(Calendar.SECOND, 0);
             i.putExtra("timeStamp", dateAndTime.getTimeInMillis());
             i.putExtra("notificationID", notificationID);
             setResult(RESULT_OK, i);
@@ -193,6 +194,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
             dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
             dateAndTime.set(Calendar.MINUTE, dueMinute);
+            dateAndTime.set(Calendar.SECOND, 0);
             i.putExtra("timeStamp", dateAndTime.getTimeInMillis());
             i.putExtra("position", editPosition);
             i.putExtra("notificationID", notificationID);

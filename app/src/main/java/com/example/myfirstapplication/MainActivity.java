@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(editIntent, 200);
     }
 
-    public void deleteItem(int position){
+    public void deleteItem(int position) {
         cancelNotification(listItems.get(position).getNotificationID());
         listItems.remove(position); //MAY CAUSE ERROR IF DEFAULT VALUE IS USED
         DataManager.saveItems(this, "ListItems.json", listItems);
@@ -337,9 +337,9 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Item> toPutInOverdue = new ArrayList<>();
         for (int a = 0; a < listItems.size(); a++) {
             Item currentItem = listItems.get(a);
-            Calendar currentItemTime = Calendar.getInstance();
-            currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
-            if (currentItemTime.compareTo(Calendar.getInstance()) < 0) {
+            Calendar currentItemDueTime = Calendar.getInstance();
+            currentItemDueTime.setTimeInMillis(currentItem.getTimeStamp() + 60000); //add a minute bc it's only overdue a minute after that time
+            if (currentItemDueTime.compareTo(Calendar.getInstance()) < 0) {
                 toPutInOverdue.add(currentItem);
             }
         }
