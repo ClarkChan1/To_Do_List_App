@@ -124,7 +124,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             itemTime = dayOfWeekFormatter.format(currentItemTime.getTime());
         } else if(currentTime.get(Calendar.YEAR) == currentItemTime.get(Calendar.YEAR)){
             //show month
-            SimpleDateFormat monthFormatter = new SimpleDateFormat("MMM");
+            SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");
             monthFormatter.setCalendar(currentItemTime);
             itemTime = monthFormatter.format(currentItemTime.getTime());
         } else {
