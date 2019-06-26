@@ -110,33 +110,34 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         return convertView;
     }
 
-    public String getDueString(Item currentItem){
+    public String getDueString(Item currentItem) {
         Calendar currentItemTime = Calendar.getInstance();
         currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
         Calendar currentTime = Calendar.getInstance();
         String itemTime;
-        if(currentTime.get(Calendar.DAY_OF_MONTH) == currentItemTime.get(Calendar.DAY_OF_MONTH)) {
-            itemTime = getTimeString(currentItem);
-        } else if(currentTime.get(Calendar.WEEK_OF_MONTH) == currentItemTime.get(Calendar.WEEK_OF_MONTH)){
-            //show day of week like mon, tue, wed
-            SimpleDateFormat dayOfWeekFormatter = new SimpleDateFormat("E");
-            dayOfWeekFormatter.setCalendar(currentItemTime);
-            itemTime = dayOfWeekFormatter.format(currentItemTime.getTime());
-        } else if(currentTime.get(Calendar.YEAR) == currentItemTime.get(Calendar.YEAR)){
-            //show month
-            SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");
-            monthFormatter.setCalendar(currentItemTime);
-            itemTime = monthFormatter.format(currentItemTime.getTime());
-        } else {
+        if (currentTime.get(Calendar.YEAR) != currentItemTime.get(Calendar.YEAR)) {
             //show year
             SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
             yearFormatter.setCalendar(currentItemTime);
             itemTime = yearFormatter.format(currentItemTime.getTime());
+        } else if (currentTime.get(Calendar.DAY_OF_MONTH) == currentItemTime.get(Calendar.DAY_OF_MONTH)) {
+            itemTime = getTimeString(currentItem);
+
+        } else if (currentTime.get(Calendar.WEEK_OF_MONTH) == currentItemTime.get(Calendar.WEEK_OF_MONTH)) {
+            //show day of week like mon, tue, wed
+            SimpleDateFormat dayOfWeekFormatter = new SimpleDateFormat("E");
+            dayOfWeekFormatter.setCalendar(currentItemTime);
+            itemTime = dayOfWeekFormatter.format(currentItemTime.getTime());
+        } else {
+            //show month
+            SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");
+            monthFormatter.setCalendar(currentItemTime);
+            itemTime = monthFormatter.format(currentItemTime.getTime());
         }
         return itemTime;
     }
 
-    public String getTimeString (Item currentItem){
+    public String getTimeString(Item currentItem) {
         Calendar currentItemTime = Calendar.getInstance();
         currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
         String itemTime;
@@ -159,7 +160,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         return itemTime;
     }
 
-    public void showPopup(final int position){
+    public void showPopup(final int position) {
         final Dialog itemPopup = new Dialog(context);
         itemPopup.setContentView(R.layout.item_popup);
         ImageView close = (ImageView) itemPopup.findViewById(R.id.close);
@@ -171,12 +172,12 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                 context.itemAdapter.notifyDataSetChanged();
             }
         });
-        TextView name = (TextView)itemPopup.findViewById(R.id.name);
-        TextView category= (TextView)itemPopup.findViewById(R.id.category);
-        TextView dueDate= (TextView)itemPopup.findViewById(R.id.dueDate);
-        TextView dueTime= (TextView)itemPopup.findViewById(R.id.dueTime);
-        TextView editButton =(TextView)itemPopup.findViewById(R.id.editButton);
-        TextView deleteButton =(TextView)itemPopup.findViewById(R.id.deleteButton);
+        TextView name = (TextView) itemPopup.findViewById(R.id.name);
+        TextView category = (TextView) itemPopup.findViewById(R.id.category);
+        TextView dueDate = (TextView) itemPopup.findViewById(R.id.dueDate);
+        TextView dueTime = (TextView) itemPopup.findViewById(R.id.dueTime);
+        TextView editButton = (TextView) itemPopup.findViewById(R.id.editButton);
+        TextView deleteButton = (TextView) itemPopup.findViewById(R.id.deleteButton);
 
         name.setText(items.get(position).getName());
         category.setText(items.get(position).getCategory());
