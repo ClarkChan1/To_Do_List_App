@@ -239,7 +239,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         timePicked.set(Calendar.DAY_OF_MONTH, dueDay);
         timePicked.set(Calendar.HOUR_OF_DAY, dueHour);
         timePicked.set(Calendar.MINUTE, dueMinute);
-        if (timePicked.compareTo(Calendar.getInstance()) < 0) {
+        if ((timePicked.compareTo(Calendar.getInstance()) < 0) || (dueYear == -1) || (dueHour == -1)) {
             Toast correctTime = Toast.makeText(getApplicationContext(), "Task must be due sometime after this moment", Toast.LENGTH_LONG);
             correctTime.show();
         } else {

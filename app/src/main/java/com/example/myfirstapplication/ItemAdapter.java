@@ -17,6 +17,7 @@ import com.podcopic.animationlib.library.AnimationType;
 import com.podcopic.animationlib.library.StartSmartAnimation;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -96,7 +97,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         });
 
         //set time
-        time.setText(getTimeString(items.get(position)));
+        time.setText(getDueString(items.get(position)));
 
         //set category
         if (currentItem.getCategory().equals("Work")) {
@@ -109,12 +110,38 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         return convertView;
     }
 
-    public String getTimeString(Item currentItem){
+    public String getDueString(Item currentItem){
         Calendar currentItemTime = Calendar.getInstance();
         currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
+        Calendar currentTime = Calendar.getInstance();
+        String itemTime;
+        if(currentTime.get(Calendar.DAY_OF_MONTH) == currentItemTime.get(Calendar.DAY_OF_MONTH)) {
+            itemTime = getTimeString(currentItem);
+        } else if(currentTime.get(Calendar.WEEK_OF_MONTH) == currentItemTime.get(Calendar.WEEK_OF_MONTH)){
+            //show day of week like mon, tue, wed
+            SimpleDateFormat dayOfWeekFormatter = new SimpleDateFormat("E");
+            dayOfWeekFormatter.setCalendar(currentItemTime);
+            itemTime = dayOfWeekFormatter.format(currentItemTime.getTime());
+        } else if(currentTime.get(Calendar.YEAR) == currentItemTime.get(Calendar.YEAR)){
+            //show month
+            SimpleDateFormat monthFormatter = new SimpleDateFormat("MMM");
+            monthFormatter.setCalendar(currentItemTime);
+            itemTime = monthFormatter.format(currentItemTime.getTime());
+        } else {
+            //show year
+            SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
+            yearFormatter.setCalendar(currentItemTime);
+            itemTime = yearFormatter.format(currentItemTime.getTime());
+        }
+        return itemTime;
+    }
+
+    public String getTimeString (Item currentItem){
+        Calendar currentItemTime = Calendar.getInstance();
+        currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
+        String itemTime;
         int dueHour = currentItemTime.get(Calendar.HOUR_OF_DAY);
         int dueMinute = currentItemTime.get(Calendar.MINUTE);
-        String itemTime = "";
         if (dueHour % 12 == 0) {
             itemTime = 12 + ":";
         } else {

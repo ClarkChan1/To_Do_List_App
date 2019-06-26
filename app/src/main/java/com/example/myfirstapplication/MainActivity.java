@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
 //    Typeface professionalFont;
     private volatile boolean isPaused;
 
+    final int millisInMinute = 60000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -338,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
         for (int a = 0; a < listItems.size(); a++) {
             Item currentItem = listItems.get(a);
             Calendar currentItemDueTime = Calendar.getInstance();
-            currentItemDueTime.setTimeInMillis(currentItem.getTimeStamp() + 60000); //add a minute bc it's only overdue a minute after that time
+            currentItemDueTime.setTimeInMillis(currentItem.getTimeStamp() + millisInMinute); //add a minute bc it's only overdue a minute after that time
             if (currentItemDueTime.compareTo(Calendar.getInstance()) < 0) {
                 toPutInOverdue.add(currentItem);
             }
