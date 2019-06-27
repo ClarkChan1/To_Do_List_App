@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 displayDateAndTime.postDelayed(this, 1000);
             }
         };
-        checkDate();
+        getData();
 
         listView = (ListView) findViewById(R.id.listView);
         header = (LinearLayout) findViewById(R.id.header);
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 //        isPaused = false;
         displayDateAndTime.post(dateAndTimeRun);
-        checkDate();
+        getData();
         checkOverdue();
         switch (currentSection) {
             case 0:
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 growSection(findViewById(R.id.completedSection));
                 header.setBackgroundColor(Color.parseColor("#00cc66"));
                 actionButton.setImageResource(R.drawable.delete_icon);
-                actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+//                actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
                 completedItemsAdapter = new CompletedItemsAdapter(this, R.layout.completed_item_template, completedItems);
                 switchAdapter(completedItemsAdapter);
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 growSection(findViewById(R.id.overdueSection));
                 header.setBackgroundColor(Color.parseColor("#ff0066"));
                 actionButton.setImageResource(R.drawable.delete_icon);
-                actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+//                actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
                 overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.overdue_item_template, overdueItems);
                 switchAdapter(overdueItemsAdapter);
@@ -154,12 +154,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void checkDate() {
+    public void getData() {
         //keep track of the current day
-        long currentTotalDate = System.currentTimeMillis();
-        SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy");
-        String dateString = sdfDate.format(currentTotalDate);
-        DataManager.checkDate(this, (new String[]{"ListItems.json", "CompletedItems.json", "OverdueItems.json"}), dateString);
+//        long currentTotalDate = System.currentTimeMillis();
+//        SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy");
+//        String dateString = sdfDate.format(currentTotalDate);
+//        DataManager.checkDate(this, (new String[]{"ListItems.json", "CompletedItems.json", "OverdueItems.json"}), dateString);
         notificationID = DataManager.readNotificationID(this, "NotificationID.json");
         //reset all lists
         listItems = DataManager.readItems(this, "ListItems.json");
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public void performAction(View v) {
+    public void actionButtonPressed(View v) {
         switch(currentSection) {
             case 0:
                 Intent createIntent = new Intent(this, create_item.class);
@@ -191,9 +191,15 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1:
                 //todo delete all items from completed section
+                completedItems.clear();
+                switchAdapter(completedItemsAdapter);
+                saveItems("CompletedItems.json", completedItems);
                 break;
             case 2:
                 //todo delete all items from overdue section
+                overdueItems.clear();
+                switchAdapter(overdueItemsAdapter);
+                saveItems("OverdueItems.json", overdueItems);
                 break;
         }
     }

@@ -105,7 +105,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:background="@drawable/add_button_border"
-            android:onClick="performAction"
+            android:onClick="actionButtonPressed"
             android:src="@drawable/add_icon"
             android:textColor="#ffffff"
             android:typeface="monospace" />
