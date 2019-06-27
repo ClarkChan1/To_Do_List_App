@@ -114,26 +114,33 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         Calendar currentItemTime = Calendar.getInstance();
         currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
         Calendar currentTime = Calendar.getInstance();
-        String itemTime;
+        String itemTime = "";
         if (currentTime.get(Calendar.YEAR) != currentItemTime.get(Calendar.YEAR)) {
             //show year
             SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
             yearFormatter.setCalendar(currentItemTime);
             itemTime = yearFormatter.format(currentItemTime.getTime());
-        } else if (currentTime.get(Calendar.DAY_OF_MONTH) == currentItemTime.get(Calendar.DAY_OF_MONTH)) {
-            itemTime = getTimeString(currentItem);
+            return itemTime;
+        }
 
-        } else if (currentTime.get(Calendar.WEEK_OF_MONTH) == currentItemTime.get(Calendar.WEEK_OF_MONTH)) {
-            //show day of week like mon, tue, wed
-            SimpleDateFormat dayOfWeekFormatter = new SimpleDateFormat("E");
-            dayOfWeekFormatter.setCalendar(currentItemTime);
-            itemTime = dayOfWeekFormatter.format(currentItemTime.getTime());
-        } else {
             //show month
             SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");
             monthFormatter.setCalendar(currentItemTime);
             itemTime = monthFormatter.format(currentItemTime.getTime());
+        if (currentTime.get(Calendar.MONTH) != currentItemTime.get(Calendar.MONTH)) {
+            return itemTime;
         }
+        if (currentTime.get(Calendar.WEEK_OF_MONTH) == currentItemTime.get(Calendar.WEEK_OF_MONTH)) {
+            //show day of week like mon, tue, wed
+            SimpleDateFormat dayOfWeekFormatter = new SimpleDateFormat("E");
+            dayOfWeekFormatter.setCalendar(currentItemTime);
+            itemTime = dayOfWeekFormatter.format(currentItemTime.getTime());
+            if (currentTime.get(Calendar.DAY_OF_MONTH) == currentItemTime.get(Calendar.DAY_OF_MONTH)) {
+                itemTime = getTimeString(currentItem);
+
+            }
+        }
+
         return itemTime;
     }
 
