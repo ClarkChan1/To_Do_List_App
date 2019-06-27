@@ -57,6 +57,6 @@
         android:layout_weight=".5"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/delete_icon" />
+        android:src="@drawable/trash_icon" />
 
 </LinearLayout>

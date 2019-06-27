@@ -97,16 +97,15 @@
         android:layout_height="0dp"
         android:layout_weight=".8">
 
-        <Button
+        <ImageButton
             android:id="@+id/createItemButton"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:autoSizeTextType="uniform"
             android:background="@drawable/add_button_border"
-            android:onClick="createItem"
-            android:text="+"
+            android:onClick="performAction"
+            android:src="@drawable/add_icon"
             android:textColor="#ffffff"
             android:typeface="monospace" />
 

@@ -15,7 +15,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout bottomPortion;
     //variable so we can change color of header background when switching sections
     LinearLayout header;
-    Button createItemButton;
+    ImageButton actionButton;
 
     private ArrayList<Item> listItems = new ArrayList<>();
     ItemAdapter itemAdapter;
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listView);
         header = (LinearLayout) findViewById(R.id.header);
-        createItemButton = (Button) findViewById(R.id.createItemButton);
+        actionButton = (ImageButton) findViewById(R.id.createItemButton);
 
 
         if (savedInstanceState != null) {
@@ -126,27 +127,27 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 growSection(findViewById(R.id.toDoSection));
                 header.setBackgroundColor(Color.parseColor("#3385ff"));
-                createItemButton.setEnabled(true);
-                createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
-                bottomPortion.setBackgroundColor(Color.TRANSPARENT);
+                actionButton.setImageResource(R.drawable.add_icon);
+                actionButton.setScaleType(ImageView.ScaleType.CENTER);
+                actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
                 itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
                 switchAdapter(itemAdapter);
                 break;
             case 1:
                 growSection(findViewById(R.id.completedSection));
                 header.setBackgroundColor(Color.parseColor("#00cc66"));
-                createItemButton.setEnabled(false);
-                createItemButton.setVisibility(View.INVISIBLE);
-                bottomPortion.setBackgroundColor(Color.parseColor("#00cc66"));
+                actionButton.setImageResource(R.drawable.delete_icon);
+                actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
                 completedItemsAdapter = new CompletedItemsAdapter(this, R.layout.completed_item_template, completedItems);
                 switchAdapter(completedItemsAdapter);
                 break;
             case 2:
                 growSection(findViewById(R.id.overdueSection));
                 header.setBackgroundColor(Color.parseColor("#ff0066"));
-                createItemButton.setEnabled(false);
-                createItemButton.setVisibility(View.INVISIBLE);
-                bottomPortion.setBackgroundColor(Color.parseColor("#ff0066"));
+                actionButton.setImageResource(R.drawable.delete_icon);
+                actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
                 overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.overdue_item_template, overdueItems);
                 switchAdapter(overdueItemsAdapter);
                 break;
@@ -180,11 +181,21 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public void createItem(View v) {
-        Intent createIntent = new Intent(this, create_item.class);
-        createIntent.putExtra("type", "create");
-        createIntent.putExtra("notificationID", notificationID);
-        startActivityForResult(createIntent, 100);
+    public void performAction(View v) {
+        switch(currentSection) {
+            case 0:
+                Intent createIntent = new Intent(this, create_item.class);
+                createIntent.putExtra("type", "create");
+                createIntent.putExtra("notificationID", notificationID);
+                startActivityForResult(createIntent, 100);
+                break;
+            case 1:
+                //todo delete all items from completed section
+                break;
+            case 2:
+                //todo delete all items from overdue section
+                break;
+        }
     }
 
     public void editItem(int position) {
@@ -289,10 +300,9 @@ public class MainActivity extends AppCompatActivity {
         if ((currentSection != 0) && (OverdueItemsAdapter.completeInstances == 0) && (OverdueItemsAdapter.deleteInstances == 0)) {
             shrinkCurrent(currentSection);
             header.setBackgroundColor(Color.parseColor("#3385ff"));
-            createItemButton.setEnabled(true);
-            createItemButton.setVisibility(View.VISIBLE);
-            createItemButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
-            bottomPortion.setBackgroundColor(Color.TRANSPARENT);
+            actionButton.setImageResource(R.drawable.add_icon);
+            actionButton.setScaleType(ImageView.ScaleType.CENTER);
+            actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
             currentSection = 0;
             growSection(v);
             listItems = DataManager.readItems(this, "ListItems.json");
@@ -306,9 +316,9 @@ public class MainActivity extends AppCompatActivity {
         if ((currentSection != 1) && (ItemAdapter.instances == 0) && (OverdueItemsAdapter.completeInstances == 0) && (OverdueItemsAdapter.deleteInstances == 0)) {
             shrinkCurrent(currentSection);
             header.setBackgroundColor(Color.parseColor("#00cc66"));
-            createItemButton.setEnabled(false);
-            createItemButton.setVisibility(View.INVISIBLE);
-            bottomPortion.setBackgroundColor(Color.parseColor("#00cc66"));
+            actionButton.setImageResource(R.drawable.delete_icon);
+            actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
             currentSection = 1;
             growSection(v);
             completedItems = DataManager.readItems(this, "CompletedItems.json");
@@ -320,11 +330,10 @@ public class MainActivity extends AppCompatActivity {
     public void switchOverdue(View v) {
         if ((currentSection != 2) && (ItemAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
-
             header.setBackgroundColor(Color.parseColor("#ff0066"));
-            createItemButton.setEnabled(false);
-            createItemButton.setVisibility(View.INVISIBLE);
-            bottomPortion.setBackgroundColor(Color.parseColor("#ff0066"));
+            actionButton.setImageResource(R.drawable.delete_icon);
+            actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
             currentSection = 2;
             growSection(v);
             overdueItems = DataManager.readItems(this, "OverdueItems.json");
