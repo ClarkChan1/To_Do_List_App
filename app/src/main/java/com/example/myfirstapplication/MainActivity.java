@@ -317,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
             shrinkCurrent(currentSection);
             header.setBackgroundColor(Color.parseColor("#00cc66"));
             actionButton.setImageResource(R.drawable.delete_icon);
-            actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+//            actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
             actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
             currentSection = 1;
             growSection(v);
@@ -332,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
             shrinkCurrent(currentSection);
             header.setBackgroundColor(Color.parseColor("#ff0066"));
             actionButton.setImageResource(R.drawable.delete_icon);
-            actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+//            actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
             actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
             currentSection = 2;
             growSection(v);
