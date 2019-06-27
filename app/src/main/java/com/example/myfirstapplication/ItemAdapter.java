@@ -115,32 +115,27 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
         Calendar currentTime = Calendar.getInstance();
         String itemTime = "";
-        if (currentTime.get(Calendar.YEAR) != currentItemTime.get(Calendar.YEAR)) {
-            //show year
+        if (currentTime.get(Calendar.YEAR) == currentItemTime.get(Calendar.YEAR)) {
+            //show month
+            SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");
+            monthFormatter.setCalendar(currentItemTime);
+            itemTime = monthFormatter.format(currentItemTime.getTime());
+            if (currentTime.get(Calendar.WEEK_OF_MONTH) == currentItemTime.get(Calendar.WEEK_OF_MONTH)) {
+                if (currentTime.get(Calendar.DAY_OF_MONTH) == currentItemTime.get(Calendar.DAY_OF_MONTH)) {
+                    itemTime = getTimeString(currentItem);
+                } else {
+                    //show day of week like mon, tue, wed
+                    SimpleDateFormat dayOfWeekFormatter = new SimpleDateFormat("E");
+                    dayOfWeekFormatter.setCalendar(currentItemTime);
+                    itemTime = dayOfWeekFormatter.format(currentItemTime.getTime());
+                }
+            }
+        } else {
             SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
             yearFormatter.setCalendar(currentItemTime);
             itemTime = yearFormatter.format(currentItemTime.getTime());
             return itemTime;
         }
-
-            //show month
-            SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");
-            monthFormatter.setCalendar(currentItemTime);
-            itemTime = monthFormatter.format(currentItemTime.getTime());
-        if (currentTime.get(Calendar.MONTH) != currentItemTime.get(Calendar.MONTH)) {
-            return itemTime;
-        }
-        if (currentTime.get(Calendar.WEEK_OF_MONTH) == currentItemTime.get(Calendar.WEEK_OF_MONTH)) {
-            //show day of week like mon, tue, wed
-            SimpleDateFormat dayOfWeekFormatter = new SimpleDateFormat("E");
-            dayOfWeekFormatter.setCalendar(currentItemTime);
-            itemTime = dayOfWeekFormatter.format(currentItemTime.getTime());
-            if (currentTime.get(Calendar.DAY_OF_MONTH) == currentItemTime.get(Calendar.DAY_OF_MONTH)) {
-                itemTime = getTimeString(currentItem);
-
-            }
-        }
-
         return itemTime;
     }
 
