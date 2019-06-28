@@ -65,11 +65,10 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
                         if (instances== 0) {
                             overdueItems.removeAll(toComplete);
                             for (int a = 0; a < toComplete.size(); a++) {
-                                Item currentItem = toComplete.get(a);
                                 //get time of completion
                                 Calendar currentTime = Calendar.getInstance();
-                                CompletedItem currentOverdueItem = new CompletedItem(currentItem.getName(), currentItem.getCategory(), currentItem.getTimeStamp(), currentTime.getTimeInMillis(), currentItem.getNotificationID());
-                                context.insertItem(context.completedItems, currentOverdueItem, "completed");
+                                toComplete.get(a).setTimeStamp(currentTime.getTimeInMillis());
+                                context.insertItem(context.completedItems, toComplete.get(a), "completed");
                             }
                             context.switchAdapter(context.overdueItemsAdapter);
                             //save everything

@@ -54,7 +54,7 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
         });
 
         //set time
-        time.setText(getDateString(completedItems.get(position)));
+        time.setText(getDueString(completedItems.get(position)));
 
         //set category
         if (currentItem.getCategory().equals("Work")) {
@@ -67,7 +67,7 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
         return convertView;
     }
 
-    public String getDateString(Item currentItem) {
+    public String getDueString(Item currentItem) {
         Calendar currentItemTime = Calendar.getInstance();
         currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
         Calendar currentTime = Calendar.getInstance();
@@ -79,7 +79,7 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
             itemTime = monthFormatter.format(currentItemTime.getTime());
             if (currentTime.get(Calendar.WEEK_OF_MONTH) == currentItemTime.get(Calendar.WEEK_OF_MONTH)) {
                 if (currentTime.get(Calendar.DAY_OF_MONTH) == currentItemTime.get(Calendar.DAY_OF_MONTH)) {
-                    itemTime = getTimeString(currentItem, currentTime);
+                    itemTime = getTimeString(currentItem);
                 } else {
                     //show day of week like mon, tue, wed
                     SimpleDateFormat dayOfWeekFormatter = new SimpleDateFormat("E");
@@ -96,7 +96,9 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
         return itemTime;
     }
 
-    public String getTimeString(Item currentItem, Calendar currentItemTime) {
+    public String getTimeString(Item currentItem) {
+        Calendar currentItemTime = Calendar.getInstance();
+        currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
         String itemTime;
         int dueHour = currentItemTime.get(Calendar.HOUR_OF_DAY);
         int dueMinute = currentItemTime.get(Calendar.MINUTE);
@@ -145,10 +147,9 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
 
         Calendar itemdueDate = Calendar.getInstance();
         itemdueDate.setTimeInMillis(currentItem.getTimeStamp());
-
         String dueDateText = DateFormat.getDateInstance().format(itemdueDate.getTime());
         dueDate.setText(dueDateText);
-        dueTime.setText(getTimeString(currentItem, itemdueDate));
+        dueTime.setText(getTimeString(currentItem));
 
         deleteItem.setOnClickListener(new View.OnClickListener() {
             @Override
