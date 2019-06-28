@@ -106,9 +106,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/add_button_border"
             android:onClick="actionButtonPressed"
-            android:src="@drawable/add_icon"
-            android:textColor="#ffffff"
-            android:typeface="monospace" />
+            android:src="@drawable/add_icon" />
 
     </RelativeLayout>
 
