@@ -26,8 +26,7 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
     private ArrayList<Item> toDelete;
     private ArrayList<Item> toComplete;
     private int template_resource;
-    static int completeInstances = 0;
-    static int deleteInstances = 0;
+    static int instances = 0;
 
     public OverdueItemsAdapter(MainActivity context, int resource, ArrayList<Item> overdueItems) {
         super(context, resource, overdueItems);
@@ -50,65 +49,34 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         TextView time = (TextView) convertView.findViewById(R.id.time);
         TextView category = (TextView) convertView.findViewById(R.id.category);
         CheckBox check = (CheckBox) convertView.findViewById(R.id.check);
-        ImageView deleteButton = (ImageView) convertView.findViewById(R.id.deleteButton);
-
-        //set click listener on deleteButton and code animation
-        final View finalConvertView = convertView;
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (deleteInstances == 0) {
-                    completeInstances++;
-                    StartSmartAnimation.startAnimation((LinearLayout) finalConvertView.findViewById(R.id.item), AnimationType.FadeOut, 1000, 0, true);
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            toDelete.add(overdueItems.get(position));
-                            completeInstances--;
-                            if (completeInstances == 0) {
-                                overdueItems.removeAll(toDelete);
-                                context.switchAdapter(context.overdueItemsAdapter);
-                                //save everything
-                                context.saveItems("OverdueItems.json", overdueItems);
-                                //reset toDelete so it doesn't just infinitely grow
-                                toDelete = new ArrayList<>();
-                            }
-                        }
-                    }, 1000);
-                }
-            }
-        });
 
         //set click listener on checkbox and code animation
+        final View finalConvertView = convertView;
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (completeInstances == 0) {
-                    deleteInstances++;
-                    StartSmartAnimation.startAnimation((LinearLayout) finalConvertView.findViewById(R.id.item), AnimationType.SlideOutRight, 1000, 0, true);
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            toComplete.add(overdueItems.get(position));
-                            deleteInstances--;
-                            if (deleteInstances == 0) {
-                                overdueItems.removeAll(toComplete);
-                                for (int a = 0; a < toComplete.size(); a++) {
-                                    context.insertItem(context.completedItems, toComplete.get(a), "completed");
-                                }
-                                context.switchAdapter(context.overdueItemsAdapter);
-                                //save everything
-                                context.saveItems("OverdueItems.json", overdueItems);
-                                context.saveItems("CompletedItems.json", context.completedItems);
-                                //reset toComplete so it doesn't just infinitely grow
-                                toComplete = new ArrayList<>();
+                instances++;
+                StartSmartAnimation.startAnimation((LinearLayout) finalConvertView.findViewById(R.id.item), AnimationType.SlideOutRight, 1000, 0, true);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        toComplete.add(overdueItems.get(position));
+                        instances--;
+                        if (instances== 0) {
+                            overdueItems.removeAll(toComplete);
+                            for (int a = 0; a < toComplete.size(); a++) {
+                                context.insertItem(context.completedItems, toComplete.get(a), "completed");
                             }
+                            context.switchAdapter(context.overdueItemsAdapter);
+                            //save everything
+                            context.saveItems("OverdueItems.json", overdueItems);
+                            context.saveItems("CompletedItems.json", context.completedItems);
+                            //reset toComplete so it doesn't just infinitely grow
+                            toComplete = new ArrayList<>();
                         }
-                    }, 1000);
-
-                }
+                    }
+                }, 1000);
             }
         });
 
