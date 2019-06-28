@@ -67,10 +67,11 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
                             //cancel notifications for all the items to remove and in the same loop add them to completedItems list
                             for (int a = 0; a < toRemove.size(); a++) {
+                                Item currentItem = toRemove.get(a);
                                 //get time of completion
                                 Calendar currentTime = Calendar.getInstance();
-                                toRemove.get(a).setTimeStamp(currentTime.getTimeInMillis());
-                                context.insertItem(context.completedItems, toRemove.get(a), "completed");
+                                CompletedItem currentCompletedItem = new CompletedItem(currentItem.getName(), currentItem.getCategory(), currentItem.getTimeStamp(), currentTime.getTimeInMillis(), currentItem.getNotificationID());
+                                context.insertItem(context.completedItems, currentCompletedItem, "completed");
                                 context.cancelNotification(toRemove.get(a).getNotificationID());
                             }
                             context.resetAdapter();
