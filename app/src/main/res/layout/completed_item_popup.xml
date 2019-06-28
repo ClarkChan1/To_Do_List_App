@@ -48,7 +48,7 @@
             android:id="@+id/textView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:gravity="center"
             android:text="Category:"
             android:textSize="18sp"/>
@@ -78,9 +78,9 @@
             android:id="@+id/textView4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:gravity="center"
-            android:text="Date Due:"
+            android:text="Completion Date:"
             android:textSize="18sp"/>
 
         <TextView
@@ -108,9 +108,9 @@
             android:id="@+id/textView6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:gravity="center"
-            android:text="Time Due:"
+            android:text="Completion Time:"
             android:textSize="18sp"
             />
 
