@@ -150,7 +150,7 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         return itemTime;
     }
 
-    public void showPopup(int position){
+    public void showPopup(final int position){
         final Dialog itemPopup = new Dialog(context);
         itemPopup.setContentView(R.layout.overdue_item_popup);
         ImageView close = (ImageView) itemPopup.findViewById(R.id.close);
@@ -164,6 +164,8 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         TextView category= (TextView)itemPopup.findViewById(R.id.category);
         TextView dueDate= (TextView)itemPopup.findViewById(R.id.dueDate);
         TextView dueTime= (TextView)itemPopup.findViewById(R.id.dueTime);
+        TextView deleteItem = (TextView)itemPopup.findViewById(R.id.deleteButton);
+
         name.setText(overdueItems.get(position).getName());
         category.setText(overdueItems.get(position).getCategory());
 
@@ -173,6 +175,18 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         String dueDateText = DateFormat.getDateInstance().format(itemdueDate.getTime());
         dueDate.setText(dueDateText);
         dueTime.setText(getTimeString(currentItem));
+
+        deleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                overdueItems.remove(position);
+                context.switchAdapter(context.overdueItemsAdapter);
+                //save everything
+                context.saveItems("OverdueItems.json", overdueItems);
+                itemPopup.dismiss();
+            }
+        });
+
         itemPopup.show();
     }
 }

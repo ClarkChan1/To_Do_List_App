@@ -124,4 +124,21 @@
             android:textSize="18sp"/>
     </LinearLayout>
 
+
+
+    <TextView
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:gravity="center"
+        android:background="@drawable/rounded_border_work"
+        android:text="delete"
+        android:textSize="18sp"/>
+
+
 </LinearLayout>

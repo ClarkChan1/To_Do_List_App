@@ -108,7 +108,7 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
         return itemTime;
     }
 
-    public void showPopup(int position){
+    public void showPopup(final int position){
         final Dialog itemPopup = new Dialog(context);
         itemPopup.setContentView(R.layout.completed_item_popup);
         ImageView close = (ImageView) itemPopup.findViewById(R.id.close);
@@ -122,6 +122,8 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
         TextView category= (TextView)itemPopup.findViewById(R.id.category);
         TextView dueDate= (TextView)itemPopup.findViewById(R.id.dueDate);
         TextView dueTime= (TextView)itemPopup.findViewById(R.id.dueTime);
+        TextView deleteItem = (TextView)itemPopup.findViewById(R.id.deleteButton);
+
         name.setText(completedItems.get(position).getName());
         category.setText(completedItems.get(position).getCategory());
 
@@ -131,6 +133,18 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
         String dueDateText = DateFormat.getDateInstance().format(itemdueDate.getTime());
         dueDate.setText(dueDateText);
         dueTime.setText(getTimeString(currentItem));
+
+        deleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                completedItems.remove(position);
+                context.switchAdapter(context.completedItemsAdapter);
+                //save everything
+                context.saveItems("CompletedItems.json", completedItems);
+                itemPopup.dismiss();
+            }
+        });
+
         itemPopup.show();
     }
 

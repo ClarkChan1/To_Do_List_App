@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     ItemAdapter itemAdapter;
 
     ArrayList<Item> completedItems = new ArrayList<>();
-    private CompletedItemsAdapter completedItemsAdapter;
+    CompletedItemsAdapter completedItemsAdapter;
 
     private ArrayList<Item> overdueItems = new ArrayList<>();
     OverdueItemsAdapter overdueItemsAdapter;
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 actionButton.setImageResource(R.drawable.delete_icon);
 //                actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
-                overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.overdue_item_template, overdueItems);
+                overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.item_template, overdueItems);
                 switchAdapter(overdueItemsAdapter);
                 break;
         }
@@ -394,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
             growSection(v);
             overdueItems = DataManager.readItems(this, "OverdueItems.json");
             checkOverdue();
-            overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.overdue_item_template, overdueItems);
+            overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.item_template, overdueItems);
             switchAdapter(overdueItemsAdapter);
         }
     }
