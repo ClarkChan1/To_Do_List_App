@@ -163,5 +163,4 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
 
         itemPopup.show();
     }
-
 }
