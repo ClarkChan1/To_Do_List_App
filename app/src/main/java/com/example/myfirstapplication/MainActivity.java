@@ -1,6 +1,7 @@
 package com.example.myfirstapplication;
 
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -51,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     //global fonts to be used by all classes
 //    Typeface headerFont;
 //    Typeface professionalFont;
-    private volatile boolean isPaused;
 
     final int millisInMinute = 60000;
 
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void actionButtonPressed(View v) {
-        switch(currentSection) {
+        switch (currentSection) {
             case 0:
                 Intent createIntent = new Intent(this, create_item.class);
                 createIntent.putExtra("type", "create");
@@ -190,18 +190,64 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(createIntent, 100);
                 break;
             case 1:
-                //todo delete all items from completed section
+                //todo make a popup saying are you sure you want to delete all items?
+                if(!completedItems.isEmpty()) {
+                    deleteCompletedPopup();
+                }
+                break;
+            case 2:
+                //todo make a popup saying are you sure you want to delete all items?
+                if(!overdueItems.isEmpty()) {
+                    deleteOverduePopup();
+                }
+                break;
+        }
+    }
+
+    public void deleteCompletedPopup() {
+        final Dialog deleteCompletedDialog = new Dialog(this);
+        deleteCompletedDialog.setContentView(R.layout.delete_completed_popup);
+        TextView deleteButton = deleteCompletedDialog.findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 completedItems.clear();
                 switchAdapter(completedItemsAdapter);
                 saveItems("CompletedItems.json", completedItems);
-                break;
-            case 2:
-                //todo delete all items from overdue section
+                deleteCompletedDialog.dismiss();
+            }
+        });
+        TextView cancelButton = deleteCompletedDialog.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteCompletedDialog.dismiss();
+            }
+        });
+        deleteCompletedDialog.show();
+    }
+
+    public void deleteOverduePopup() {
+        final Dialog deleteOverdueDialog = new Dialog(this);
+        deleteOverdueDialog.setContentView(R.layout.delete_completed_popup);
+        TextView deleteButton = deleteOverdueDialog.findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 overdueItems.clear();
                 switchAdapter(overdueItemsAdapter);
                 saveItems("OverdueItems.json", overdueItems);
-                break;
-        }
+                deleteOverdueDialog.dismiss();
+            }
+        });
+        TextView cancelButton = deleteOverdueDialog.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteOverdueDialog.dismiss();
+            }
+        });
+        deleteOverdueDialog.show();
     }
 
     public void editItem(int position) {

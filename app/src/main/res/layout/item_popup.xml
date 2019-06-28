@@ -17,7 +17,6 @@
         android:layout_marginBottom="20dp"
         android:src="@drawable/x_out"
         android:layout_gravity="right"
-
         />
 
     <TextView
