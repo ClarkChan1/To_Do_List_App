@@ -206,7 +206,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void deleteCompletedPopup() {
         final Dialog deleteCompletedDialog = new Dialog(this);
-        deleteCompletedDialog.setContentView(R.layout.delete_completed_popup);
+        deleteCompletedDialog.setContentView(R.layout.delete_items_popup);
+        TextView message = deleteCompletedDialog.findViewById(R.id.message);
+        message.setText("Are you sure you want to delete ALL completed items?");
         TextView deleteButton = deleteCompletedDialog.findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,7 +231,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void deleteOverduePopup() {
         final Dialog deleteOverdueDialog = new Dialog(this);
-        deleteOverdueDialog.setContentView(R.layout.delete_completed_popup);
+        deleteOverdueDialog.setContentView(R.layout.delete_items_popup);
+        TextView message = deleteOverdueDialog.findViewById(R.id.message);
+        message.setText("Are you sure you want to delete ALL overdue items?");
         TextView deleteButton = deleteOverdueDialog.findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override

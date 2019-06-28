@@ -110,7 +110,7 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
 
     public void showPopup(int position){
         final Dialog itemPopup = new Dialog(context);
-        itemPopup.setContentView(R.layout.item_popup);
+        itemPopup.setContentView(R.layout.completed_item_popup);
         ImageView close = (ImageView) itemPopup.findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
