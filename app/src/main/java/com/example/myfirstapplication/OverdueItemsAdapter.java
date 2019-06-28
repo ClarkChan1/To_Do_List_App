@@ -23,7 +23,6 @@ import java.util.Calendar;
 public class OverdueItemsAdapter extends ArrayAdapter<Item> {
     private MainActivity context;
     private ArrayList<Item> overdueItems;
-    private ArrayList<Item> toDelete;
     private ArrayList<Item> toComplete;
     private int template_resource;
     static int instances = 0;
@@ -32,7 +31,6 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         super(context, resource, overdueItems);
         this.context = context;
         this.overdueItems = overdueItems;
-        toDelete = new ArrayList<>();
         toComplete = new ArrayList<>();
         template_resource = resource;
     }
