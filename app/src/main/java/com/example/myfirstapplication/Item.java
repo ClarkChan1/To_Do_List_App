@@ -45,6 +45,8 @@ public class Item implements Parcelable {
 
     public long getTimeStamp() { return timeStamp; }
 
+    public void setTimeStamp(long timeStamp) { this.timeStamp = timeStamp; }
+
     public int getNotificationID() {
         return notificationID;
     }

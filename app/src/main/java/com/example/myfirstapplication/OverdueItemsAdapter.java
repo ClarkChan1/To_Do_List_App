@@ -65,6 +65,9 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
                         if (instances== 0) {
                             overdueItems.removeAll(toComplete);
                             for (int a = 0; a < toComplete.size(); a++) {
+                                //get time of completion
+                                Calendar currentTime = Calendar.getInstance();
+                                toComplete.get(a).setTimeStamp(currentTime.getTimeInMillis());
                                 context.insertItem(context.completedItems, toComplete.get(a), "completed");
                             }
                             context.switchAdapter(context.overdueItemsAdapter);
