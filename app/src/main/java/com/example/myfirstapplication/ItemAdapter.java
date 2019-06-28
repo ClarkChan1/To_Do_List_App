@@ -114,7 +114,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         Calendar currentItemTime = Calendar.getInstance();
         currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
         Calendar currentTime = Calendar.getInstance();
-        String itemTime = "";
+        String itemTime;
         if (currentTime.get(Calendar.YEAR) == currentItemTime.get(Calendar.YEAR)) {
             //show month
             SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");

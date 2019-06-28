@@ -191,13 +191,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1:
                 //todo make a popup saying are you sure you want to delete all items?
-                if(!completedItems.isEmpty()) {
+                if (!completedItems.isEmpty()) {
                     deleteCompletedPopup();
                 }
                 break;
             case 2:
                 //todo make a popup saying are you sure you want to delete all items?
-                if(!overdueItems.isEmpty()) {
+                if (!overdueItems.isEmpty()) {
                     deleteOverduePopup();
                 }
                 break;
@@ -284,10 +284,18 @@ public class MainActivity extends AppCompatActivity {
                 Item currentItem = addTo.get(a);
                 Calendar currentItemTime = Calendar.getInstance();
                 currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
-                if (toAddTime.compareTo(currentItemTime) < 0) {
-                    addTo.add(a, toAdd);
-                    added = true;
-                    break; //since the end condition is a<addTo.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
+                if (section.equals("completed")) {
+                    if (toAddTime.compareTo(currentItemTime) > 0) {
+                        addTo.add(a, toAdd);
+                        added = true;
+                        break; //since the end condition is a<addTo.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
+                    }
+                } else {
+                    if (toAddTime.compareTo(currentItemTime) < 0) {
+                        addTo.add(a, toAdd);
+                        added = true;
+                        break; //since the end condition is a<addTo.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
+                    }
                 }
             }
             if (!added) {
@@ -369,7 +377,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchCompleted(View v) {
-        if ((currentSection != 1) && (ItemAdapter.instances == 0)  && (OverdueItemsAdapter.instances == 0)) {
+        if ((currentSection != 1) && (ItemAdapter.instances == 0) && (OverdueItemsAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
             header.setBackgroundColor(Color.parseColor("#00cc66"));
             actionButton.setImageResource(R.drawable.delete_icon);
