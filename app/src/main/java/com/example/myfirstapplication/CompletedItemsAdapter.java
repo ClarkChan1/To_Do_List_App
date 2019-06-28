@@ -136,13 +136,12 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
         name.setText(completedItems.get(position).getName());
         category.setText(completedItems.get(position).getCategory());
 
-        CompletedItem currentItem = (CompletedItem) completedItems.get(position);
+        Item currentItem = completedItems.get(position);
         Calendar itemCompleteDate = Calendar.getInstance();
-        itemCompleteDate.setTimeInMillis(currentItem.completedTimeStamp);
-
+        itemCompleteDate.setTimeInMillis(currentItem.getTimeStamp());
         String completedDateText = DateFormat.getDateInstance().format(itemCompleteDate.getTime());
         dueDate.setText(completedDateText);
-        dueTime.setText(getTimeString(currentItem, itemCompleteDate));
+        dueTime.setText(getTimeString(currentItem));
 
         Calendar itemdueDate = Calendar.getInstance();
         itemdueDate.setTimeInMillis(currentItem.getTimeStamp());
