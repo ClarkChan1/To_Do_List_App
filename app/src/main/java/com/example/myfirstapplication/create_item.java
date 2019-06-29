@@ -9,10 +9,13 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -20,7 +23,7 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class create_item extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+public class create_item extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener {
     String name = "";
     int dueYear = -1;
     int dueMonth = -1;
@@ -37,8 +40,9 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     boolean goodName = false;
     boolean goodCategory = false;
     boolean goodDateAndTime = false;
+    //keep track of whether or not I'm creating or editing an item with this String.
     String activityType = "";
-
+    //since I'm using one xml file for both creating and editing items, this button reference is needed to change the bottom button text to "create" or "edit"
     Button actionButton;
 
     @Override
@@ -46,6 +50,13 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_or_edit_item);
         actionButton = findViewById(R.id.actionButton);
+        //create the dropdown menu
+        Spinner spinner = findViewById(R.id.repeating);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.repeating, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
         if (savedInstanceState != null) {
             activityType = savedInstanceState.getString("type");
             if (activityType.equals("create")) {
@@ -69,6 +80,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             }
             notificationID = savedInstanceState.getInt("notificationID");
             repeat = savedInstanceState.getInt("repeat");
+            spinner.setSelection(repeat);
             editPosition = savedInstanceState.getInt("position");
         } else {
             //This is for the start of activity when we are either editing or creating an item
@@ -95,12 +107,21 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 dueMinute = setDateAndTime.get(Calendar.MINUTE);
                 editPosition = data.getIntExtra("position", -1);
                 repeat = data.getIntExtra("repeat", -1);
+                spinner.setSelection(repeat);
                 populateData();
             }
             notificationID = data.getIntExtra("notificationID", -1);
         }
 
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        repeat = position;
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     public void selectTimeButtonClicked(View v) {
         DialogFragment timePicker = new TimePickerFragment();
@@ -191,6 +212,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             dateAndTime.set(Calendar.SECOND, 0);
             i.putExtra("timeStamp", dateAndTime.getTimeInMillis());
             i.putExtra("notificationID", notificationID);
+            i.putExtra("repeat", repeat);
             setResult(RESULT_OK, i);
             finish();
         }
@@ -212,6 +234,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             i.putExtra("timeStamp", dateAndTime.getTimeInMillis());
             i.putExtra("position", editPosition);
             i.putExtra("notificationID", notificationID);
+            i.putExtra("repeat", repeat);
             setResult(RESULT_OK, i);
             finish();
         }
@@ -230,7 +253,6 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             RadioButton lifeButton = findViewById(R.id.radio2);
             lifeButton.setChecked(true);
         }
-        TextView repeat = findViewById(R.id.repeating);
     }
 
     public void checkData() {

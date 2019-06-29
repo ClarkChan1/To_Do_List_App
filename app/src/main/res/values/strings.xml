@@ -5,5 +5,11 @@
     <string name="dueText">dueTime</string>
     <string name="item_name">name</string>
     <string name="item_time">time</string>
-
+    <string-array name="repeating">
+        <item>never</item>
+        <item>daily</item>
+        <item>weekly</item>
+        <item>monthly</item>
+        <item>yearly</item>
+    </string-array>
 </resources>
