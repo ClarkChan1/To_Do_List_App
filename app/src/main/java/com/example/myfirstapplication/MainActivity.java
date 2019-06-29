@@ -285,11 +285,9 @@ public class MainActivity extends AppCompatActivity {
                 Calendar currentItemTime = Calendar.getInstance();
                 currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
                 if (section.equals("completed")) {
-                    if (toAddTime.compareTo(currentItemTime) > 0) {
-                        addTo.add(a, toAdd);
-                        added = true;
-                        break; //since the end condition is a<addTo.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
-                    }
+                    addTo.add(a, toAdd);
+                    added = true;
+                    break; //since the end condition is a<addTo.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
                 } else {
                     if (toAddTime.compareTo(currentItemTime) < 0) {
                         addTo.add(a, toAdd);
