@@ -121,7 +121,9 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {}
+    public void onNothingSelected(AdapterView<?> parent) {
+        repeat = 0;
+    }
 
     public void selectTimeButtonClicked(View v) {
         DialogFragment timePicker = new TimePickerFragment();
