@@ -8,13 +8,15 @@ public class Item implements Parcelable {
     private String category;
     private long timeStamp;
     private int notificationID;
+    private int repeat;
 
 
-    public Item(String name, String category, long timeStamp, int notificationID) {
+    public Item(String name, String category, long timeStamp, int notificationID, int repeat) {
         this.name = name;
         this.category = category;
         this.timeStamp = timeStamp;
         this.notificationID = notificationID;
+        this.repeat = repeat;
     }
 
     protected Item(Parcel in) {
@@ -50,6 +52,8 @@ public class Item implements Parcelable {
     public int getNotificationID() {
         return notificationID;
     }
+
+    public int getRepeat() { return repeat; }
 
     @Override
     public int describeContents() {

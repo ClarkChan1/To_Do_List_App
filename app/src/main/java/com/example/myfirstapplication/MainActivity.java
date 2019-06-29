@@ -184,10 +184,7 @@ public class MainActivity extends AppCompatActivity {
     public void actionButtonPressed(View v) {
         switch (currentSection) {
             case 0:
-                Intent createIntent = new Intent(this, create_item.class);
-                createIntent.putExtra("type", "create");
-                createIntent.putExtra("notificationID", notificationID);
-                startActivityForResult(createIntent, 100);
+                createItem();
                 break;
             case 1:
                 //todo make a popup saying are you sure you want to delete all items?
@@ -254,13 +251,22 @@ public class MainActivity extends AppCompatActivity {
         deleteOverdueDialog.show();
     }
 
+    public void createItem(){
+        Intent createIntent = new Intent(this, create_item.class);
+        createIntent.putExtra("type", "create");
+        createIntent.putExtra("notificationID", notificationID);
+        startActivityForResult(createIntent, 100);
+    }
+
     public void editItem(int position) {
+        Item currentItem = listItems.get(position);
         Intent editIntent = new Intent(this, create_item.class);
         editIntent.putExtra("type", "edit");
-        editIntent.putExtra("name", listItems.get(position).getName());
-        editIntent.putExtra("category", listItems.get(position).getCategory());
-        editIntent.putExtra("timeStamp", listItems.get(position).getTimeStamp());
+        editIntent.putExtra("name", currentItem.getName());
+        editIntent.putExtra("category", currentItem.getCategory());
+        editIntent.putExtra("timeStamp", currentItem.getTimeStamp());
         editIntent.putExtra("notificationID", notificationID);
+        editIntent.putExtra("repeat", currentItem.getRepeat());
         editIntent.putExtra("position", position);
         startActivityForResult(editIntent, 200);
     }
@@ -427,12 +433,12 @@ public class MainActivity extends AppCompatActivity {
         itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
         if (resultCode == RESULT_OK) {
             if (requestCode == 100) {
-                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getLongExtra("timeStamp", -1), data.getIntExtra("notificationID", -1));
+                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getLongExtra("timeStamp", -1), data.getIntExtra("notificationID", -1), data.getIntExtra("repeat", -1));
                 insertItem(listItems, toAdd, "todo");
             }
             if (requestCode == 200) {
                 deleteItem(data.getIntExtra("position", -1));
-                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getLongExtra("timeStamp", -1), data.getIntExtra("notificationID", -1));
+                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getLongExtra("timeStamp", -1), data.getIntExtra("notificationID", -1), data.getIntExtra("repeat", -1));
                 insertItem(listItems, toAdd, "todo");
             }
             checkOverdue();

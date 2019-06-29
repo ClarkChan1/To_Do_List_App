@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -28,6 +29,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     int dueMinute = -1;
     String category = "";
     int notificationID = 0;
+    int repeat = 0;
     //This is to track which item in the Listview is to be edited
     int editPosition = -1;
 
@@ -35,19 +37,21 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     boolean goodName = false;
     boolean goodCategory = false;
     boolean goodDateAndTime = false;
-
-
     String activityType = "";
+
+    Button actionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.create_or_edit_item);
+        actionButton = findViewById(R.id.actionButton);
         if (savedInstanceState != null) {
             activityType = savedInstanceState.getString("type");
             if (activityType.equals("create")) {
-                setContentView(R.layout.activity_create_item);
+                actionButton.setText("create");
             } else {
-                setContentView(R.layout.activity_edit_item);
+                actionButton.setText("edit");
             }
             if (savedInstanceState.getBoolean("collectCategory")) {
                 category = savedInstanceState.getString("category");
@@ -63,13 +67,14 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 dueMinute = savedInstanceState.getInt("dueMinute");
                 setTimeString();
             }
-            editPosition = savedInstanceState.getInt("position");
             notificationID = savedInstanceState.getInt("notificationID");
+            repeat = savedInstanceState.getInt("repeat");
+            editPosition = savedInstanceState.getInt("position");
         } else {
             //This is for the start of activity when we are either editing or creating an item
             Intent data = getIntent();
             if (data.getStringExtra("type").equals("create")) {
-                setContentView(R.layout.activity_create_item);
+                actionButton.setText("create");
                 EditText nameField = (EditText) findViewById(R.id.nameField);
                 nameField.requestFocus();
                 //get keyboard to appear upon entering create item
@@ -77,7 +82,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                 activityType = "create";
             } else if (data.getStringExtra("type").equals("edit")) {
-                setContentView(R.layout.activity_edit_item);
+                actionButton.setText("edit");
                 activityType = "edit";
                 name = data.getStringExtra("name");
                 category = data.getStringExtra("category");
@@ -89,6 +94,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 dueHour = setDateAndTime.get(Calendar.HOUR_OF_DAY);
                 dueMinute = setDateAndTime.get(Calendar.MINUTE);
                 editPosition = data.getIntExtra("position", -1);
+                repeat = data.getIntExtra("repeat", -1);
                 populateData();
             }
             notificationID = data.getIntExtra("notificationID", -1);
@@ -162,8 +168,16 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         }
     }
 
-    public void onCreateButtonClicked(View v) {
-        checkData(v);
+    public void actionButtonClicked(View v){
+        if(activityType.equals("create")){
+            onCreateButtonClicked();
+        } else {
+            onEditButtonClicked();
+        }
+    }
+
+    public void onCreateButtonClicked() {
+        checkData();
         if (goodName && goodCategory && goodDateAndTime) {
             Intent i = new Intent();
             i.putExtra("name", name);
@@ -182,8 +196,8 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         }
     }
 
-    public void onEditButtonClicked(View v) {
-        checkData(v);
+    public void onEditButtonClicked() {
+        checkData();
         if (goodName && goodCategory && goodDateAndTime) {
             Intent i = new Intent();
             i.putExtra("name", name);
@@ -216,9 +230,10 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             RadioButton lifeButton = findViewById(R.id.radio2);
             lifeButton.setChecked(true);
         }
+        TextView repeat = findViewById(R.id.repeating);
     }
 
-    public void checkData(View v) {
+    public void checkData() {
         EditText nameField = (EditText) findViewById(R.id.nameField);
         name = nameField.getText().toString();
         if (name.equals("")) {
@@ -272,7 +287,8 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         } else {
             outState.putBoolean("collectDueTime", false);
         }
-        outState.putInt("position", editPosition);
         outState.putInt("notificationID", notificationID);
+        outState.putInt("repeat", repeat);
+        outState.putInt("position", editPosition);
     }
 }
