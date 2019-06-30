@@ -1,6 +1,7 @@
 package com.example.myfirstapplication;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -50,6 +51,10 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         TextView time = (TextView) convertView.findViewById(R.id.time);
         TextView category = (TextView) convertView.findViewById(R.id.category);
         CheckBox check = (CheckBox) convertView.findViewById(R.id.check);
+
+        if (overdueItems.get(position).getRepeat() != 0) {
+            name.setBackgroundColor(Color.parseColor("#21aaff"));
+        }
 
         //set click listener on checkbox and code animation
         final View finalConvertView = convertView;

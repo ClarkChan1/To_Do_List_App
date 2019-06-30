@@ -309,10 +309,9 @@ public class MainActivity extends AppCompatActivity {
         if (section.equals("todo")) {
             DataManager.saveItems(this, "ListItems.json", listItems);
             itemAdapter.notifyDataSetChanged();
-        }
-        //if we are inserting item into the to do section, make a notification
-        //todo (I did a bit already but)change this to make notifications set at a certain date instead of just a certain time in the current day
-        if (section.equals("todo")) {
+
+            //if we are inserting item into the to do section, make a notification
+            //todo (I did a bit already but)change this to make notifications set at a certain date instead of just a certain time in the current day
             Calendar taskDueTime = Calendar.getInstance();
             taskDueTime.setTimeInMillis(toAdd.getTimeStamp());
             setNotification(taskDueTime, toAdd.getName());
