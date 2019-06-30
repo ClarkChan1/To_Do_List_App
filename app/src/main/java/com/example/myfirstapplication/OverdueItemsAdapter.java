@@ -25,6 +25,7 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
     private MainActivity context;
     private ArrayList<Item> overdueItems;
     private ArrayList<Item> toComplete;
+    private ArrayList<Item> repeatingItems;
     private int template_resource;
     static int instances = 0;
 
@@ -33,6 +34,7 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         this.context = context;
         this.overdueItems = overdueItems;
         toComplete = new ArrayList<>();
+        repeatingItems = new ArrayList<>();
         template_resource = resource;
     }
 
@@ -62,14 +64,51 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
                     public void run() {
                         toComplete.add(overdueItems.get(position));
                         instances--;
-                        if (instances== 0) {
+                        if (instances == 0) {
                             overdueItems.removeAll(toComplete);
                             for (int a = 0; a < toComplete.size(); a++) {
-                                //get time of completion
-                                Calendar currentTime = Calendar.getInstance();
-                                toComplete.get(a).setTimeStamp(currentTime.getTimeInMillis());
-                                context.insertItem(context.completedItems, toComplete.get(a), "completed");
+                                Item currentItem = toComplete.get(a);
+                                //put item in repeatingItems BEFORE changing the timeStamp to completion time because we want the initial due date when calculating the next due date for repeating items
+                                if (currentItem.getRepeat() != 0) {
+                                    repeatingItems.add(currentItem);
+                                }
+                                if (currentItem.getRepeat() == 0) {
+                                    //get time of completion
+                                    Calendar currentTime = Calendar.getInstance();
+                                    currentItem.setTimeStamp(currentTime.getTimeInMillis());
+                                    context.insertItem(context.completedItems, currentItem, "completed");
+                                }
                             }
+
+                            //add back any items that are set to repeating and set their time to be the next interval
+                            for (int b = 0; b < repeatingItems.size(); b++) {
+                                Item currentItem = repeatingItems.get(b);
+                                Calendar currentItemTime = Calendar.getInstance();
+                                currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
+                                switch (currentItem.getRepeat()) {
+                                    case 1:
+                                        currentItemTime.add(Calendar.DAY_OF_MONTH, 1);
+                                        break;
+                                    case 2:
+                                        currentItemTime.add(Calendar.WEEK_OF_MONTH, 1);
+                                        break;
+                                    case 3:
+                                        currentItemTime.add(Calendar.MONTH, 1);
+                                        break;
+                                    case 4:
+                                        currentItemTime.add(Calendar.YEAR, 1);
+                                        break;
+                                }
+                                currentItem.setTimeStamp(currentItemTime.getTimeInMillis());
+                                //compare this new due time to current time to decide whether to keep it in overdue or send it back to the to do section
+                                Calendar currentTime = Calendar.getInstance();
+                                if (currentItemTime.compareTo(currentTime) > 0) {
+                                    context.insertItem(context.listItems, currentItem, "todo");
+                                } else {
+                                    context.insertItem(context.overdueItems, currentItem, "overdue");
+                                }
+                            }
+
                             context.switchAdapter(context.overdueItemsAdapter);
                             //save everything
                             context.saveItems("OverdueItems.json", overdueItems);
@@ -162,7 +201,7 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         return itemTime;
     }
 
-    public void showPopup(final int position){
+    public void showPopup(final int position) {
         final Dialog itemPopup = new Dialog(context);
         itemPopup.setContentView(R.layout.overdue_item_popup);
         ImageView close = (ImageView) itemPopup.findViewById(R.id.close);
@@ -172,11 +211,11 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
                 itemPopup.dismiss();
             }
         });
-        TextView name = (TextView)itemPopup.findViewById(R.id.name);
-        TextView category= (TextView)itemPopup.findViewById(R.id.category);
-        TextView dueDate= (TextView)itemPopup.findViewById(R.id.dueDate);
-        TextView dueTime= (TextView)itemPopup.findViewById(R.id.dueTime);
-        TextView deleteItem = (TextView)itemPopup.findViewById(R.id.deleteButton);
+        TextView name = (TextView) itemPopup.findViewById(R.id.name);
+        TextView category = (TextView) itemPopup.findViewById(R.id.category);
+        TextView dueDate = (TextView) itemPopup.findViewById(R.id.dueDate);
+        TextView dueTime = (TextView) itemPopup.findViewById(R.id.dueTime);
+        TextView deleteItem = (TextView) itemPopup.findViewById(R.id.deleteButton);
 
         name.setText(overdueItems.get(position).getName());
         category.setText(overdueItems.get(position).getCategory());

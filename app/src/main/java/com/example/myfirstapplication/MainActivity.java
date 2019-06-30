@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Item> completedItems = new ArrayList<>();
     CompletedItemsAdapter completedItemsAdapter;
 
-    private ArrayList<Item> overdueItems = new ArrayList<>();
+    ArrayList<Item> overdueItems = new ArrayList<>();
     OverdueItemsAdapter overdueItemsAdapter;
 
     private int currentSection = 0;
