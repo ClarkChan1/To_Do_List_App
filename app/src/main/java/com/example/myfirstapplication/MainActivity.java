@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout header;
     ImageButton actionButton;
 
-    private ArrayList<Item> listItems = new ArrayList<>();
+    ArrayList<Item> listItems = new ArrayList<>();
     ItemAdapter itemAdapter;
 
     ArrayList<Item> completedItems = new ArrayList<>();

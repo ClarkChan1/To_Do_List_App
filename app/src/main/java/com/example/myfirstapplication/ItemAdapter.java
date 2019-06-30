@@ -1,6 +1,7 @@
 package com.example.myfirstapplication;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -25,6 +26,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
     private MainActivity context;
     private ArrayList<Item> items;
     private ArrayList<Item> toRemove;
+    private ArrayList<Item> repeatingItems;
     private int template_resource;
     static int instances = 0;
 
@@ -33,6 +35,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         this.context = context;
         this.items = items;
         toRemove = new ArrayList<>();
+        repeatingItems = new ArrayList<>();
         template_resource = resource;
     }
 
@@ -48,6 +51,10 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         TextView name = (TextView) convertView.findViewById(R.id.name);
         TextView time = (TextView) convertView.findViewById(R.id.time);
         TextView category = (TextView) convertView.findViewById(R.id.category);
+
+        if (items.get(position).getRepeat() != 0) {
+            name.setBackgroundColor(Color.parseColor("#21aaff"));
+        }
 
         //set click listener on checkbox and code animation
         final View finalConvertView = convertView;
@@ -67,18 +74,52 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
                             //cancel notifications for all the items to remove and in the same loop add them to completedItems list
                             for (int a = 0; a < toRemove.size(); a++) {
-                                //get time of completion
+                                Item currentItem = toRemove.get(a);
+                                //put item in repeatingItems BEFORE changing the timeStamp to completion time because we want the initial due date when calculating the next due date for repeating items
+                                if (currentItem.getRepeat() != 0) {
+                                    repeatingItems.add(new Item(currentItem.getName(), currentItem.getCategory(), currentItem.getTimeStamp(), currentItem.getNotificationID(), currentItem.getRepeat()));
+                                }
+                                //get time of completion and set currentItem's timeStamp to it
                                 Calendar currentTime = Calendar.getInstance();
-                                toRemove.get(a).setTimeStamp(currentTime.getTimeInMillis());
-                                context.insertItem(context.completedItems, toRemove.get(a), "completed");
-                                context.cancelNotification(toRemove.get(a).getNotificationID());
+                                currentItem.setTimeStamp(currentTime.getTimeInMillis());
+                                //only put the item into the completed section if it is not repeating
+                                if (currentItem.getRepeat() == 0) {
+                                    context.insertItem(context.completedItems, currentItem, "completed");
+                                }
+                                context.cancelNotification(currentItem.getNotificationID());
+
                             }
+                            //add back any items that are set to repeating and set their time to be the next interval
+                            for (int b = 0; b < repeatingItems.size(); b++) {
+                                Item currentItem = repeatingItems.get(b);
+                                Calendar currentItemTime = Calendar.getInstance();
+                                currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
+                                switch (currentItem.getRepeat()) {
+                                    case 1:
+                                        currentItemTime.add(Calendar.DAY_OF_MONTH, 1);
+                                        break;
+                                    case 2:
+                                        currentItemTime.add(Calendar.WEEK_OF_MONTH, 1);
+                                        break;
+                                    case 3:
+                                        currentItemTime.add(Calendar.MONTH, 1);
+                                        break;
+                                    case 4:
+                                        currentItemTime.add(Calendar.YEAR, 1);
+                                        break;
+                                }
+                                currentItem.setTimeStamp(currentItemTime.getTimeInMillis());
+                                context.insertItem(context.listItems, currentItem, "todo");
+                            }
+
                             context.resetAdapter();
                             //save everything
                             context.saveItems("ListItems.json", items);
                             context.saveItems("CompletedItems.json", context.completedItems);
                             //reset toRemove so it doesn't just infinitely grow
                             toRemove = new ArrayList<>();
+                            //reset repeatingItems so it doesn't just infinitely grow
+                            repeatingItems = new ArrayList<>();
                         }
                     }
                 }, 1000);
