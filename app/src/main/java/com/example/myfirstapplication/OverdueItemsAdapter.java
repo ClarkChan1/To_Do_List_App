@@ -107,7 +107,6 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
                                 currentItem.setTimeStamp(currentItemTime.getTimeInMillis());
                                 //compare this new due time to current time to decide whether to keep it in overdue or send it back to the to do section
                                 Calendar currentTime = Calendar.getInstance();
-                                currentTime.add(Calendar.WEEK_OF_MONTH, 1);
                                 if (currentItemTime.compareTo(currentTime) > 0) {
                                     context.insertItem(context.listItems, currentItem, "todo");
                                 } else {
