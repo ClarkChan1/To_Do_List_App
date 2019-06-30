@@ -107,6 +107,7 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
                                 currentItem.setTimeStamp(currentItemTime.getTimeInMillis());
                                 //compare this new due time to current time to decide whether to keep it in overdue or send it back to the to do section
                                 Calendar currentTime = Calendar.getInstance();
+                                currentTime.add(Calendar.WEEK_OF_MONTH, 1);
                                 if (currentItemTime.compareTo(currentTime) > 0) {
                                     context.insertItem(context.listItems, currentItem, "todo");
                                 } else {
@@ -120,6 +121,8 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
                             context.saveItems("CompletedItems.json", context.completedItems);
                             //reset toComplete so it doesn't just infinitely grow
                             toComplete = new ArrayList<>();
+                            //reset repeatingItems so it doesn't just infinitely grow
+                            repeatingItems = new ArrayList<>();
                         }
                     }
                 }, 1000);
