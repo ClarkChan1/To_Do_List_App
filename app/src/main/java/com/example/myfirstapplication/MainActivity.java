@@ -290,11 +290,12 @@ public class MainActivity extends AppCompatActivity {
                 Item currentItem = addTo.get(a);
                 Calendar currentItemTime = Calendar.getInstance();
                 currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
-                if (section.equals("completed")) {
+                //descending order in terms of current millis
+                if (section.equals("completed") || section.equals("overdue")) {
                     addTo.add(a, toAdd);
                     added = true;
                     break; //since the end condition is a<addTo.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
-                } else {
+                } else { //ascending order in terms of current millis
                     if (toAddTime.compareTo(currentItemTime) < 0) {
                         addTo.add(a, toAdd);
                         added = true;
@@ -418,10 +419,10 @@ public class MainActivity extends AppCompatActivity {
             Calendar currentItemDueTime = Calendar.getInstance();
             currentItemDueTime.setTimeInMillis(currentItem.getTimeStamp() + millisInMinute); //add a minute bc it's only overdue a minute after that time
             if (currentItemDueTime.compareTo(Calendar.getInstance()) < 0) {
+                insertItem(overdueItems, currentItem, "overdue");
                 toPutInOverdue.add(currentItem);
             }
         }
-        overdueItems.addAll(toPutInOverdue);
         listItems.removeAll(toPutInOverdue);
         DataManager.saveItems(this, "OverdueItems.json", overdueItems);
         DataManager.saveItems(this, "ListItems.json", listItems);
