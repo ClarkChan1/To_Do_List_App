@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
         cancelNotification(listItems.get(position).getNotificationID());
         listItems.remove(position); //MAY CAUSE ERROR IF DEFAULT VALUE IS USED
         DataManager.saveItems(this, "ListItems.json", listItems);
-        itemAdapter.notifyDataSetChanged();
+        resetAdapter();
     }
 
     public void insertItem(ArrayList<Item> addTo, Item toAdd, String section) {
