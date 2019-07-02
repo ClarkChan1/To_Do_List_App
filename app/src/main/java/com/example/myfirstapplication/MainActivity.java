@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
 //    Typeface headerFont;
 //    Typeface professionalFont;
 
-    final int millisInMinute = 60000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -495,7 +493,7 @@ public class MainActivity extends AppCompatActivity {
         for (int a = 0; a < listItems.size(); a++) {
             Item currentItem = listItems.get(a);
             Calendar currentItemDueTime = Calendar.getInstance();
-            currentItemDueTime.setTimeInMillis(currentItem.getTimeStamp() + millisInMinute); //add a minute bc it's only overdue a minute after that time
+            currentItemDueTime.add(Calendar.MINUTE,1); //add a minute bc it's only overdue a minute after that time
             if (currentItemDueTime.compareTo(Calendar.getInstance()) < 0) {
                 insertItem(overdueItems, currentItem, "overdue");
                 toPutInOverdue.add(currentItem);
