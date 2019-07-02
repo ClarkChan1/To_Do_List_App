@@ -26,6 +26,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     private ListView listView;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private int currentSection = 0;
 
     int notificationID;
+
+    ListOrderTracker listOrderTracker;
 
     Handler displayDateAndTime;
     Runnable dateAndTimeRun;
@@ -114,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 //        isPaused = true;
         displayDateAndTime.removeCallbacks(dateAndTimeRun);
         DataManager.saveNotificationID(this, notificationID);
+        DataManager.saveListOrders(this, listOrderTracker);
     }
 
     @Override
@@ -165,6 +169,8 @@ public class MainActivity extends AppCompatActivity {
         listItems = DataManager.readItems(this, "ListItems.json");
         overdueItems = DataManager.readItems(this, "OverdueItems.json");
         completedItems = DataManager.readItems(this, "CompletedItems.json");
+        //get the orders of the lists
+        listOrderTracker = DataManager.readListOrders(this, "ListOrders.json");
     }
 
     public void resetAdapter() {
@@ -251,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
         deleteOverdueDialog.show();
     }
 
-    public void createItem(){
+    public void createItem() {
         Intent createIntent = new Intent(this, create_item.class);
         createIntent.putExtra("type", "create");
         createIntent.putExtra("notificationID", notificationID);
@@ -283,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
             addTo.add(toAdd);
         } else {
             boolean added = false;
+            boolean ascending;
             Calendar toAddTime = Calendar.getInstance();
             toAddTime.setTimeInMillis(toAdd.getTimeStamp());
 
@@ -290,21 +297,57 @@ public class MainActivity extends AppCompatActivity {
                 Item currentItem = addTo.get(a);
                 Calendar currentItemTime = Calendar.getInstance();
                 currentItemTime.setTimeInMillis(currentItem.getTimeStamp());
-                //descending order in terms of current millis
-                if (section.equals("completed") || section.equals("overdue")) {
-                    addTo.add(a, toAdd);
-                    added = true;
-                    break; //since the end condition is a<addTo.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
-                } else { //ascending order in terms of current millis
+                ascending = false;
+                switch (section) {
+                    case "todo":
+                        if (listOrderTracker.todoAscending) {
+                            ascending = true;
+                        }
+                        break;
+                    case "completed":
+                        if (listOrderTracker.completedAscending) {
+                            ascending = true;
+                        }
+                        break;
+                    case "overdue":
+                        if (listOrderTracker.overdueAscending) {
+                            ascending = true;
+                        }
+                        break;
+                }
+                if (ascending) {
                     if (toAddTime.compareTo(currentItemTime) < 0) {
                         addTo.add(a, toAdd);
                         added = true;
                         break; //since the end condition is a<addTo.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
                     }
+                } else {
+                    if (toAddTime.compareTo(currentItemTime) > 0) {
+                        addTo.add(a, toAdd);
+                        added = true;
+                        break; //since the end condition is a<addTo.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
+                    }
                 }
+//                //descending order in terms of current millis
+//                if (section.equals("completed") || section.equals("overdue")) {
+//                    addTo.add(a, toAdd);
+//                    added = true;
+//                    break; //since the end condition is a<addTo.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
+//                } else { //ascending order in terms of current millis
+//                    if (toAddTime.compareTo(currentItemTime) < 0) {
+//                        addTo.add(a, toAdd);
+//                        added = true;
+//                        break; //since the end condition is a<addTo.size(), this will run infinitely without this break statement because we added an item to the list, so size increased by 1 and will keep doing so as we add the same element again and again
+//                    }
+//                }
             }
             if (!added) {
                 addTo.add(toAdd);
+//                if (ascending) {
+//                    addTo.add(toAdd);
+//                } else {
+//                    addTo.add(0, toAdd);
+//                }
             }
         }
         if (section.equals("todo")) {
@@ -318,6 +361,23 @@ public class MainActivity extends AppCompatActivity {
             setNotification(taskDueTime, toAdd.getName());
             notificationID++;
             DataManager.saveNotificationID(this, notificationID);
+        }
+    }
+
+    public void reverseList(int section) {
+        switch (section) {
+            case 0:
+                Collections.reverse(listItems);
+                resetAdapter();
+                break;
+            case 1:
+                Collections.reverse(completedItems);
+                switchAdapter(completedItemsAdapter);
+                break;
+            case 2:
+                Collections.reverse(overdueItems);
+                switchAdapter(overdueItemsAdapter);
+                break;
         }
     }
 
@@ -377,6 +437,12 @@ public class MainActivity extends AppCompatActivity {
             checkOverdue();
             itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
             switchAdapter(itemAdapter);
+        } else if (currentSection == 0) {
+            reverseList(currentSection);
+            switchAdapter(itemAdapter);
+            listOrderTracker.todoAscending = !(listOrderTracker.todoAscending);
+            saveItems("ListItems.json", listItems);
+            DataManager.saveListOrders(this, listOrderTracker);
         }
     }
 
@@ -392,6 +458,12 @@ public class MainActivity extends AppCompatActivity {
             completedItems = DataManager.readItems(this, "CompletedItems.json");
             completedItemsAdapter = new CompletedItemsAdapter(this, R.layout.completed_item_template, completedItems);
             switchAdapter(completedItemsAdapter);
+        } else if (currentSection == 1) {
+            reverseList(currentSection);
+            switchAdapter(completedItemsAdapter);
+            listOrderTracker.completedAscending = !(listOrderTracker.completedAscending);
+            saveItems("CompletedItems.json", completedItems);
+            DataManager.saveListOrders(this, listOrderTracker);
         }
     }
 
@@ -408,6 +480,12 @@ public class MainActivity extends AppCompatActivity {
             checkOverdue();
             overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.item_template, overdueItems);
             switchAdapter(overdueItemsAdapter);
+        } else if (currentSection == 2) {
+            reverseList(currentSection);
+            switchAdapter(overdueItemsAdapter);
+            listOrderTracker.overdueAscending = !(listOrderTracker.overdueAscending);
+            saveItems("OverdueItems.json", overdueItems);
+            DataManager.saveListOrders(this, listOrderTracker);
         }
     }
 
@@ -450,5 +528,6 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putInt("section", currentSection);
         DataManager.saveNotificationID(this, notificationID);
+        DataManager.saveListOrders(this, listOrderTracker);
     }
 }

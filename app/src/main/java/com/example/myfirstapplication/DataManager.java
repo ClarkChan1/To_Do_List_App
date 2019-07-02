@@ -153,4 +153,41 @@ public class DataManager {
         }
     }
 
+    public static void saveListOrders(Context context, ListOrderTracker listOrdersToSave) {
+        try {
+            String jsonString = gson.toJson(listOrdersToSave);
+            FileOutputStream fos = context.openFileOutput("ListOrders.json", Context.MODE_PRIVATE);
+            fos.write(jsonString.getBytes());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("FileNotFoundException while trying to save!");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("IOException while trying to save!");
+            e.printStackTrace();
+        }
+    }
+
+    public static ListOrderTracker readListOrders(Context context, String fileName){
+        ListOrderTracker listOrders = null;
+        try {
+            //Create a FileOutputStream for the case where the device doesn't have the json file yet
+            File currentJSONFile = new File(context.getFilesDir().getAbsolutePath() + "/" + fileName);
+            if (!currentJSONFile.exists()) {
+                FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+                fos.close();
+            }
+            FileInputStream fis = context.openFileInput(fileName);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            listOrders = gson.fromJson(br, ListOrderTracker.class);
+            fis.close();
+            isr.close();
+            br.close();
+        } catch (IOException e) {
+            System.out.println("IOException while trying to load in readItems()!");
+            e.printStackTrace();
+        }
+        return listOrders == null ? (new ListOrderTracker(true, false, false)) : listOrders;
+    }
 }

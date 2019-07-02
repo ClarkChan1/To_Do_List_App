@@ -73,19 +73,28 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
         Calendar currentTime = Calendar.getInstance();
         String itemTime;
         if (currentTime.get(Calendar.YEAR) == currentItemTime.get(Calendar.YEAR)) {
-            //show month
-            SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");
-            monthFormatter.setCalendar(currentItemTime);
-            itemTime = monthFormatter.format(currentItemTime.getTime());
-            if (currentTime.get(Calendar.WEEK_OF_MONTH) == currentItemTime.get(Calendar.WEEK_OF_MONTH)) {
-                if (currentTime.get(Calendar.DAY_OF_MONTH) == currentItemTime.get(Calendar.DAY_OF_MONTH)) {
-                    itemTime = getTimeString(currentItem);
+            if (currentTime.get(Calendar.MONTH) == currentItemTime.get(Calendar.MONTH)) {
+                if (currentTime.get(Calendar.WEEK_OF_MONTH) == currentItemTime.get(Calendar.WEEK_OF_MONTH)) {
+                    if (currentTime.get(Calendar.DAY_OF_MONTH) == currentItemTime.get(Calendar.DAY_OF_MONTH)) {
+                        //show due time
+                        itemTime = getTimeString(currentItem);
+                    } else{
+                        //show day of week like mon, tue, wed
+                        SimpleDateFormat dayOfWeekFormatter = new SimpleDateFormat("E");
+                        dayOfWeekFormatter.setCalendar(currentItemTime);
+                        itemTime = dayOfWeekFormatter.format(currentItemTime.getTime());
+                    }
                 } else {
-                    //show day of week like mon, tue, wed
-                    SimpleDateFormat dayOfWeekFormatter = new SimpleDateFormat("E");
-                    dayOfWeekFormatter.setCalendar(currentItemTime);
-                    itemTime = dayOfWeekFormatter.format(currentItemTime.getTime());
+                    //show current month
+                    SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");
+                    monthFormatter.setCalendar(currentItemTime);
+                    itemTime = monthFormatter.format(currentItemTime.getTime());
                 }
+            } else {
+                //show month
+                SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");
+                monthFormatter.setCalendar(currentItemTime);
+                itemTime = monthFormatter.format(currentItemTime.getTime());
             }
         } else {
             SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
