@@ -14,9 +14,24 @@
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:src="@drawable/x_out"
         android:layout_gravity="right"
+        />
+
+    <TextView
+        android:id="@+id/repeating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_border_blue"
+        android:text="repeating"
+        android:textSize="18sp"
         />
 
     <TextView

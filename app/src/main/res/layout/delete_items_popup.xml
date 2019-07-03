@@ -55,7 +55,7 @@
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:gravity="center"
-            android:background="@drawable/rounded_border_blue"
+            android:background="@drawable/rounded_border_white"
             android:text="cancel"
             android:textSize="18sp"/>
     </LinearLayout>

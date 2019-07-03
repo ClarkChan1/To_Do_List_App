@@ -166,7 +166,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                     if (currentTime.get(Calendar.DAY_OF_MONTH) == currentItemTime.get(Calendar.DAY_OF_MONTH)) {
                         //show due time
                         itemTime = getTimeString(currentItem);
-                    } else{
+                    } else {
                         //show day of week like mon, tue, wed
                         SimpleDateFormat dayOfWeekFormatter = new SimpleDateFormat("E");
                         dayOfWeekFormatter.setCalendar(currentItemTime);
@@ -230,14 +230,18 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         });
         TextView name = (TextView) itemPopup.findViewById(R.id.name);
         TextView category = (TextView) itemPopup.findViewById(R.id.category);
+        TextView repeating = (TextView) itemPopup.findViewById(R.id.repeating);
         TextView dueDate = (TextView) itemPopup.findViewById(R.id.dueDate);
         TextView dueTime = (TextView) itemPopup.findViewById(R.id.dueTime);
         TextView editButton = (TextView) itemPopup.findViewById(R.id.editButton);
         TextView deleteButton = (TextView) itemPopup.findViewById(R.id.deleteButton);
 
+
         name.setText(items.get(position).getName());
         category.setText(items.get(position).getCategory());
-
+        if (items.get(position).getRepeat() == 0) {
+            repeating.setVisibility(View.INVISIBLE);
+        }
         Item currentItem = items.get(position);
         Calendar itemdueDate = Calendar.getInstance();
         itemdueDate.setTimeInMillis(currentItem.getTimeStamp());
