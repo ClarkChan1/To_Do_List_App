@@ -29,6 +29,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
     private ArrayList<Item> repeatingItems;
     private int template_resource;
     static int instances = 0;
+    static Dialog itemPopup;
 
     public ItemAdapter(MainActivity context, int resource, ArrayList<Item> items) {
         super(context, resource, items);
@@ -217,7 +218,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
     }
 
     public void showPopup(final int position) {
-        final Dialog itemPopup = new Dialog(context);
+        itemPopup = new Dialog(context);
         itemPopup.setContentView(R.layout.item_popup);
         ImageView close = (ImageView) itemPopup.findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {

@@ -52,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
 
     Handler displayDateAndTime;
     Runnable dateAndTimeRun;
+
+    //dialogs we need to keep track of in case the user rotates the screen while the dialog is open.
+    Dialog deleteCompletedDialog;
+    Dialog deleteOverdueDialog;
+
+
     //global fonts to be used by all classes
 //    Typeface headerFont;
 //    Typeface professionalFont;
@@ -112,6 +118,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        switch (currentSection){
+            case 0:
+                if(ItemAdapter.itemPopup.isShowing()){
+                    ItemAdapter.itemPopup.dismiss();
+                }
+                break;
+            case 1:
+                if(CompletedItemsAdapter.itemPopup.isShowing()){
+                    CompletedItemsAdapter.itemPopup.dismiss();
+                } else if(deleteCompletedDialog.isShowing()){
+                    deleteCompletedDialog.dismiss();
+                }
+                break;
+            case 2:
+                if(OverdueItemsAdapter.itemPopup.isShowing()){
+                    OverdueItemsAdapter.itemPopup.dismiss();
+                } else if(deleteOverdueDialog.isShowing()){
+                    deleteOverdueDialog.dismiss();
+                }
+                break;
+        }
 //        isPaused = true;
         displayDateAndTime.removeCallbacks(dateAndTimeRun);
         DataManager.saveNotificationID(this, notificationID);
@@ -206,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deleteCompletedPopup() {
-        final Dialog deleteCompletedDialog = new Dialog(this);
+        deleteCompletedDialog = new Dialog(this);
         deleteCompletedDialog.setContentView(R.layout.delete_items_popup);
         TextView message = deleteCompletedDialog.findViewById(R.id.message);
         message.setText("Are you sure you want to delete ALL completed items?");
@@ -231,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deleteOverduePopup() {
-        final Dialog deleteOverdueDialog = new Dialog(this);
+        deleteOverdueDialog = new Dialog(this);
         deleteOverdueDialog.setContentView(R.layout.delete_items_popup);
         TextView message = deleteOverdueDialog.findViewById(R.id.message);
         message.setText("Are you sure you want to delete ALL overdue items?");

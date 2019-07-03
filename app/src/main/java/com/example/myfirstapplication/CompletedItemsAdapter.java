@@ -19,6 +19,7 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
     private MainActivity context;
     private int template_resource;
     private ArrayList<Item> completedItems;
+    static Dialog itemPopup;
 
     public CompletedItemsAdapter(MainActivity context, int resource, ArrayList<Item> completedItems) {
         super(context, resource, completedItems);
@@ -129,7 +130,7 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
     }
 
     public void showPopup(final int position) {
-        final Dialog itemPopup = new Dialog(context);
+        itemPopup = new Dialog(context);
         itemPopup.setContentView(R.layout.completed_item_popup);
         ImageView close = (ImageView) itemPopup.findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {

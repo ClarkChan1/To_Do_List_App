@@ -29,6 +29,7 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
     private ArrayList<Item> repeatingItems;
     private int template_resource;
     static int instances = 0;
+    static Dialog itemPopup;
 
     public OverdueItemsAdapter(MainActivity context, int resource, ArrayList<Item> overdueItems) {
         super(context, resource, overdueItems);
@@ -218,7 +219,7 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
     }
 
     public void showPopup(final int position) {
-        final Dialog itemPopup = new Dialog(context);
+        itemPopup = new Dialog(context);
         itemPopup.setContentView(R.layout.overdue_item_popup);
         ImageView close = (ImageView) itemPopup.findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
