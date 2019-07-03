@@ -101,7 +101,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 Calendar setDateAndTime = Calendar.getInstance();
                 setDateAndTime.setTimeInMillis(data.getLongExtra("timeStamp", -1));
                 dueYear = setDateAndTime.get(Calendar.YEAR);
-                dueMonth =setDateAndTime.get(Calendar.MONTH);
+                dueMonth = setDateAndTime.get(Calendar.MONTH);
                 dueDay = setDateAndTime.get(Calendar.DAY_OF_MONTH);
                 dueHour = setDateAndTime.get(Calendar.HOUR_OF_DAY);
                 dueMinute = setDateAndTime.get(Calendar.MINUTE);
@@ -172,7 +172,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         textTime.setText(timeString);
     }
 
-    public void setDateString(){
+    public void setDateString() {
         TextView textDate;
         textDate = findViewById(R.id.selectDueDate);
         Calendar datePicked = Calendar.getInstance();
@@ -191,8 +191,8 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         }
     }
 
-    public void actionButtonClicked(View v){
-        if(activityType.equals("create")){
+    public void actionButtonClicked(View v) {
+        if (activityType.equals("create")) {
             onCreateButtonClicked();
         } else {
             onEditButtonClicked();

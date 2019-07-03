@@ -114,7 +114,7 @@ public class DataManager {
 //        }
 //    }
 
-    public static int readNotificationID(Context context, String fileName){
+    public static int readNotificationID(Context context, String fileName) {
         int notificationID = 0;
         try {
             //Create a FileOutputStream for the case where the device doesn't have the json file yet
@@ -139,7 +139,7 @@ public class DataManager {
         return notificationID;
     }
 
-    public static void saveNotificationID(Context context, int toSave){
+    public static void saveNotificationID(Context context, int toSave) {
         try {
             FileOutputStream fos = context.openFileOutput("NotificationID.json", Context.MODE_PRIVATE);
             fos.write(String.valueOf(toSave).getBytes());
@@ -168,7 +168,7 @@ public class DataManager {
         }
     }
 
-    public static ListOrderTracker readListOrders(Context context, String fileName){
+    public static ListOrderTracker readListOrders(Context context, String fileName) {
         ListOrderTracker listOrders = null;
         try {
             //Create a FileOutputStream for the case where the device doesn't have the json file yet

@@ -16,13 +16,15 @@ public class NotificationHelper extends ContextWrapper {
     public static final String channelName = "to do list";
 
     private NotificationManager manager;
+
     public NotificationHelper(Context base) {
         super(base);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        createChannels();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            createChannels();
     }
+
     @TargetApi(Build.VERSION_CODES.O)
-    public void createChannels(){
+    public void createChannels() {
         NotificationChannel toDoListChannel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_DEFAULT);
         toDoListChannel.enableLights(true);
         toDoListChannel.enableVibration(true);
@@ -32,14 +34,14 @@ public class NotificationHelper extends ContextWrapper {
         getManager().createNotificationChannel(toDoListChannel);
     }
 
-    public NotificationManager getManager(){
-        if(manager == null){
+    public NotificationManager getManager() {
+        if (manager == null) {
             manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         }
         return manager;
     }
 
-    public NotificationCompat.Builder getChannelNotification(String title, String message){
+    public NotificationCompat.Builder getChannelNotification(String title, String message) {
         Intent resultIntent = new Intent(this, MainActivity.class);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 1, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         return new NotificationCompat.Builder(getApplicationContext(), channelID)

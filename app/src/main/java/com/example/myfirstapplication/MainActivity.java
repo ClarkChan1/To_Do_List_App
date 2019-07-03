@@ -494,7 +494,7 @@ public class MainActivity extends AppCompatActivity {
             Item currentItem = listItems.get(a);
             Calendar currentItemDueTime = Calendar.getInstance();
             currentItemDueTime.setTimeInMillis(currentItem.getTimeStamp()); //add a minute bc it's only overdue a minute after that time
-            currentItemDueTime.add(Calendar.MINUTE,1);
+            currentItemDueTime.add(Calendar.MINUTE, 1);
             if (currentItemDueTime.compareTo(Calendar.getInstance()) < 0) {
                 insertItem(overdueItems, currentItem, "overdue");
                 toPutInOverdue.add(currentItem);

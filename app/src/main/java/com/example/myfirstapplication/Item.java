@@ -45,15 +45,21 @@ public class Item implements Parcelable {
         return category;
     }
 
-    public long getTimeStamp() { return timeStamp; }
+    public long getTimeStamp() {
+        return timeStamp;
+    }
 
-    public void setTimeStamp(long timeStamp) { this.timeStamp = timeStamp; }
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 
     public int getNotificationID() {
         return notificationID;
     }
 
-    public int getRepeat() { return repeat; }
+    public int getRepeat() {
+        return repeat;
+    }
 
     @Override
     public int describeContents() {

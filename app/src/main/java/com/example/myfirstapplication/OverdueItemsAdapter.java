@@ -167,7 +167,7 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
                     if (currentTime.get(Calendar.DAY_OF_MONTH) == currentItemTime.get(Calendar.DAY_OF_MONTH)) {
                         //show due time
                         itemTime = getTimeString(currentItem);
-                    } else{
+                    } else {
                         //show day of week like mon, tue, wed
                         SimpleDateFormat dayOfWeekFormatter = new SimpleDateFormat("E");
                         dayOfWeekFormatter.setCalendar(currentItemTime);

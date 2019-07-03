@@ -17,6 +17,6 @@ public class DatePickerFragment extends DialogFragment {
         int currentYear = c.get(Calendar.YEAR);
         int currentMonth = c.get(Calendar.MONTH);
         int currentDay = c.get(Calendar.DAY_OF_MONTH);
-        return new DatePickerDialog(getActivity(),(DatePickerDialog.OnDateSetListener)getActivity(), currentYear, currentMonth, currentDay);
+        return new DatePickerDialog(getActivity(), (DatePickerDialog.OnDateSetListener) getActivity(), currentYear, currentMonth, currentDay);
     }
 }

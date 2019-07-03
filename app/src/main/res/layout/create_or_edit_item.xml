@@ -56,8 +56,8 @@
             android:id="@+id/radioGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_weight="1">
 
             <RadioButton
                 android:id="@+id/radio1"
@@ -86,8 +86,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="Due Date"
             android:textSize="18sp" />
 
@@ -98,8 +98,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:onClick="selectDateButtonClicked"
             android:gravity="center"
+            android:onClick="selectDateButtonClicked"
             android:text="click here"
             android:textSize="18sp" />
 
@@ -116,8 +116,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="Due Time"
             android:textSize="18sp" />
 
@@ -128,8 +128,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:onClick="selectTimeButtonClicked"
             android:gravity="center"
+            android:onClick="selectTimeButtonClicked"
             android:text="click here"
             android:textSize="18sp" />
 
@@ -145,8 +145,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="Repeat"
             android:textSize="18sp" />
 
@@ -155,8 +155,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="never"
             android:textSize="18sp" />
 

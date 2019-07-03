@@ -78,7 +78,7 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
                     if (currentTime.get(Calendar.DAY_OF_MONTH) == currentItemTime.get(Calendar.DAY_OF_MONTH)) {
                         //show due time
                         itemTime = getTimeString(currentItem);
-                    } else{
+                    } else {
                         //show day of week like mon, tue, wed
                         SimpleDateFormat dayOfWeekFormatter = new SimpleDateFormat("E");
                         dayOfWeekFormatter.setCalendar(currentItemTime);
@@ -128,7 +128,7 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
         return itemTime;
     }
 
-    public void showPopup(final int position){
+    public void showPopup(final int position) {
         final Dialog itemPopup = new Dialog(context);
         itemPopup.setContentView(R.layout.completed_item_popup);
         ImageView close = (ImageView) itemPopup.findViewById(R.id.close);
@@ -138,11 +138,11 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
                 itemPopup.dismiss();
             }
         });
-        TextView name = (TextView)itemPopup.findViewById(R.id.name);
-        TextView category= (TextView)itemPopup.findViewById(R.id.category);
-        TextView dueDate= (TextView)itemPopup.findViewById(R.id.dueDate);
-        TextView dueTime= (TextView)itemPopup.findViewById(R.id.dueTime);
-        TextView deleteItem = (TextView)itemPopup.findViewById(R.id.deleteButton);
+        TextView name = (TextView) itemPopup.findViewById(R.id.name);
+        TextView category = (TextView) itemPopup.findViewById(R.id.category);
+        TextView dueDate = (TextView) itemPopup.findViewById(R.id.dueDate);
+        TextView dueTime = (TextView) itemPopup.findViewById(R.id.dueTime);
+        TextView deleteItem = (TextView) itemPopup.findViewById(R.id.deleteButton);
 
         name.setText(completedItems.get(position).getName());
         category.setText(completedItems.get(position).getCategory());
