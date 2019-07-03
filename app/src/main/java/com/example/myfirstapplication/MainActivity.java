@@ -99,6 +99,17 @@ public class MainActivity extends AppCompatActivity {
         actionButton = (ImageButton) findViewById(R.id.createItemButton);
 
 
+        //get lists
+        listItems = DataManager.readItems(this, "ListItems.json");
+        completedItems = DataManager.readItems(this, "CompletedItems.json");
+        overdueItems = DataManager.readItems(this, "OverdueItems.json");
+
+        //get adapters
+        itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
+        completedItemsAdapter = new CompletedItemsAdapter(this, R.layout.completed_item_template, completedItems);
+        overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.item_template, overdueItems);
+
+
         if (savedInstanceState != null) {
             currentSection = savedInstanceState.getInt("section");
         } else {
@@ -118,24 +129,36 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        switch (currentSection){
+        switch (currentSection) {
             case 0:
-                if(ItemAdapter.itemPopup.isShowing()){
-                    ItemAdapter.itemPopup.dismiss();
+                if (ItemAdapter.itemPopup != null) {
+                    if (ItemAdapter.itemPopup.isShowing()) {
+                        ItemAdapter.itemPopup.dismiss();
+                    }
                 }
                 break;
             case 1:
-                if(CompletedItemsAdapter.itemPopup.isShowing()){
-                    CompletedItemsAdapter.itemPopup.dismiss();
-                } else if(deleteCompletedDialog.isShowing()){
-                    deleteCompletedDialog.dismiss();
+                if (CompletedItemsAdapter.itemPopup != null) {
+                    if (CompletedItemsAdapter.itemPopup.isShowing()) {
+                        CompletedItemsAdapter.itemPopup.dismiss();
+                    }
+                }
+                if(deleteCompletedDialog != null){
+                    if(deleteCompletedDialog.isShowing()) {
+                        deleteCompletedDialog.dismiss();
+                    }
                 }
                 break;
             case 2:
-                if(OverdueItemsAdapter.itemPopup.isShowing()){
-                    OverdueItemsAdapter.itemPopup.dismiss();
-                } else if(deleteOverdueDialog.isShowing()){
-                    deleteOverdueDialog.dismiss();
+                if (OverdueItemsAdapter.itemPopup != null) {
+                    if (OverdueItemsAdapter.itemPopup.isShowing()) {
+                        OverdueItemsAdapter.itemPopup.dismiss();
+                    }
+                }
+                if(deleteOverdueDialog != null){
+                    if(deleteOverdueDialog.isShowing()) {
+                        deleteOverdueDialog.dismiss();
+                    }
                 }
                 break;
         }

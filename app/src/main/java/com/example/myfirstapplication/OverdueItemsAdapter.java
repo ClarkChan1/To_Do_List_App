@@ -230,13 +230,16 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         });
         TextView name = (TextView) itemPopup.findViewById(R.id.name);
         TextView category = (TextView) itemPopup.findViewById(R.id.category);
+        TextView repeating = (TextView) itemPopup.findViewById(R.id.repeating);
         TextView dueDate = (TextView) itemPopup.findViewById(R.id.dueDate);
         TextView dueTime = (TextView) itemPopup.findViewById(R.id.dueTime);
         TextView deleteItem = (TextView) itemPopup.findViewById(R.id.deleteButton);
 
         name.setText(overdueItems.get(position).getName());
         category.setText(overdueItems.get(position).getCategory());
-
+        if (overdueItems.get(position).getRepeat() == 0) {
+            repeating.setVisibility(View.INVISIBLE);
+        }
         Item currentItem = overdueItems.get(position);
         Calendar itemdueDate = Calendar.getInstance();
         itemdueDate.setTimeInMillis(currentItem.getTimeStamp());
