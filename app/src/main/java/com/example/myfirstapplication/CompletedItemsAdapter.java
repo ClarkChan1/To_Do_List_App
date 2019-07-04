@@ -87,13 +87,13 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
                     }
                 } else {
                     //show current month
-                    SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");
+                    SimpleDateFormat monthFormatter = new SimpleDateFormat("MMM dd");
                     monthFormatter.setCalendar(currentItemTime);
                     itemTime = monthFormatter.format(currentItemTime.getTime());
                 }
             } else {
                 //show month
-                SimpleDateFormat monthFormatter = new SimpleDateFormat("MMMM");
+                SimpleDateFormat monthFormatter = new SimpleDateFormat("MMM dd");
                 monthFormatter.setCalendar(currentItemTime);
                 itemTime = monthFormatter.format(currentItemTime.getTime());
             }
