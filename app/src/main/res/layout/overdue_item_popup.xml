@@ -17,19 +17,40 @@
         android:layout_marginBottom="20dp"
         android:src="@drawable/x_out" />
 
-    <TextView
-        android:id="@+id/repeating"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/repeatingLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/rounded_border_blue"
-        android:paddingLeft="20dp"
-        android:paddingTop="2dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="2dp"
-        android:text="repeating"
-        android:textSize="18sp" />
+        android:gravity="center"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/rounded_border_blue"
+            android:layout_marginRight="20dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="2dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="2dp"
+            android:text="repeating"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/repeating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/rounded_border_blue"
+            android:paddingLeft="20dp"
+            android:paddingTop="2dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="2dp"
+            android:text=""
+            android:textSize="18sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/name"
