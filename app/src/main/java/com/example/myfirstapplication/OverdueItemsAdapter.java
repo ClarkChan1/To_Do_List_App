@@ -54,7 +54,20 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         CheckBox check = (CheckBox) convertView.findViewById(R.id.check);
 
         if (overdueItems.get(position).getRepeat() != 0) {
-            name.setTextColor(Color.parseColor("#1453ff"));
+            switch (overdueItems.get(position).getRepeat()) {
+                case 1:
+                    name.setTextColor(Color.parseColor("#2f7deb"));
+                    break;
+                case 2:
+                    name.setTextColor(Color.parseColor("#0e9964"));
+                    break;
+                case 3:
+                    name.setTextColor(Color.parseColor("#9900ad"));
+                    break;
+                case 4:
+                    name.setTextColor(Color.parseColor("#c94f4f"));
+                    break;
+            }
         }
 
         //set click listener on checkbox and code animation
@@ -230,6 +243,7 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         });
         TextView name = (TextView) itemPopup.findViewById(R.id.name);
         TextView category = (TextView) itemPopup.findViewById(R.id.category);
+        LinearLayout repeatingLayout = (LinearLayout) itemPopup.findViewById(R.id.repeatingLayout);
         TextView repeating = (TextView) itemPopup.findViewById(R.id.repeating);
         TextView dueDate = (TextView) itemPopup.findViewById(R.id.dueDate);
         TextView dueTime = (TextView) itemPopup.findViewById(R.id.dueTime);
@@ -238,7 +252,27 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         name.setText(overdueItems.get(position).getName());
         category.setText(overdueItems.get(position).getCategory());
         if (overdueItems.get(position).getRepeat() == 0) {
-            repeating.setVisibility(View.INVISIBLE);
+            repeatingLayout.setVisibility(View.INVISIBLE);
+        } else {
+            switch (overdueItems.get(position).getRepeat()) {
+                case 1:
+                    repeating.setBackgroundResource(R.drawable.rounded_border_daily);
+                    repeating.setText("daily");
+                    break;
+                case 2:
+                    repeating.setBackgroundResource(R.drawable.rounded_border_weekly);
+                    repeating.setText("weekly");
+                    break;
+                case 3:
+                    repeating.setBackgroundResource(R.drawable.rounded_border_monthly);
+                    repeating.setText("monthly");
+                    break;
+                case 4:
+                    repeating.setBackgroundResource(R.drawable.rounded_border_yearly);
+                    repeating.setText("yearly");
+                    break;
+            }
+            repeating.setTextColor(Color.parseColor("#ffffff"));
         }
         Item currentItem = overdueItems.get(position);
         Calendar itemdueDate = Calendar.getInstance();
