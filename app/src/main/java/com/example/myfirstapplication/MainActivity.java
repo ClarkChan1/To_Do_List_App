@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     RelativeLayout bottomPortion;
     //variable so we can change color of header background when switching sections
-    LinearLayout mainBackground;
     LinearLayout header;
     ImageButton actionButton;
 
@@ -96,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         getData();
 
         listView = (ListView) findViewById(R.id.listView);
-        mainBackground = (LinearLayout) findViewById(R.id.mainLayout);
         header = (LinearLayout) findViewById(R.id.header);
         actionButton = (ImageButton) findViewById(R.id.createItemButton);
 
@@ -180,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
         switch (currentSection) {
             case 0:
                 growSection(findViewById(R.id.toDoSection));
-                mainBackground.setBackgroundResource(R.drawable.gradient_blue);
                 header.setBackgroundColor(Color.parseColor("#3385ff"));
                 actionButton.setImageResource(R.drawable.add_icon);
                 actionButton.setScaleType(ImageView.ScaleType.CENTER);
@@ -190,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1:
                 growSection(findViewById(R.id.completedSection));
-                mainBackground.setBackgroundResource(R.drawable.gradient_green);
                 header.setBackgroundColor(Color.parseColor("#00cc66"));
                 actionButton.setImageResource(R.drawable.delete_icon);
                 actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
@@ -199,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2:
                 growSection(findViewById(R.id.overdueSection));
-                mainBackground.setBackgroundResource(R.drawable.gradient_red);
                 header.setBackgroundColor(Color.parseColor("#fc0054"));
                 actionButton.setImageResource(R.drawable.delete_icon);
                 actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
@@ -478,7 +473,6 @@ public class MainActivity extends AppCompatActivity {
     public void switchToDo(View v) {
         if ((currentSection != 0) && (OverdueItemsAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
-            mainBackground.setBackgroundResource(R.drawable.gradient_blue);
             header.setBackgroundColor(Color.parseColor("#3385ff"));
             actionButton.setImageResource(R.drawable.add_icon);
             actionButton.setScaleType(ImageView.ScaleType.CENTER);
@@ -501,7 +495,6 @@ public class MainActivity extends AppCompatActivity {
     public void switchCompleted(View v) {
         if ((currentSection != 1) && (ItemAdapter.instances == 0) && (OverdueItemsAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
-            mainBackground.setBackgroundResource(R.drawable.gradient_green);
             header.setBackgroundColor(Color.parseColor("#00cc66"));
             actionButton.setImageResource(R.drawable.delete_icon);
 //            actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -523,7 +516,6 @@ public class MainActivity extends AppCompatActivity {
     public void switchOverdue(View v) {
         if ((currentSection != 2) && (ItemAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
-            mainBackground.setBackgroundResource(R.drawable.gradient_red);
             header.setBackgroundColor(Color.parseColor("#fc0054"));
             actionButton.setImageResource(R.drawable.delete_icon);
 //            actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);

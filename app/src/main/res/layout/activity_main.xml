@@ -5,7 +5,6 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_blue"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -87,9 +86,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:layout_weight="6"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="10sp" />
+        android:layout_weight="6" />
 
     <RelativeLayout
         android:id="@+id/bottomPortion"
