@@ -54,7 +54,7 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         CheckBox check = (CheckBox) convertView.findViewById(R.id.check);
 
         if (overdueItems.get(position).getRepeat() != 0) {
-            name.setBackgroundColor(Color.parseColor("#21aaff"));
+            name.setTextColor(Color.parseColor("#1453ff"));
         }
 
         //set click listener on checkbox and code animation

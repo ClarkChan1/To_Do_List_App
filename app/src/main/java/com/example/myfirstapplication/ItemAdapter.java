@@ -54,7 +54,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         TextView category = (TextView) convertView.findViewById(R.id.category);
 
         if (items.get(position).getRepeat() != 0) {
-            name.setBackgroundColor(Color.parseColor("#21aaff"));
+            name.setTextColor(Color.parseColor("#1453ff"));
         }
 
         //set click listener on checkbox and code animation
