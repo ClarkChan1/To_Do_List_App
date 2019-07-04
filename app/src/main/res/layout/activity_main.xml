@@ -5,7 +5,7 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#19334d"
+    android:background="@drawable/gradient_blue"
     android:orientation="vertical"
     tools:context=".MainActivity">
 

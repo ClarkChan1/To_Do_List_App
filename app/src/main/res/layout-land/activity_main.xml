@@ -39,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="#ffffff"
         android:orientation="horizontal">
 
         <TextView
@@ -80,7 +81,12 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="6"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10sp"/>
 
     <RelativeLayout
         android:id="@+id/bottomPortion"
