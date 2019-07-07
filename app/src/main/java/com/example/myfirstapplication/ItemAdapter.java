@@ -42,33 +42,16 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
+//        if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(template_resource, parent, false);
-        }
+//        }
 
         Item currentItem = (Item) getItem(position);
         CheckBox check = (CheckBox) convertView.findViewById(R.id.check);
         TextView name = (TextView) convertView.findViewById(R.id.name);
         TextView time = (TextView) convertView.findViewById(R.id.time);
         TextView category = (TextView) convertView.findViewById(R.id.category);
-
-        if (items.get(position).getRepeat() != 0) {
-            switch (items.get(position).getRepeat()) {
-                case 1:
-                    name.setTextColor(Color.parseColor("#2f7deb"));
-                    break;
-                case 2:
-                    name.setTextColor(Color.parseColor("#0e9964"));
-                    break;
-                case 3:
-                    name.setTextColor(Color.parseColor("#9900ad"));
-                    break;
-                case 4:
-                    name.setTextColor(Color.parseColor("#c94f4f"));
-                    break;
-            }
-        }
 
         //set click listener on checkbox and code animation
         final View finalConvertView = convertView;
@@ -154,6 +137,23 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 //                itemName.setSelected(true);
             }
         });
+
+        if (currentItem.getRepeat() != 0) {
+            switch (currentItem.getRepeat()) {
+                case 1:
+                    name.setTextColor(Color.parseColor("#2f7deb"));
+                    break;
+                case 2:
+                    name.setTextColor(Color.parseColor("#0e9964"));
+                    break;
+                case 3:
+                    name.setTextColor(Color.parseColor("#9900ad"));
+                    break;
+                case 4:
+                    name.setTextColor(Color.parseColor("#c94f4f"));
+                    break;
+            }
+        }
 
         //set time
         time.setText(getDueString(items.get(position)));
