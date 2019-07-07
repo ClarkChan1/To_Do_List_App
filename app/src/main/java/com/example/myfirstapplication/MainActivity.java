@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -178,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         switch (currentSection) {
             case 0:
                 growSection(findViewById(R.id.toDoSection));
-                header.setBackgroundColor(Color.parseColor("#3385ff"));
+                header.setBackgroundResource(R.drawable.gradient_blue);
                 actionButton.setImageResource(R.drawable.add_icon);
                 actionButton.setScaleType(ImageView.ScaleType.CENTER);
                 actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
@@ -187,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1:
                 growSection(findViewById(R.id.completedSection));
-                header.setBackgroundColor(Color.parseColor("#00cc66"));
+                header.setBackgroundResource(R.drawable.gradient_green);
                 actionButton.setImageResource(R.drawable.delete_icon);
                 actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
                 completedItemsAdapter = new CompletedItemsAdapter(this, R.layout.completed_item_template, completedItems);
@@ -195,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2:
                 growSection(findViewById(R.id.overdueSection));
-                header.setBackgroundColor(Color.parseColor("#fc0054"));
+                header.setBackgroundResource(R.drawable.gradient_red);
                 actionButton.setImageResource(R.drawable.delete_icon);
                 actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
                 overdueItemsAdapter = new OverdueItemsAdapter(this, R.layout.item_template, overdueItems);
@@ -473,7 +472,7 @@ public class MainActivity extends AppCompatActivity {
     public void switchToDo(View v) {
         if ((currentSection != 0) && (OverdueItemsAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
-            header.setBackgroundColor(Color.parseColor("#3385ff"));
+            header.setBackgroundResource(R.drawable.gradient_blue);
             actionButton.setImageResource(R.drawable.add_icon);
             actionButton.setScaleType(ImageView.ScaleType.CENTER);
             actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.add_button_border));
@@ -495,7 +494,7 @@ public class MainActivity extends AppCompatActivity {
     public void switchCompleted(View v) {
         if ((currentSection != 1) && (ItemAdapter.instances == 0) && (OverdueItemsAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
-            header.setBackgroundColor(Color.parseColor("#00cc66"));
+            header.setBackgroundResource(R.drawable.gradient_green);
             actionButton.setImageResource(R.drawable.delete_icon);
 //            actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
             actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
@@ -516,7 +515,7 @@ public class MainActivity extends AppCompatActivity {
     public void switchOverdue(View v) {
         if ((currentSection != 2) && (ItemAdapter.instances == 0)) {
             shrinkCurrent(currentSection);
-            header.setBackgroundColor(Color.parseColor("#fc0054"));
+            header.setBackgroundResource(R.drawable.gradient_red);
             actionButton.setImageResource(R.drawable.delete_icon);
 //            actionButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
             actionButton.setBackground(ContextCompat.getDrawable(this, R.drawable.delete_button_border));
