@@ -121,7 +121,7 @@ public class DataManager {
             File currentJSONFile = new File(context.getFilesDir().getAbsolutePath() + "/" + fileName);
             if (!currentJSONFile.exists()) {
                 FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-                fos.write(0);
+                fos.write(Integer.toString(0).getBytes());
                 fos.close();
             }
             FileInputStream fis = context.openFileInput(fileName);
