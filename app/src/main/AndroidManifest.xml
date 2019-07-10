@@ -6,9 +6,9 @@
         android:allowBackup="true"
         android:largeHeap="true"
         android:hardwareAccelerated="false"
-        android:icon="@mipmap/second_icon"
+        android:icon="@mipmap/pencil_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/second_icon_round"
+        android:roundIcon="@mipmap/pencil_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".create_item"></activity>
