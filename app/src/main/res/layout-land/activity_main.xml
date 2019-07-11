@@ -96,9 +96,8 @@
             android:id="@+id/createItemButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
+            android:layout_centerVertical="true"
             android:background="@drawable/add_button_border"
             android:onClick="actionButtonPressed"
             android:src="@drawable/add_icon" />
