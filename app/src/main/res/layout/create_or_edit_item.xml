@@ -166,11 +166,10 @@
     <Button
         android:id="@+id/actionButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight=".45"
         android:background="#80ff80"
         android:onClick="actionButtonClicked"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
         android:text="Create" />
 
 </LinearLayout>
