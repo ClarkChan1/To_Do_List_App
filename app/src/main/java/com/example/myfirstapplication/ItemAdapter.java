@@ -53,6 +53,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         TextView name = (TextView) convertView.findViewById(R.id.name);
         TextView time = (TextView) convertView.findViewById(R.id.time);
         TextView category = (TextView) convertView.findViewById(R.id.category);
+        TextView repeating = (TextView) convertView.findViewById(R.id.repeating);
 
         //set click listener on checkbox and code animation
         final View finalConvertView = convertView;
@@ -158,16 +159,20 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             } else {
                 switch (currentItem.getRepeat()) {
                     case 1:
-                        name.setTextColor(Color.parseColor("#2f7deb"));
+                        repeating.setText("daily");
+                        repeating.setBackgroundResource(R.drawable.rounded_border_daily);
                         break;
                     case 2:
-                        name.setTextColor(Color.parseColor("#0e9964"));
+                        repeating.setText("weekly");
+                        repeating.setBackgroundResource(R.drawable.rounded_border_weekly);
                         break;
                     case 3:
-                        name.setTextColor(Color.parseColor("#9900ad"));
+                        repeating.setText("monthly");
+                        repeating.setBackgroundResource(R.drawable.rounded_border_monthly);
                         break;
                     case 4:
-                        name.setTextColor(Color.parseColor("#c94f4f"));
+                        repeating.setText("yearly");
+                        repeating.setBackgroundResource(R.drawable.rounded_border_yearly);
                         break;
                 }
             }
