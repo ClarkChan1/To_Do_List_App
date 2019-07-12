@@ -1,6 +1,7 @@
 package com.example.myfirstapplication;
 
 import android.app.Dialog;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -139,19 +140,36 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         });
 
         if (currentItem.getRepeat() != 0) {
-            switch (currentItem.getRepeat()) {
-                case 1:
-                    name.setTextColor(Color.parseColor("#2f7deb"));
-                    break;
-                case 2:
-                    name.setTextColor(Color.parseColor("#0e9964"));
-                    break;
-                case 3:
-                    name.setTextColor(Color.parseColor("#9900ad"));
-                    break;
-                case 4:
-                    name.setTextColor(Color.parseColor("#c94f4f"));
-                    break;
+            if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                switch (currentItem.getRepeat()) {
+                    case 1:
+                        name.setTextColor(Color.parseColor("#2f7deb"));
+                        break;
+                    case 2:
+                        name.setTextColor(Color.parseColor("#0e9964"));
+                        break;
+                    case 3:
+                        name.setTextColor(Color.parseColor("#9900ad"));
+                        break;
+                    case 4:
+                        name.setTextColor(Color.parseColor("#c94f4f"));
+                        break;
+                }
+            } else {
+                switch (currentItem.getRepeat()) {
+                    case 1:
+                        name.setTextColor(Color.parseColor("#2f7deb"));
+                        break;
+                    case 2:
+                        name.setTextColor(Color.parseColor("#0e9964"));
+                        break;
+                    case 3:
+                        name.setTextColor(Color.parseColor("#9900ad"));
+                        break;
+                    case 4:
+                        name.setTextColor(Color.parseColor("#c94f4f"));
+                        break;
+                }
             }
         }
 
