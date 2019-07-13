@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView dateText = (TextView) findViewById(R.id.currentDate);
                 TextView timeText = (TextView) findViewById(R.id.currentTime);
                 long currentTotalDate = System.currentTimeMillis();
-                SimpleDateFormat sdfDate = new SimpleDateFormat("MMM dd yyyy\nhh:mm a");
+                SimpleDateFormat sdfDate = new SimpleDateFormat("E MMM dd\nhh:mm a");
                 String dateString = sdfDate.format(currentTotalDate);
                 String timeString = dateString.substring(dateString.indexOf("\n") + 1);
                 //this is to get rid of the leading 0 when hours is < 10
