@@ -140,6 +140,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
             }
         });
 
+        //display signs of repeating items
         if (currentItem.getRepeat() != 0) {
             if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 switch (currentItem.getRepeat()) {
