@@ -18,6 +18,11 @@
         android:roundIcon="@mipmap/pencil_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1702769818665564~4271376834"/>
+
         <activity android:name=".create_item"></activity>
         <activity android:name=".MainActivity"
             android:launchMode="singleTop">
