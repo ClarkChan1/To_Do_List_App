@@ -200,9 +200,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //display a banner ad
-        adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build();
+        adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 //        isPaused = false;
         //display an interstitial ad
