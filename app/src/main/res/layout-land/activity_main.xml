@@ -82,7 +82,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:layout_weight="6" />
 
@@ -96,31 +95,23 @@
             android:id="@+id/createItemButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
             android:background="@drawable/add_button_border"
             android:onClick="actionButtonPressed"
             android:src="@drawable/add_icon" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.8">
-
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
-            <!--this is the real id, sub it in when you actually want to display ads, the one currently used is for testing-->
-            <!--ads:adUnitId="ca-app-pub-1702769818665564/6075892027"-->
-        </com.google.android.gms.ads.AdView>
-
-    </RelativeLayout>
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        ads:adSize="FULL_BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+        <!--this is the real id, sub it in when you actually want to display ads, the one currently used is for testing-->
+        <!--ads:adUnitId="ca-app-pub-1702769818665564/6075892027"-->
+    </com.google.android.gms.ads.AdView>
 
 </LinearLayout>
