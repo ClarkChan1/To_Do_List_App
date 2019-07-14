@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -26,6 +25,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
@@ -37,7 +37,6 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     private ListView listView;
-    RelativeLayout bottomPortion;
     //variable so we can change color of header background when switching sections
     LinearLayout header;
     ImageButton actionButton;
@@ -66,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
     //for ads
     AdView adView;
+    InterstitialAd intAd;
+    AdRequest adRequest;
     //global fonts to be used by all classes
 //    Typeface headerFont;
 //    Typeface professionalFont;
@@ -82,15 +83,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //display ads
+        //reference the adView
         adView = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build();
-        adView.loadAd(adRequest);
 
+        //interstitial ad
+//        intAd = new InterstitialAd(this);
+//        intAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+//        intAd.loadAd(adRequest);
 
-        bottomPortion = (RelativeLayout) findViewById(R.id.bottomPortion);
         //set up the fonts to be used in this activity
 //        headerFont = Typeface.createFromAsset(getAssets(), "fonts/nevis.ttf");
 //        professionalFont = Typeface.createFromAsset(getAssets(), "fonts/Euphemia UCAS Regular 2.6.6.ttf");
@@ -153,6 +153,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        //load a new ad
+        //intAd = new InterstitialAd(this);
+        //intAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+//        intAd.loadAd(adRequest);
         switch (currentSection) {
             case 0:
                 if (ItemAdapter.itemPopup != null) {
@@ -195,7 +199,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //display a banner ad
+        adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        adView.loadAd(adRequest);
 //        isPaused = false;
+        //display an interstitial ad
+//        if(intAd.isLoaded()) {
+//            intAd.show();
+//        }
         displayDateAndTime.post(dateAndTimeRun);
         getData();
         checkOverdue();
