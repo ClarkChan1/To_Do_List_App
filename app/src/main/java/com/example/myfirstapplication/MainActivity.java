@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     //for ads
     AdView adView;
-    InterstitialAd intAd;
+//    InterstitialAd intAd;
     AdRequest adRequest;
     //global fonts to be used by all classes
 //    Typeface headerFont;
