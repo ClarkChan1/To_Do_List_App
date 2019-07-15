@@ -1,4 +1,4 @@
-package To.Do.List;
+package com.to_do.to_do_list;
 
 import android.annotation.TargetApi;
 import android.app.Notification;

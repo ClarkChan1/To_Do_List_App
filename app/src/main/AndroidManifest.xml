@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="To.Do.List">
+    package="com.to_do.to_do_list">
 
     <supports-screens
         android:smallScreens="true"
@@ -18,8 +18,8 @@
         android:roundIcon="@mipmap/pencil_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="To.Do.List.create_item"></activity>
-        <activity android:name="To.Do.List.MainActivity"
+        <activity android:name=".create_item"></activity>
+        <activity android:name=".MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name="To.Do.List.AlertReceiver">
+        <receiver android:name=".AlertReceiver">
 
         </receiver>
     </application>
