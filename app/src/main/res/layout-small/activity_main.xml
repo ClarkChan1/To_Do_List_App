@@ -39,7 +39,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.2"
+        android:layout_weight="1.1"
         android:background="#ffffff"
         android:orientation="horizontal">
 
@@ -52,8 +52,8 @@
             android:gravity="center"
             android:onClick="switchToDo"
             android:text="To Do"
-            android:textSize="12dp"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/completedSection"
@@ -64,8 +64,8 @@
             android:gravity="center"
             android:onClick="switchCompleted"
             android:text="Completed"
-            android:textSize="12dp"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/overdueSection"
@@ -76,8 +76,8 @@
             android:gravity="center"
             android:onClick="switchOverdue"
             android:text="Overdue"
-            android:textSize="12dp"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="12dp" />
 
     </LinearLayout>
 
@@ -90,33 +90,59 @@
         android:layout_marginRight="10dp"
         android:layout_weight="6" />
 
-    <RelativeLayout
-        android:id="@+id/bottomPortion"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.1">
 
-        <ImageButton
-            android:id="@+id/createItemButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/add_button_border"
-            android:onClick="actionButtonPressed"
-            android:src="@drawable/add_icon" />
 
-    </RelativeLayout>
+    <ImageButton
+        android:id="@+id/createItemButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/add_button_border"
+        android:onClick="actionButtonPressed"
+        android:src="@drawable/add_icon" />
 
-    <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="5dp"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-1702769818665564/6075892027">
-    </com.google.android.gms.ads.AdView>
+        ads:adUnitId="ca-app-pub-1702769818665564/6075892027"></com.google.android.gms.ads.AdView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp">
+
+        <TextView
+            android:id="@+id/rate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_border_daily"
+            android:gravity="center"
+            android:text="rate me"
+            android:layout_marginRight="10dp"
+            android:textSize="15sp"
+            android:textColor="#ffffff"/>
+
+        <TextView
+            android:id="@+id/gopro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_border_yearly"
+            android:gravity="center"
+            android:text="remove ads"
+            android:textSize="15sp"
+            android:textColor="#ffffff"/>
+    </LinearLayout>
 
 </LinearLayout>
