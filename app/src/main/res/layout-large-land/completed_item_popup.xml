@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Date Due:"
+            android:text="Completion Date:"
             android:textSize="24sp" />
 
         <TextView
@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Time Due:"
+            android:text="Completion Time:"
             android:textSize="24sp" />
 
         <TextView
