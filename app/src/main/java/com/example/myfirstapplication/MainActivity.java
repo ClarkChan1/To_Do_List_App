@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,7 +26,6 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
@@ -67,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
     AdView adView;
 //    InterstitialAd intAd;
     AdRequest adRequest;
+    //buttons for rating and removing ads
+    TextView rate;
+    TextView removeAds;
     //global fonts to be used by all classes
 //    Typeface headerFont;
 //    Typeface professionalFont;
@@ -86,10 +89,27 @@ public class MainActivity extends AppCompatActivity {
         //reference the adView
         adView = (AdView)findViewById(R.id.adView);
 
-        //interstitial ad
-//        intAd = new InterstitialAd(this);
-//        intAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-//        intAd.loadAd(adRequest);
+        //set up buttons for rating and removing ads
+        rate = (TextView)findViewById(R.id.rate);
+        removeAds = (TextView)findViewById(R.id.gopro);
+        rate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
+                } catch (android.content.ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
+                }
+            }
+        });
+        //todo put the startActivity code when full version is published so that this app can link to it when user clicks remove ads
+//        removeAds.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+
 
         //set up the fonts to be used in this activity
 //        headerFont = Typeface.createFromAsset(getAssets(), "fonts/nevis.ttf");
