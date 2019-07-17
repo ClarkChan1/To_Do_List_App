@@ -1,4 +1,4 @@
-package com.example.myfirstapplication;
+package com.to_do.lite;
 
 import android.os.Parcel;
 import android.os.Parcelable;

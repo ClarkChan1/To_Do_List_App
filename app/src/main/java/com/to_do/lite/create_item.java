@@ -1,4 +1,4 @@
-package com.example.myfirstapplication;
+package com.to_do.lite;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -19,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.lite.lite.R;
 
 import java.text.DateFormat;
 import java.util.Calendar;

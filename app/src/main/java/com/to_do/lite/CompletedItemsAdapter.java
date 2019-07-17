@@ -1,4 +1,4 @@
-package com.example.myfirstapplication;
+package com.to_do.lite;
 
 import android.app.Dialog;
 import androidx.core.content.ContextCompat;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.lite.lite.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

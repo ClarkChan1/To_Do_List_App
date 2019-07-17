@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.myfirstapplication">
+    package="com.lite.lite">
 
     <supports-screens
         android:smallScreens="true"
@@ -24,8 +24,8 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-1702769818665564~4271376834"/>
 
-        <activity android:name=".create_item"></activity>
-        <activity android:name=".MainActivity"
+        <activity android:name="com.to_do.lite.create_item"></activity>
+        <activity android:name="com.to_do.lite.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".AlertReceiver">
+        <receiver android:name="com.com.to_do.myfirstapplication.AlertReceiver">
 
         </receiver>
     </application>

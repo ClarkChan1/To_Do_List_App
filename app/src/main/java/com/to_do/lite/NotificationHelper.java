@@ -1,4 +1,4 @@
-package com.example.myfirstapplication;
+package com.to_do.lite;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
+
+import com.lite.lite.R;
 
 public class NotificationHelper extends ContextWrapper {
     public static final String channelID = "to_do_list";

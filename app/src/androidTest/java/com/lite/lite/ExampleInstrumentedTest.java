@@ -1,4 +1,4 @@
-package com.example.myfirstapplication;
+package com.lite.lite;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;

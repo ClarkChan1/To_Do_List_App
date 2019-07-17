@@ -1,4 +1,4 @@
-package com.example.myfirstapplication;
+package com.to_do.lite;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;

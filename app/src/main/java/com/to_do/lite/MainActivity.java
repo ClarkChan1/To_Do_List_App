@@ -1,4 +1,4 @@
-package com.example.myfirstapplication;
+package com.to_do.lite;
 
 import android.app.AlarmManager;
 import android.app.Dialog;
@@ -29,6 +29,8 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.lite.lite.BuildConfig;
+import com.lite.lite.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
