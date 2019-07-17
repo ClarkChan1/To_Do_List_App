@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="550dp"
-    android:layout_height="800dp"
+    android:layout_width="450dp"
+    android:layout_height="750dp"
     android:layout_gravity="center"
     android:background="#e6e6e6"
 
@@ -87,6 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:layout_gravity="center"
             android:text="duedate"
             android:textSize="30sp" />
     </LinearLayout>
@@ -117,6 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:layout_gravity="center"
             android:text="duetime"
             android:textSize="30sp" />
     </LinearLayout>
