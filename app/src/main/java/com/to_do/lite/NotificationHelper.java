@@ -12,8 +12,6 @@ import android.graphics.Color;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
 
-import com.lite.lite.R;
-
 public class NotificationHelper extends ContextWrapper {
     public static final String channelID = "to_do_list";
     public static final String channelName = "to do list";

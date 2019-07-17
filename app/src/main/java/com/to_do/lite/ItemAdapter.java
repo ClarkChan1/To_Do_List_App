@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.lite.lite.R;
 import com.podcopic.animationlib.library.AnimationType;
 import com.podcopic.animationlib.library.StartSmartAnimation;
 
