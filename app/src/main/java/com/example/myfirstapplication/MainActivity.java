@@ -102,13 +102,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        //todo put the startActivity code when full version is published so that this app can link to it when user clicks remove ads
-//        removeAds.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        removeAds.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "com.to_do.to_do_list")));
+                } catch (android.content.ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + "com.to_do.to_do_list")));
+                }
+            }
+        });
 
 
         //set up the fonts to be used in this activity
