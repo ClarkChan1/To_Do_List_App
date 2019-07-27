@@ -37,6 +37,10 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     //This is to track which item in the Listview is to be edited
     int editPosition = -1;
 
+    //check if user has set the date and time
+    boolean dateSet = false;
+    boolean timeSet = false;
+
     //create boolean statements to check if user input was good
     boolean goodName = false;
     boolean goodCategory = false;
@@ -83,6 +87,8 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                     setTimeString();
                 }
             }
+            dateSet = savedInstanceState.getBoolean("dateSet");
+            timeSet = savedInstanceState.getBoolean("timeSet");
             notificationID = savedInstanceState.getInt("notificationID");
             repeat = savedInstanceState.getInt("repeat");
             spinner.setSelection(repeat);
@@ -110,6 +116,10 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 dueDay = setDateAndTime.get(Calendar.DAY_OF_MONTH);
                 dueHour = setDateAndTime.get(Calendar.HOUR_OF_DAY);
                 dueMinute = setDateAndTime.get(Calendar.MINUTE);
+                if (dueYear < 9000) {
+                    dateSet = true;
+                    timeSet = true;
+                }
                 editPosition = data.getIntExtra("position", -1);
                 repeat = data.getIntExtra("repeat", -1);
                 spinner.setSelection(repeat);
@@ -140,16 +150,13 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         Calendar currentTime = Calendar.getInstance();
         dueHour = hourOfDay;
         dueMinute = minute;
+        timeSet = true;
         setTimeString();
-        if (dueYear == -1 || dueYear >= 9000) {
-            if (dueYear >= 9000) {
-                dueYear = currentTime.get(Calendar.YEAR);
-                dueMonth = currentTime.get(Calendar.MONTH);
-                dueDay = currentTime.get(Calendar.DAY_OF_MONTH);
-            }
-            TextView textDate;
-            textDate = findViewById(R.id.selectDueDate);
-            textDate.setText("today");
+        if (!dateSet) {
+            dueYear = currentTime.get(Calendar.YEAR);
+            dueMonth = currentTime.get(Calendar.MONTH);
+            dueDay = currentTime.get(Calendar.DAY_OF_MONTH);
+            setDateString();
         }
     }
 
@@ -164,11 +171,12 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         dueYear = year;
         dueMonth = month;
         dueDay = dayOfMonth;
+        dateSet = true;
         setDateString();
-        if (dueHour == -1) {
-            TextView textTime;
-            textTime = findViewById(R.id.selectDueTime);
-            textTime.setText("11:59 PM");
+        if (!timeSet) {
+            dueHour = 23;
+            dueMinute = 59;
+            setTimeString();
         }
     }
 
@@ -360,6 +368,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             }
             timePicked.set(Calendar.HOUR_OF_DAY, dueHour);
             timePicked.set(Calendar.MINUTE, dueMinute);
+            timePicked.set(Calendar.SECOND, 0);
         } else {
             if (dueHour == -1) {
                 timePicked.set(Calendar.YEAR, dueYear);
@@ -408,6 +417,8 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         } else {
             outState.putBoolean("collectDueTime", false);
         }
+        outState.putBoolean("dateSet", dateSet);
+        outState.putBoolean("timeSet", timeSet);
         outState.putInt("notificationID", notificationID);
         outState.putInt("repeat", repeat);
         outState.putInt("position", editPosition);
