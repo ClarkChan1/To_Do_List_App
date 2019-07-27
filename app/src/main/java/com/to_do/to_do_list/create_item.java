@@ -229,9 +229,9 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                     dateAndTime.set(Calendar.YEAR, dueYear);
                     dateAndTime.set(Calendar.MONTH, dueMonth);
                     dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
-                    dateAndTime.set(Calendar.HOUR_OF_DAY, 0);
-                    dateAndTime.set(Calendar.MINUTE, 0);
-                    dateAndTime.set(Calendar.SECOND, 0);
+                    dateAndTime.set(Calendar.HOUR_OF_DAY, 23);
+                    dateAndTime.set(Calendar.MINUTE, 59);
+                    dateAndTime.set(Calendar.SECOND, 59);
                 } else {
                     dateAndTime.set(Calendar.YEAR, dueYear);
                     dateAndTime.set(Calendar.MONTH, dueMonth);
@@ -278,9 +278,9 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                     dateAndTime.set(Calendar.YEAR, dueYear);
                     dateAndTime.set(Calendar.MONTH, dueMonth);
                     dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
-                    dateAndTime.set(Calendar.HOUR_OF_DAY, 0);
-                    dateAndTime.set(Calendar.MINUTE, 0);
-                    dateAndTime.set(Calendar.SECOND, 0);
+                    dateAndTime.set(Calendar.HOUR_OF_DAY, 23);
+                    dateAndTime.set(Calendar.MINUTE, 59);
+                    dateAndTime.set(Calendar.SECOND, 59);
                 } else {
                     dateAndTime.set(Calendar.YEAR, dueYear);
                     dateAndTime.set(Calendar.MONTH, dueMonth);
