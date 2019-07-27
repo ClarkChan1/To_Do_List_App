@@ -72,12 +72,16 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 dueYear = savedInstanceState.getInt("dueYear");
                 dueMonth = savedInstanceState.getInt("dueMonth");
                 dueDay = savedInstanceState.getInt("dueDay");
-                setDateString();
+                if (dueYear < 9000) {
+                    setDateString();
+                }
             }
             if (savedInstanceState.getBoolean("collectDueTime")) {
                 dueHour = savedInstanceState.getInt("dueHour");
                 dueMinute = savedInstanceState.getInt("dueMinute");
-                setTimeString();
+                if (dueYear < 9000) {
+                    setTimeString();
+                }
             }
             notificationID = savedInstanceState.getInt("notificationID");
             repeat = savedInstanceState.getInt("repeat");
@@ -133,9 +137,20 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        Calendar currentTime = Calendar.getInstance();
         dueHour = hourOfDay;
         dueMinute = minute;
         setTimeString();
+        if (dueYear == -1 || dueYear >= 9000) {
+            if (dueYear >= 9000) {
+                dueYear = currentTime.get(Calendar.YEAR);
+                dueMonth = currentTime.get(Calendar.MONTH);
+                dueDay = currentTime.get(Calendar.DAY_OF_MONTH);
+            }
+            TextView textDate;
+            textDate = findViewById(R.id.selectDueDate);
+            textDate.setText("today");
+        }
     }
 
     public void selectDateButtonClicked(View v) {
@@ -150,6 +165,11 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         dueMonth = month;
         dueDay = dayOfMonth;
         setDateString();
+        if (dueHour == -1) {
+            TextView textTime;
+            textTime = findViewById(R.id.selectDueTime);
+            textTime.setText("11:59 PM");
+        }
     }
 
     public void setTimeString() {
@@ -212,7 +232,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 if (dueHour == -1) {
                     dateAndTime.set(Calendar.YEAR, 9001);
                     dateAndTime.set(Calendar.MONTH, 0);
-                    dateAndTime.set(Calendar.DAY_OF_MONTH, 0);
+                    dateAndTime.set(Calendar.DAY_OF_MONTH, 1);
                     dateAndTime.set(Calendar.HOUR_OF_DAY, 0);
                     dateAndTime.set(Calendar.MINUTE, 0);
                     dateAndTime.set(Calendar.SECOND, 0);
@@ -261,7 +281,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 if (dueHour == -1) {
                     dateAndTime.set(Calendar.YEAR, 9001);
                     dateAndTime.set(Calendar.MONTH, 0);
-                    dateAndTime.set(Calendar.DAY_OF_MONTH, 0);
+                    dateAndTime.set(Calendar.DAY_OF_MONTH, 1);
                     dateAndTime.set(Calendar.HOUR_OF_DAY, 0);
                     dateAndTime.set(Calendar.MINUTE, 0);
                     dateAndTime.set(Calendar.SECOND, 0);
@@ -345,12 +365,14 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 timePicked.set(Calendar.YEAR, dueYear);
                 timePicked.set(Calendar.MONTH, dueMonth);
                 timePicked.set(Calendar.DAY_OF_MONTH, dueDay);
+                timePicked.set(Calendar.SECOND, 0);
             } else {
                 timePicked.set(Calendar.YEAR, dueYear);
                 timePicked.set(Calendar.MONTH, dueMonth);
                 timePicked.set(Calendar.DAY_OF_MONTH, dueDay);
                 timePicked.set(Calendar.HOUR_OF_DAY, dueHour);
                 timePicked.set(Calendar.MINUTE, dueMinute);
+                timePicked.set(Calendar.SECOND, 0);
             }
         }
         if ((timePicked.compareTo(Calendar.getInstance()) < 0)) {
