@@ -45,8 +45,8 @@ public class ItemAdapter extends ArrayAdapter<Item> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 //        if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(template_resource, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        convertView = inflater.inflate(template_resource, parent, false);
 //        }
 
         Item currentItem = (Item) getItem(position);
@@ -143,7 +143,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
         //display signs of repeating items
         if (currentItem.getRepeat() != 0) {
-            if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 switch (currentItem.getRepeat()) {
                     case 1:
                         name.setTextColor(Color.parseColor("#2f7deb"));
@@ -224,6 +224,9 @@ public class ItemAdapter extends ArrayAdapter<Item> {
                 itemTime = monthFormatter.format(currentItemTime.getTime());
             }
         } else {
+            if (currentItemTime.get(Calendar.YEAR) >= 9000) {
+                return "";
+            }
             SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
             yearFormatter.setCalendar(currentItemTime);
             itemTime = yearFormatter.format(currentItemTime.getTime());
@@ -305,9 +308,13 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         Item currentItem = items.get(position);
         Calendar itemdueDate = Calendar.getInstance();
         itemdueDate.setTimeInMillis(currentItem.getTimeStamp());
-        String dueDateText = DateFormat.getDateInstance().format(itemdueDate.getTime());
-        dueDate.setText(dueDateText);
-        dueTime.setText(getTimeString(currentItem));
+        if (itemdueDate.get(Calendar.YEAR) >= 9000) {
+            dueDate.setText("none");
+            dueTime.setText("none");
+        } else {
+            dueDate.setText(DateFormat.getDateInstance().format(itemdueDate.getTime()));
+            dueTime.setText(getTimeString(currentItem));
+        }
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
