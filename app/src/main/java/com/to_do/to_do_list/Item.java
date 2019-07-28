@@ -9,14 +9,16 @@ public class Item implements Parcelable {
     private long timeStamp;
     private int notificationID;
     private int repeat;
+    private boolean canSetDateTime;
 
 
-    public Item(String name, String category, long timeStamp, int notificationID, int repeat) {
+    public Item(String name, String category, long timeStamp, int notificationID, int repeat, boolean specificDateTime) {
         this.name = name;
         this.category = category;
         this.timeStamp = timeStamp;
         this.notificationID = notificationID;
         this.repeat = repeat;
+        this.canSetDateTime = specificDateTime;
     }
 
     protected Item(Parcel in) {
@@ -60,6 +62,8 @@ public class Item implements Parcelable {
     public int getRepeat() {
         return repeat;
     }
+
+    public boolean isCanSetDateTime() { return canSetDateTime; }
 
     @Override
     public int describeContents() {
