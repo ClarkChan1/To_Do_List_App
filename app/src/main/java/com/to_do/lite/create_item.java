@@ -10,8 +10,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -40,6 +42,8 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     //check if user has set the date and time
     boolean dateSet = false;
     boolean timeSet = false;
+    //controls if user can set a specific date and time
+    boolean canSetDateTime = true;
 
     //create boolean statements to check if user input was good
     boolean goodName = false;
@@ -49,6 +53,12 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     String activityType = "";
     //since I'm using one xml file for both creating and editing items, this button reference is needed to change the bottom button text to "create" or "edit"
     Button actionButton;
+
+    //linear layouts for the date and time
+    LinearLayout dateLinear;
+    LinearLayout timeLinear;
+    //checkbox for setting sepcific date and time
+    CheckBox dateTimeCheckbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +71,11 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+        //checkbox for setting sepcific date and time
+        dateTimeCheckbox = (CheckBox)findViewById(R.id.specificDateAndTime);
+        //linear layouts for the date and time
+        dateLinear = (LinearLayout) findViewById(R.id.dateLinearLayout);
+        timeLinear = (LinearLayout) findViewById(R.id.timeLinearLayout);
 
         if (savedInstanceState != null) {
             activityType = savedInstanceState.getString("type");
@@ -91,6 +106,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             timeSet = savedInstanceState.getBoolean("timeSet");
             notificationID = savedInstanceState.getInt("notificationID");
             repeat = savedInstanceState.getInt("repeat");
+            canSetDateTime = savedInstanceState.getBoolean("canSetDateTime");
             spinner.setSelection(repeat);
             editPosition = savedInstanceState.getInt("position");
         } else {
@@ -122,10 +138,21 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 }
                 editPosition = data.getIntExtra("position", -1);
                 repeat = data.getIntExtra("repeat", -1);
+                canSetDateTime = data.getBooleanExtra("canSetDateTime", false);
                 spinner.setSelection(repeat);
                 populateData();
             }
             notificationID = data.getIntExtra("notificationID", -1);
+        }
+        //see if the checkbox for setting date and time is checked
+        if(canSetDateTime){
+            dateTimeCheckbox.setChecked(true);
+            dateLinear.setVisibility(View.VISIBLE);
+            timeLinear.setVisibility(View.VISIBLE);
+        } else {
+            dateTimeCheckbox.setChecked(false);
+            dateLinear.setVisibility(View.INVISIBLE);
+            timeLinear.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -141,8 +168,22 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     }
 
     public void selectTimeButtonClicked(View v) {
-        DialogFragment timePicker = new TimePickerFragment();
-        timePicker.show(getSupportFragmentManager(), "start time picker");
+        if (canSetDateTime) {
+            DialogFragment timePicker = new TimePickerFragment();
+            timePicker.show(getSupportFragmentManager(), "start time picker");
+        }
+    }
+
+    public void setDateTimeCheckbox(View v) {
+        if (dateTimeCheckbox.isChecked()) {
+            canSetDateTime = true;
+            dateLinear.setVisibility(View.VISIBLE);
+            timeLinear.setVisibility(View.VISIBLE);
+        } else {
+            canSetDateTime = false;
+            dateLinear.setVisibility(View.INVISIBLE);
+            timeLinear.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -157,12 +198,15 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             dueMonth = currentTime.get(Calendar.MONTH);
             dueDay = currentTime.get(Calendar.DAY_OF_MONTH);
             setDateString();
+            dateSet = true;
         }
     }
 
     public void selectDateButtonClicked(View v) {
-        DialogFragment datePicker = new DatePickerFragment();
-        datePicker.show(getSupportFragmentManager(), "start date picker");
+        if (canSetDateTime) {
+            DialogFragment datePicker = new DatePickerFragment();
+            datePicker.show(getSupportFragmentManager(), "start date picker");
+        }
     }
 
 
@@ -177,6 +221,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             dueHour = 23;
             dueMinute = 59;
             setTimeString();
+            timeSet = true;
         }
     }
 
@@ -236,42 +281,85 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             i.putExtra("category", category);
             Calendar currentTime = Calendar.getInstance();
             Calendar dateAndTime = Calendar.getInstance();
-            if (dueYear == -1) {
-                if (dueHour == -1) {
-                    dateAndTime.set(Calendar.YEAR, 9001);
-                    dateAndTime.set(Calendar.MONTH, 0);
-                    dateAndTime.set(Calendar.DAY_OF_MONTH, 1);
-                    dateAndTime.set(Calendar.HOUR_OF_DAY, 0);
-                    dateAndTime.set(Calendar.MINUTE, 0);
-                    dateAndTime.set(Calendar.SECOND, 0);
-                } else {
+            if (canSetDateTime) {
+                if (!dateSet) {
                     dateAndTime.set(Calendar.YEAR, currentTime.get(Calendar.YEAR));
                     dateAndTime.set(Calendar.MONTH, currentTime.get(Calendar.MONTH));
                     dateAndTime.set(Calendar.DAY_OF_MONTH, currentTime.get(Calendar.DAY_OF_MONTH));
                     dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
                     dateAndTime.set(Calendar.MINUTE, dueMinute);
                     dateAndTime.set(Calendar.SECOND, 0);
+                } else {
+                    if (!timeSet) {
+                        dateAndTime.set(Calendar.YEAR, dueYear);
+                        dateAndTime.set(Calendar.MONTH, dueMonth);
+                        dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
+                        dateAndTime.set(Calendar.HOUR_OF_DAY, 23);
+                        dateAndTime.set(Calendar.MINUTE, 59);
+                        dateAndTime.set(Calendar.SECOND, 59);
+                    } else {
+                        dateAndTime.set(Calendar.YEAR, dueYear);
+                        dateAndTime.set(Calendar.MONTH, dueMonth);
+                        dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
+                        dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
+                        dateAndTime.set(Calendar.MINUTE, dueMinute);
+                        dateAndTime.set(Calendar.SECOND, 0);
+                    }
                 }
             } else {
-                if (dueHour == -1) {
-                    dateAndTime.set(Calendar.YEAR, dueYear);
-                    dateAndTime.set(Calendar.MONTH, dueMonth);
-                    dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
-                    dateAndTime.set(Calendar.HOUR_OF_DAY, 23);
-                    dateAndTime.set(Calendar.MINUTE, 59);
-                    dateAndTime.set(Calendar.SECOND, 59);
-                } else {
-                    dateAndTime.set(Calendar.YEAR, dueYear);
-                    dateAndTime.set(Calendar.MONTH, dueMonth);
-                    dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
-                    dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
-                    dateAndTime.set(Calendar.MINUTE, dueMinute);
-                    dateAndTime.set(Calendar.SECOND, 0);
-                }
+                dateAndTime.set(Calendar.YEAR, 9001);
+                dateAndTime.set(Calendar.MONTH, 0);
+                dateAndTime.set(Calendar.DAY_OF_MONTH, 1);
+                dateAndTime.set(Calendar.HOUR_OF_DAY, 0);
+                dateAndTime.set(Calendar.MINUTE, 0);
+                dateAndTime.set(Calendar.SECOND, 0);
             }
+//            if (!dateSet) {
+//                if (!timeSet) {
+//                    dateAndTime.set(Calendar.YEAR, 9001);
+//                    dateAndTime.set(Calendar.MONTH, 0);
+//                    dateAndTime.set(Calendar.DAY_OF_MONTH, 1);
+//                    dateAndTime.set(Calendar.HOUR_OF_DAY, 0);
+//                    dateAndTime.set(Calendar.MINUTE, 0);
+//                    dateAndTime.set(Calendar.SECOND, 0);
+//                } else {
+//                    dateAndTime.set(Calendar.YEAR, currentTime.get(Calendar.YEAR));
+//                    dateAndTime.set(Calendar.MONTH, currentTime.get(Calendar.MONTH));
+//                    dateAndTime.set(Calendar.DAY_OF_MONTH, currentTime.get(Calendar.DAY_OF_MONTH));
+//                    dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
+//                    dateAndTime.set(Calendar.MINUTE, dueMinute);
+//                    dateAndTime.set(Calendar.SECOND, 0);
+//                }
+//            } else {
+//                if (!timeSet) {
+//                    dateAndTime.set(Calendar.YEAR, dueYear);
+//                    dateAndTime.set(Calendar.MONTH, dueMonth);
+//                    dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
+//                    dateAndTime.set(Calendar.HOUR_OF_DAY, 23);
+//                    dateAndTime.set(Calendar.MINUTE, 59);
+//                    dateAndTime.set(Calendar.SECOND, 59);
+//                } else {
+//                    if (canSetDateTime) {
+//                        dateAndTime.set(Calendar.YEAR, dueYear);
+//                        dateAndTime.set(Calendar.MONTH, dueMonth);
+//                        dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
+//                        dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
+//                        dateAndTime.set(Calendar.MINUTE, dueMinute);
+//                        dateAndTime.set(Calendar.SECOND, 0);
+//                    } else {
+//                        dateAndTime.set(Calendar.YEAR, 9001);
+//                        dateAndTime.set(Calendar.MONTH, 0);
+//                        dateAndTime.set(Calendar.DAY_OF_MONTH, 1);
+//                        dateAndTime.set(Calendar.HOUR_OF_DAY, 0);
+//                        dateAndTime.set(Calendar.MINUTE, 0);
+//                        dateAndTime.set(Calendar.SECOND, 0);
+//                    }
+//                }
+//            }
             i.putExtra("timeStamp", dateAndTime.getTimeInMillis());
             i.putExtra("notificationID", notificationID);
             i.putExtra("repeat", repeat);
+            i.putExtra("canSetDateTime", canSetDateTime);
             setResult(RESULT_OK, i);
             finish();
         }
@@ -285,43 +373,44 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             i.putExtra("category", category);
             Calendar currentTime = Calendar.getInstance();
             Calendar dateAndTime = Calendar.getInstance();
-            if (dueYear == -1) {
-                if (dueHour == -1) {
-                    dateAndTime.set(Calendar.YEAR, 9001);
-                    dateAndTime.set(Calendar.MONTH, 0);
-                    dateAndTime.set(Calendar.DAY_OF_MONTH, 1);
-                    dateAndTime.set(Calendar.HOUR_OF_DAY, 0);
-                    dateAndTime.set(Calendar.MINUTE, 0);
-                    dateAndTime.set(Calendar.SECOND, 0);
-                } else {
+            if (canSetDateTime) {
+                if (!dateSet) {
                     dateAndTime.set(Calendar.YEAR, currentTime.get(Calendar.YEAR));
                     dateAndTime.set(Calendar.MONTH, currentTime.get(Calendar.MONTH));
                     dateAndTime.set(Calendar.DAY_OF_MONTH, currentTime.get(Calendar.DAY_OF_MONTH));
                     dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
                     dateAndTime.set(Calendar.MINUTE, dueMinute);
                     dateAndTime.set(Calendar.SECOND, 0);
+                } else {
+                    if (!timeSet) {
+                        dateAndTime.set(Calendar.YEAR, dueYear);
+                        dateAndTime.set(Calendar.MONTH, dueMonth);
+                        dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
+                        dateAndTime.set(Calendar.HOUR_OF_DAY, 23);
+                        dateAndTime.set(Calendar.MINUTE, 59);
+                        dateAndTime.set(Calendar.SECOND, 59);
+                    } else {
+                        dateAndTime.set(Calendar.YEAR, dueYear);
+                        dateAndTime.set(Calendar.MONTH, dueMonth);
+                        dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
+                        dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
+                        dateAndTime.set(Calendar.MINUTE, dueMinute);
+                        dateAndTime.set(Calendar.SECOND, 0);
+                    }
                 }
             } else {
-                if (dueHour == -1) {
-                    dateAndTime.set(Calendar.YEAR, dueYear);
-                    dateAndTime.set(Calendar.MONTH, dueMonth);
-                    dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
-                    dateAndTime.set(Calendar.HOUR_OF_DAY, 23);
-                    dateAndTime.set(Calendar.MINUTE, 59);
-                    dateAndTime.set(Calendar.SECOND, 59);
-                } else {
-                    dateAndTime.set(Calendar.YEAR, dueYear);
-                    dateAndTime.set(Calendar.MONTH, dueMonth);
-                    dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
-                    dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
-                    dateAndTime.set(Calendar.MINUTE, dueMinute);
-                    dateAndTime.set(Calendar.SECOND, 0);
-                }
+                dateAndTime.set(Calendar.YEAR, 9001);
+                dateAndTime.set(Calendar.MONTH, 0);
+                dateAndTime.set(Calendar.DAY_OF_MONTH, 1);
+                dateAndTime.set(Calendar.HOUR_OF_DAY, 0);
+                dateAndTime.set(Calendar.MINUTE, 0);
+                dateAndTime.set(Calendar.SECOND, 0);
             }
             i.putExtra("timeStamp", dateAndTime.getTimeInMillis());
             i.putExtra("position", editPosition);
             i.putExtra("notificationID", notificationID);
             i.putExtra("repeat", repeat);
+            i.putExtra("canSetDateTime", canSetDateTime);
             setResult(RESULT_OK, i);
             finish();
         }
@@ -360,30 +449,68 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             goodCategory = true;
         }
         Calendar timePicked = Calendar.getInstance();
-        if (dueYear == -1) {
-            if (dueHour == -1) {
-                //this means the task has an indefinite due date
-                goodDateAndTime = true;
-                return;
-            }
-            timePicked.set(Calendar.HOUR_OF_DAY, dueHour);
-            timePicked.set(Calendar.MINUTE, dueMinute);
-            timePicked.set(Calendar.SECOND, 0);
-        } else {
-            if (dueHour == -1) {
-                timePicked.set(Calendar.YEAR, dueYear);
-                timePicked.set(Calendar.MONTH, dueMonth);
-                timePicked.set(Calendar.DAY_OF_MONTH, dueDay);
-                timePicked.set(Calendar.SECOND, 0);
+        if (canSetDateTime) {
+            if (!dateSet) {
+                if (!timeSet) {
+//                    goodDateAndTime = false;
+                    Toast correctTime = Toast.makeText(getApplicationContext(), "Task must be due sometime after this moment", Toast.LENGTH_LONG);
+                    correctTime.show();
+                    return;
+                } else {
+                    timePicked.set(Calendar.HOUR_OF_DAY, dueHour);
+                    timePicked.set(Calendar.MINUTE, dueMinute);
+                    timePicked.set(Calendar.SECOND, 0);
+                }
             } else {
-                timePicked.set(Calendar.YEAR, dueYear);
-                timePicked.set(Calendar.MONTH, dueMonth);
-                timePicked.set(Calendar.DAY_OF_MONTH, dueDay);
-                timePicked.set(Calendar.HOUR_OF_DAY, dueHour);
-                timePicked.set(Calendar.MINUTE, dueMinute);
-                timePicked.set(Calendar.SECOND, 0);
+                if (!timeSet) {
+                    timePicked.set(Calendar.YEAR, dueYear);
+                    timePicked.set(Calendar.MONTH, dueMonth);
+                    timePicked.set(Calendar.DAY_OF_MONTH, dueDay);
+                    timePicked.set(Calendar.SECOND, 0);
+                } else {
+                    timePicked.set(Calendar.YEAR, dueYear);
+                    timePicked.set(Calendar.MONTH, dueMonth);
+                    timePicked.set(Calendar.DAY_OF_MONTH, dueDay);
+                    timePicked.set(Calendar.HOUR_OF_DAY, dueHour);
+                    timePicked.set(Calendar.MINUTE, dueMinute);
+                    timePicked.set(Calendar.SECOND, 0);
+                }
             }
+        } else {
+            goodDateAndTime = true;
+            return;
         }
+
+//        if (!dateSet) {
+//            if (!timeSet) {
+//                //this means the task has an indefinite due date
+//                if(!canSetDateTime) {
+//                    goodDateAndTime = true;
+//                } else {
+//                    goodDateAndTime = false;
+//                    Toast correctTime = Toast.makeText(getApplicationContext(), "Task must be due sometime after this moment", Toast.LENGTH_LONG);
+//                    correctTime.show();
+//                }
+//                return;
+//            }
+//            timePicked.set(Calendar.HOUR_OF_DAY, dueHour);
+//            timePicked.set(Calendar.MINUTE, dueMinute);
+//            timePicked.set(Calendar.SECOND, 0);
+//        } else {
+//            if (!timeSet) {
+//                timePicked.set(Calendar.YEAR, dueYear);
+//                timePicked.set(Calendar.MONTH, dueMonth);
+//                timePicked.set(Calendar.DAY_OF_MONTH, dueDay);
+//                timePicked.set(Calendar.SECOND, 0);
+//            } else {
+//                timePicked.set(Calendar.YEAR, dueYear);
+//                timePicked.set(Calendar.MONTH, dueMonth);
+//                timePicked.set(Calendar.DAY_OF_MONTH, dueDay);
+//                timePicked.set(Calendar.HOUR_OF_DAY, dueHour);
+//                timePicked.set(Calendar.MINUTE, dueMinute);
+//                timePicked.set(Calendar.SECOND, 0);
+//            }
+//        }
         if ((timePicked.compareTo(Calendar.getInstance()) < 0)) {
             Toast correctTime = Toast.makeText(getApplicationContext(), "Task must be due sometime after this moment", Toast.LENGTH_LONG);
             correctTime.show();
@@ -402,7 +529,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         } else {
             outState.putBoolean("collectCategory", false);
         }
-        if (dueYear != -1) {
+        if (dateSet) {
             outState.putInt("dueYear", dueYear);
             outState.putInt("dueMonth", dueMonth);
             outState.putInt("dueDay", dueDay);
@@ -410,7 +537,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         } else {
             outState.putBoolean("collectDate", false);
         }
-        if (dueHour != -1) {
+        if (timeSet) {
             outState.putInt("dueHour", dueHour);
             outState.putInt("dueMinute", dueMinute);
             outState.putBoolean("collectDueTime", true);
@@ -421,6 +548,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         outState.putBoolean("timeSet", timeSet);
         outState.putInt("notificationID", notificationID);
         outState.putInt("repeat", repeat);
+        outState.putBoolean("canSetDateTime", canSetDateTime);
         outState.putInt("position", editPosition);
     }
 }

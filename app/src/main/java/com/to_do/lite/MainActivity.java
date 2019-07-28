@@ -381,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
         editIntent.putExtra("notificationID", notificationID);
         editIntent.putExtra("repeat", currentItem.getRepeat());
         editIntent.putExtra("position", position);
+        editIntent.putExtra("canSetDateTime", currentItem.isCanSetDateTime());
         startActivityForResult(editIntent, 200);
     }
 
@@ -622,12 +623,12 @@ public class MainActivity extends AppCompatActivity {
         itemAdapter = new ItemAdapter(this, R.layout.item_template, listItems);
         if (resultCode == RESULT_OK) {
             if (requestCode == 100) {
-                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getLongExtra("timeStamp", -1), data.getIntExtra("notificationID", -1), data.getIntExtra("repeat", -1));
+                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getLongExtra("timeStamp", -1), data.getIntExtra("notificationID", -1), data.getIntExtra("repeat", -1), data.getBooleanExtra("canSetDateTime", false));
                 insertItem(listItems, toAdd, "todo");
             }
             if (requestCode == 200) {
                 deleteItem(data.getIntExtra("position", -1));
-                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getLongExtra("timeStamp", -1), data.getIntExtra("notificationID", -1), data.getIntExtra("repeat", -1));
+                Item toAdd = new Item(data.getStringExtra("name"), data.getStringExtra("category"), data.getLongExtra("timeStamp", -1), data.getIntExtra("notificationID", -1), data.getIntExtra("repeat", -1), data.getBooleanExtra("canSetDateTime", false));
                 insertItem(listItems, toAdd, "todo");
             }
             checkOverdue();
