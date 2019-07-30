@@ -91,14 +91,14 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 dueYear = savedInstanceState.getInt("dueYear");
                 dueMonth = savedInstanceState.getInt("dueMonth");
                 dueDay = savedInstanceState.getInt("dueDay");
-                if (dueYear < 9000) {
+                if (canSetDateTime) {
                     setDateString();
                 }
             }
             if (savedInstanceState.getBoolean("collectDueTime")) {
                 dueHour = savedInstanceState.getInt("dueHour");
                 dueMinute = savedInstanceState.getInt("dueMinute");
-                if (dueYear < 9000) {
+                if (canSetDateTime) {
                     setTimeString();
                 }
             }
@@ -132,13 +132,13 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
                 dueDay = setDateAndTime.get(Calendar.DAY_OF_MONTH);
                 dueHour = setDateAndTime.get(Calendar.HOUR_OF_DAY);
                 dueMinute = setDateAndTime.get(Calendar.MINUTE);
-                if (dueYear < 9000) {
-                    dateSet = true;
-                    timeSet = true;
-                }
                 editPosition = data.getIntExtra("position", -1);
                 repeat = data.getIntExtra("repeat", -1);
                 canSetDateTime = data.getBooleanExtra("canSetDateTime", false);
+                if (canSetDateTime) {
+                    dateSet = true;
+                    timeSet = true;
+                }
                 spinner.setSelection(repeat);
                 populateData();
             }
@@ -420,7 +420,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     public void populateData() {
         EditText nameField = (EditText) findViewById(R.id.nameField);
         nameField.setText(name);
-        if (dueYear < 9000) {
+        if (canSetDateTime) {
             setTimeString();
             setDateString();
         }
