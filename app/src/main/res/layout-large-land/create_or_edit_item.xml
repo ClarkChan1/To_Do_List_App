@@ -178,7 +178,7 @@
         android:id="@+id/actionButton"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".45"
+        android:layout_weight=".6"
         android:background="#80ff80"
         android:onClick="actionButtonClicked"
         android:text="Create" />
