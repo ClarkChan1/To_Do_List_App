@@ -13,6 +13,7 @@
         android:layout_marginLeft="5dp"
         android:layout_weight="3.75"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="@string/item_name"
         android:textColor="#000000"
         android:textSize="22sp" />
@@ -25,6 +26,7 @@
         android:layout_marginLeft="5dp"
         android:layout_weight="1.75"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="@string/item_time"
         android:textColor="#000000"
         android:textSize="22sp" />
@@ -37,6 +39,7 @@
         android:layout_weight="1.2"
         android:background="@drawable/rounded_border_life"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="work"
         android:textColor="#000000"
         android:textSize="22sp" />
