@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,8 +129,8 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
 
         //set name and the rolling text
         name.setText(currentItem.getName());
-        name.setEllipsize(TextUtils.TruncateAt.END);
-        name.setSingleLine(true);
+//        name.setEllipsize(TextUtils.TruncateAt.END);
+//        name.setSingleLine(true);
         name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
