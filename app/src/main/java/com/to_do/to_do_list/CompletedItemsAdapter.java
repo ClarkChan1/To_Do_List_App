@@ -1,7 +1,6 @@
 package com.to_do.to_do_list;
 
 import android.app.Dialog;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,8 +42,8 @@ public class CompletedItemsAdapter extends ArrayAdapter<Item> {
 
         //set name and the rolling text
         name.setText(currentItem.getName());
-        name.setEllipsize(TextUtils.TruncateAt.END);
-        name.setSingleLine(true);
+//        name.setEllipsize(TextUtils.TruncateAt.END);
+//        name.setSingleLine(true);
         name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
