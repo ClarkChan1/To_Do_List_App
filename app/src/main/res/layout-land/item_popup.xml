@@ -176,7 +176,7 @@
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:text="edit"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/deleteButton"
@@ -189,7 +189,7 @@
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:text="delete"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
 </LinearLayout>

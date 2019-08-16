@@ -13,7 +13,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_weight=".6" />
+        android:layout_weight=".6"
+        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/name"
@@ -21,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="4"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="@string/item_name"
         android:textColor="#000000"
         android:textSize="22sp" />
@@ -33,6 +35,7 @@
         android:layout_marginRight="5dp"
         android:layout_weight="1.5"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="@string/item_time"
         android:textColor="#000000"
         android:textSize="22sp" />
@@ -45,6 +48,7 @@
         android:layout_weight="1.2"
         android:background="@drawable/rounded_border_life"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="work"
         android:textColor="#000000"
         android:textSize="22sp" />
@@ -56,6 +60,7 @@
         android:layout_marginRight="10dp"
         android:layout_weight="1.2"
         android:gravity="center"
+        android:layout_gravity="center"
         android:textColor="#ffffff"
         android:textSize="22sp" />
 
