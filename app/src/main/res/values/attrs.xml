@@ -8,8 +8,5 @@
         <attr name="metaButtonBarStyle" format="reference" />
         <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
-    <declare-styleable name="CustomListView">
-
-    </declare-styleable>
 
 </resources>
