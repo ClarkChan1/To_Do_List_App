@@ -70,8 +70,6 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
-        //checkbox for setting sepcific date and time
-        dateTimeCheckbox = (CheckBox)findViewById(R.id.specificDateAndTime);
         //linear layouts for the date and time
         dateLinear = (LinearLayout) findViewById(R.id.dateLinearLayout);
         timeLinear = (LinearLayout) findViewById(R.id.timeLinearLayout);
