@@ -187,7 +187,7 @@ public class OverdueItemsAdapter extends ArrayAdapter<Item> {
         if (currentItem.getCategory().equals("Work")) {
             category.setText("Work");
             category.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_work));
-        } else {
+        } else if(currentItem.getCategory().equals("Life")){
             category.setText("Life");
             category.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_life));
         }
