@@ -82,7 +82,6 @@
         android:layout_height="0dp"
         android:layout_weight=".5"
         android:layout_gravity="center"
-        android:onClick="setDateTimeCheckbox"
         android:text="Select Date and Time"
         android:textSize="14sp"
         android:checked="true"/>
