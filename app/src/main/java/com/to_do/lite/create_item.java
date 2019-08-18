@@ -10,7 +10,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -56,8 +55,6 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
     //linear layouts for the date and time
     LinearLayout dateLinear;
     LinearLayout timeLinear;
-    //checkbox for setting sepcific date and time
-    CheckBox dateTimeCheckbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
