@@ -37,10 +37,10 @@
         android:layout_height="25dp"
         android:layout_marginRight="5dp"
         android:layout_weight="1.2"
-        android:background="@drawable/rounded_border_life"
+
         android:gravity="center"
         android:layout_gravity="center"
-        android:text="work"
+
         android:textColor="#000000"
         android:textSize="14sp" />
 
