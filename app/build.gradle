@@ -6,8 +6,8 @@ android {
         applicationId "com.to_do.lite"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 9
-        versionName "9.0"
+        versionCode 10
+        versionName "10.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
