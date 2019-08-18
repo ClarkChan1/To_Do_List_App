@@ -174,6 +174,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             setDateString();
             dateSet = true;
         }
+        hasDateAndTime = true;
     }
 
     public void selectDateButtonClicked(View v) {
@@ -195,6 +196,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             setTimeString();
             timeSet = true;
         }
+        hasDateAndTime = true;
     }
 
     public void setTimeString() {
@@ -308,30 +310,33 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
             Calendar currentTime = Calendar.getInstance();
             Calendar dateAndTime = Calendar.getInstance();
             if (hasDateAndTime) {
-                if (!dateSet) {
-                    dateAndTime.set(Calendar.YEAR, currentTime.get(Calendar.YEAR));
-                    dateAndTime.set(Calendar.MONTH, currentTime.get(Calendar.MONTH));
-                    dateAndTime.set(Calendar.DAY_OF_MONTH, currentTime.get(Calendar.DAY_OF_MONTH));
-                    dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
-                    dateAndTime.set(Calendar.MINUTE, dueMinute);
-                    dateAndTime.set(Calendar.SECOND, 0);
-                } else {
-                    if (!timeSet) {
-                        dateAndTime.set(Calendar.YEAR, dueYear);
-                        dateAndTime.set(Calendar.MONTH, dueMonth);
-                        dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
-                        dateAndTime.set(Calendar.HOUR_OF_DAY, 23);
-                        dateAndTime.set(Calendar.MINUTE, 59);
-                        dateAndTime.set(Calendar.SECOND, 59);
-                    } else {
-                        dateAndTime.set(Calendar.YEAR, dueYear);
-                        dateAndTime.set(Calendar.MONTH, dueMonth);
-                        dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
-                        dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
-                        dateAndTime.set(Calendar.MINUTE, dueMinute);
-                        dateAndTime.set(Calendar.SECOND, 0);
-                    }
-                }
+                dateAndTime.set(Calendar.YEAR, dueYear);
+                dateAndTime.set(Calendar.MONTH, dueMonth);
+                dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
+                dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
+                dateAndTime.set(Calendar.MINUTE, dueMinute);
+                dateAndTime.set(Calendar.SECOND, 0);
+//                if (!dateSet) {
+//                    dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
+//                    dateAndTime.set(Calendar.MINUTE, dueMinute);
+//                    dateAndTime.set(Calendar.SECOND, 0);
+//                } else {
+//                    if (!timeSet) {
+//                        dateAndTime.set(Calendar.YEAR, dueYear);
+//                        dateAndTime.set(Calendar.MONTH, dueMonth);
+//                        dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
+//                        dateAndTime.set(Calendar.HOUR_OF_DAY, 23);
+//                        dateAndTime.set(Calendar.MINUTE, 59);
+//                        dateAndTime.set(Calendar.SECOND, 59);
+//                    } else {
+//                        dateAndTime.set(Calendar.YEAR, dueYear);
+//                        dateAndTime.set(Calendar.MONTH, dueMonth);
+//                        dateAndTime.set(Calendar.DAY_OF_MONTH, dueDay);
+//                        dateAndTime.set(Calendar.HOUR_OF_DAY, dueHour);
+//                        dateAndTime.set(Calendar.MINUTE, dueMinute);
+//                        dateAndTime.set(Calendar.SECOND, 0);
+//                    }
+//                }
             } else {
                 dateAndTime.set(Calendar.YEAR, 9001);
                 dateAndTime.set(Calendar.MONTH, 0);
@@ -360,7 +365,7 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         if (category.equals("Work")) {
             RadioButton workButton = findViewById(R.id.radio1);
             workButton.setChecked(true);
-        } else {
+        } else if(category.equals("Life")){
             RadioButton lifeButton = findViewById(R.id.radio2);
             lifeButton.setChecked(true);
         }
@@ -438,7 +443,8 @@ public class create_item extends AppCompatActivity implements TimePickerDialog.O
         if ((timePicked.compareTo(Calendar.getInstance()) < 0)) {
             Toast correctTime = Toast.makeText(getApplicationContext(), "Task must be due sometime after this moment", Toast.LENGTH_LONG);
             correctTime.show();
-            goodDateAndTime = false;
+        } else{
+            goodDateAndTime = true;
         }
     }
 
